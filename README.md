@@ -10,4 +10,3 @@ Eu tinha esquecido de falar o que eu queria falar
 
 Estou estudando Git e GitHub, em breve estará no meu curriculo
 
-KDSJFNNDAJJjnskdjv
