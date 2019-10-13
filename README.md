@@ -1,6 +1,6 @@
 ## **Sergio Bonatto**
 
-![Minha foto](eu perfil.jpeg =250x250)
+![Minha foto](eu perfil.jpeg =150x150)
 
 Olá! Seja bem-vindo ao meu site-currículo!
 
