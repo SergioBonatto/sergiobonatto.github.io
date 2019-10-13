@@ -45,8 +45,8 @@ Assessorar o Diretor no desempenho de suas funções, auxiliar na execução das
 
 ### Qualificações e Habilidades complementares
 
-* Inglês - básico
-* Excel - intermediário 
-* Git - básico
-* Python - básico
+* Inglês - básico;
+* Excel - intermediário; 
+* Git - básico;
+* Python - básico;
 
