@@ -1,37 +1,50 @@
-## Welcome to GitHub Pages
+## **Sergio Bonatto**
 
-You can use the [editor on GitHub](https://github.com/SergioBonatto/sergiobonatto.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+![Eu aí](https://www.facebook.com/photo.php?fbid=3228954973813895&set=a.139099606132796&type=3&theater)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Olá! Seja bem-vindo ao meu site-currículo!
 
-### Markdown
+### OBJETIVO
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Desenvolver minhas habilidades com o intuito de colaborar da melhor maneira possivel com a equipe de trabalho!
 
-```markdown
-Syntax highlighted code block
+Acompanhe–me nas minhas redes sociais:
 
-# Header 1
-## Header 2
-### Header 3
+– [Facebook](https://www.facebook.com/Bonatto785)
+– [Instagram](https://www.instagram.com/sergio_bonatto/)
+– [Ou digá um "olá" via whatsapp]( https://api.whatsapp.com/send?phone=5561984573837&text=olá,%20Sergio)
 
-- Bulleted
-- List
 
-1. Numbered
-2. List
+### EXPERIÊNCIA PROFISSIONAL
 
-**Bold** and _Italic_ and `Code` text
 
-[Link](url) and ![Image](src)
-```
+**Ortopedia Sudoeste – DF**
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+*Cargo:* Recepcionista 
 
-### Jekyll Themes
+*Atribuições:*
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/SergioBonatto/sergiobonatto.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Recepcionar e prestar serviços de apoio a clientes/pacientes; marcar e confirmar consultas e terapias; emissão de guias; emissão de notas fiscais; etc.
 
-### Support or Contact
+**Oculare Oftalmologia – DF**
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+*Cargo:* Recepcionista/Técnico em exames
+
+*Atribuições:*
+
+Preparação de pacientes para consultas médicas, como realização de midríase miose, instilação de colírios; efetuação de exames de ceratoscopia, tomografia de coerência óptica, microscopia especular de córnea, retinografia, campimetria visual, tonometria sem contato, biometria ocular e paquimetria corneana; acompanhamento de pequenos procedimentos, como fotocoagulação retiniana a laser e iridectomia.
+
+**Comunidade Terapêutica Missão Ágape - RS**
+
+*Cargo:* Secretario Administrativo
+
+*Atribuições:*
+
+Assessorar o Diretor no desempenho de suas funções, auxiliar na execução das tarefas administrativas, na tomada de decisões por ocasião das reuniões, marcando e cancelando compromissos, controlar documentos e correspondências e atender clientes externos e internos.
+
+
+### Qualificações e Habilidades complementares
+
+* Inglês - básico
+* Excel - intermediário 
+* Git - básico
