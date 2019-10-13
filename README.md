@@ -1,6 +1,6 @@
 ## **Sergio Bonatto**
 
-![Minha foto](eu perfil.jpeg | width=100)
+![Minha foto](eu perfil.jpeg)
 
 Olá! Seja bem-vindo ao meu site-currículo!
 
