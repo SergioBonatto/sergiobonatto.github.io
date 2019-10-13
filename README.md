@@ -20,27 +20,27 @@ Acompanhe–me nas minhas redes sociais:
 
 **Ortopedia Sudoeste – DF**
 
-*Cargo:* Recepcionista 
+  *Cargo:* Recepcionista 
 
-*Atribuições:*
+  *Atribuições:*
 
-Recepcionar e prestar serviços de apoio a clientes/pacientes; marcar e confirmar consultas e terapias; emissão de guias; emissão de notas fiscais; etc.
+    Recepcionar e prestar serviços de apoio a clientes/pacientes; marcar e confirmar consultas e terapias; emissão de guias; emissão de notas fiscais; etc.
 
 **Oculare Oftalmologia – DF**
 
-*Cargo:* Recepcionista/Técnico em exames
+  *Cargo:* Recepcionista/Técnico em exames
 
-*Atribuições:*
+  *Atribuições:*
 
-Preparação de pacientes para consultas médicas, como realização de midríase miose, instilação de colírios; efetuação de exames de ceratoscopia, tomografia de coerência óptica, microscopia especular de córnea, retinografia, campimetria visual, tonometria sem contato, biometria ocular e paquimetria corneana; acompanhamento de pequenos procedimentos, como fotocoagulação retiniana a laser e iridectomia.
+    Preparação de pacientes para consultas médicas, como realização de midríase miose, instilação de colírios; efetuação de exames de ceratoscopia, tomografia de coerência óptica, microscopia especular de córnea, retinografia, campimetria visual, tonometria sem contato, biometria ocular e paquimetria corneana; acompanhamento de pequenos procedimentos, como fotocoagulação retiniana a laser e iridectomia.
 
 **Comunidade Terapêutica Missão Ágape - RS**
 
-*Cargo:* Secretario Administrativo
+  *Cargo:* Secretario Administrativo
 
-*Atribuições:*
+  *Atribuições:*
 
-Assessorar o Diretor no desempenho de suas funções, auxiliar na execução das tarefas administrativas, na tomada de decisões por ocasião das reuniões, marcando e cancelando compromissos, controlar documentos e correspondências e atender clientes externos e internos.
+    Assessorar o Diretor no desempenho de suas funções, auxiliar na execução das tarefas administrativas, na tomada de decisões por ocasião das reuniões, marcando e cancelando compromissos, controlar documentos e correspondências e atender clientes externos e internos.
 
 
 ### Qualificações e Habilidades complementares
