@@ -1,6 +1,6 @@
 ## **Sergio Bonatto**
 
-![Eu aí](https://github.com/SergioBonatto/sergiobonatto.github.io/blob/master/eu%20perfil.jpeg)
+![Eu aí](eu perfil.jpeg)
 
 Olá! Seja bem-vindo ao meu site-currículo!
 
