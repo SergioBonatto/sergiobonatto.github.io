@@ -1,6 +1,6 @@
 ## **Sergio Bonatto**
 
-![Minha foto](https://github.com/SergioBonatto/sergiobonatto.github.io/blob/master/eu%20perfil.jpeg)
+![Minha foto](eu perfil.jpeg)
 
 Olá! Seja bem-vindo ao meu site-currículo!
 
