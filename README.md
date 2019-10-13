@@ -10,9 +10,9 @@ Desenvolver minhas habilidades com o intuito de colaborar da melhor maneira poss
 
 Acompanhe–me nas minhas redes sociais:
 
-– [Facebook](https://www.facebook.com/Bonatto785)
-– [Instagram](https://www.instagram.com/sergio_bonatto/)
-– [Ou digá um "olá" via whatsapp]( https://api.whatsapp.com/send?phone=5561984573837&text=olá,%20Sergio)
+* [Facebook](https://www.facebook.com/Bonatto785)
+* [Instagram](https://www.instagram.com/sergio_bonatto/)
+* [Ou digá um "olá" via whatsapp]( https://api.whatsapp.com/send?phone=5561984573837&text=olá,%20Sergio)
 
 
 ### EXPERIÊNCIA PROFISSIONAL
