@@ -1,6 +1,6 @@
 ## **Sergio Bonatto**
 
-![Eu aí](https://www.facebook.com/photo.php?fbid=3228954973813895&set=a.139099606132796&type=3&theater)
+![Minha foto](https://www.facebook.com/photo.php?fbid=3228954973813895&set=a.139099606132796&type=3&theater)
 
 Olá! Seja bem-vindo ao meu site-currículo!
 
