@@ -20,11 +20,11 @@ Acompanhe–me nas minhas redes sociais:
 
 **Ortopedia Sudoeste – DF**
 
-  *Cargo:* Recepcionista 
+  *Cargo:* Recepcionista
 
   *Atribuições:*
 
-   Recepcionar e prestar serviços de apoio a clientes/pacientes; marcar e confirmar consultas e terapias; emissão de guias; emissão de notas fiscais; etc.
+   Recepcionar e prestar serviços de apoio a pacientes; marcar e confirmar consultas e terapias; emissão de guias; emissão de notas fiscais; etc.
 
 **Oculare Oftalmologia – DF**
 
@@ -46,7 +46,6 @@ Acompanhe–me nas minhas redes sociais:
 ### Qualificações e Habilidades complementares
 
 * Inglês - básico;
-* Excel - intermediário; 
+* Excel - intermediário;
 * Git - básico;
 * Python - básico;
-
