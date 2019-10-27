@@ -1,7 +1,31 @@
+*{
+  font:12px sans-serif;
+  font
+}
+
 h1{
-  color: aqua;
+  color: #01a0fa;
   font-size: 22px;
+  font-weight: bold
+}
 
+.botao{
+  width: 115px;
+  height: 25px;
+  background: #01a0fa;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+}
 
+header > nav{
+  float: right;
+}
 
+header > nav > a {
+  padding: 25px 10px;
+  text-decoration: none;
+  color: 	#01a0fa;
 }
