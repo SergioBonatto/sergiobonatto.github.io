@@ -49,3 +49,6 @@ Acompanhe–me nas minhas redes sociais:
 * Excel - intermediário;
 * Git - básico;
 * Python - básico;
+* Facebook - 'Heavy user';
+* GIMP - básico;
+
