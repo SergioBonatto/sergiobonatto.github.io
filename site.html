@@ -8,64 +8,67 @@
   </head>
 
   <body>
-    <header>
+    <header height= 80px>
       <nav>
-        <a id="Home">Home</a>
-        <a>Experiências</a>
+        <a class = "botao">Home</a>
+        <a class = "botao">Experiências</a>
         <a class = "botao">Contato</a>
       </nav>
     </header>
-    <img src="eu.png" alt = "Logo"/>
-    <p>Sergio Bonatto</p>
-    <a class = "botao">Mande uma mensagem</a>
-
-    <section>
-      <img src = "curriculo.png" height="50" width="50" alt = "Currículo"/>
-      <h1>Currículo</h1>
-      <p>Experiências de trabalho e outras skills</p>
-      <a> Acesse o CV </a>
-
-      <img src = "debate.png" height="50" width="50" alt = "Contato"/>
-      <h1>Contato</h1>
-      <p>Entre em contato ou siga-me nas minhas redes sociais</p>
-      <a class = "botao"> Formas de falar comigo</a>
+    <section id ="logo">
+      <img class="logomarca" src="eu.png" alt = "Logo"/>
+      <p id="sergio" style="font-size: 40px;font-weight: 800;letter-spacing: 0.309em;line-height: 84px;">Sergio Bonatto</p>
+      <a class="botao" style="font-size: 18px;line-height: 108px;">Mande uma mensagem</a>
     </section>
 
     <section>
-      <h1>Quem sou</h1>
-      <p>
-        Teólogo por vocação e estudante de programação por amor. Tenho experiência com atendimento ao público, rotinas administrativas e um noção em Inglês, Espanhol, manipulação de imagens e Git.
-      </p>
-      <p>
-        "Heavy user" do Facebook e amante da filosofia Open Source.
-      </p>
-      <p>
-        Saiba mais, acessando o meu CV ou seguindo-me nas minhas redes sociais.
-      </p>
+      <figure>
+        <img src = "curriculo.png" height="50" width="50" alt = "Currículo"/>
+        <h1>Currículo</h1>
+        <p>Experiências de trabalho e outras skills</p>
+        <a class = "botao"> Acesse o CV </a>
+      </figure>
 
-      <img src = "eu perfil.jpeg" height="420" width="420" alt = "Foto Perfil"/>
+      <figure>
+        <img src = "debate.png" height="50" width="50" alt = "Contato"/>
+        <h1>Contato</h1>
+        <p>Entre em contato ou siga-me nas minhas redes sociais</p>
+        <a class = "botao"> Formas de falar comigo</a>
+      </figure>
+    </section>
+
+
+    <section>
+        <p id = "perfil"><img src = "eu perfil.jpeg" height="320" width="320" alt = "Foto Perfil"/>
+
+        <p class = "linha"/>
+        <h1 class = "quem">Quem sou</h1>
+        <p id = "sou" font>
+            Teólogo por vocação e estudante de programação por amor.
+
+            Tenho experiência com atendimento ao público, rotinas administrativas e um noção em Inglês, Espanhol, manipulação de imagens e Git.
+
+            "Heavy user" do Facebook e amante da filosofia Open Source.
+        </p>
+
 
     </section>
+
+
+    <p class = "linha"/>
 
     <footer>
-      <a>Status</a>
-      <a>Política de privacidade</a>
-      <a>Contate-nos</a>
-      <a>Português</a>
 
-      <a><img src = "facebook.png" height="35" width="35" alt = "Facebook"/></a>
-      <a><img src = "github.png" height="35" width="35" alt = "GitHub"/></a>
-      <a><img src = "linkdin.png" height="35" width="35" alt = "LinkedIn"/></a>
-      <a><img src = "email.png" height="35" width="35" alt = "Email"/></a>
+      <a> Status </a>
+      <a> Política de privacidade </a>
+      <a> Contate-nos </a>
+      <a> Português </a>
 
-
-      <div>Icons "contato" and "currículo" made by
-        <a href="https://www.flaticon.com/br/autores/freepik"
-        title="Freepik">Freepik
-        </a> from
-        <a href="https://www.flaticon.com/br/"
-        title="Flaticon">www.flaticon.com
-        </a>
+      <div>
+        <a><img src = "facebook.png" height="25" width="25" alt = "Facebook"/></a>
+        <a><img src = "github.png" height="25" width="25" alt = "GitHub"/></a>
+        <a><img src = "linkdin.png" height="25" width="25" alt = "LinkedIn"/></a>
+        <a><img src = "email.png" height="25" width="25" alt = "Email"/></a>
       </div>
 
     </footer>

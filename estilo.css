@@ -1,6 +1,6 @@
 *{
   font:12px sans-serif;
-  font
+  color: #01a0fa;
 }
 
 h1{
@@ -28,4 +28,119 @@ header > nav > a {
   padding: 25px 10px;
   text-decoration: none;
   color: 	#01a0fa;
+  font-weight: bold;
+}
+
+#logo{
+    text-align: center;
+
+}
+
+#section{
+  text-align: center;
+}
+
+.logomarca{
+  text-align: center;
+  width: 7%
+}
+
+header{
+  margin-top: 25px;
+  height: 80px
+}
+
+body{
+  background-image: url("fundo.jpg");
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-size: 100%;
+  background-color: white;
+}
+
+#sergio{
+  font-size: 60px;
+  color: white;
+  font-weight: bold;
+  margin-top: 90px;
+  height: 80px;
+  background: #01a0fa;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+section > figure{
+  margin-left: 250px;
+  float: left;
+}
+
+.depoimento{
+  color: #01a0fa;
+  font-weight: bold;
+  margin-top: 90px;
+  height: 80px;
+  background: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+footer > div {
+  float: right;
+}
+
+footer > a {
+  text-align: center;
+}
+
+#perfil{
+  margin-right: 150px;
+  float: right;
+  margin-top: 65px;
+  width: 39%;
+  height: 320px;
+  padding: 1px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.linha{
+  margin-top: 225px;
+  width: 99%;
+  height: 1px;
+  background: #01a0fa;
+  padding: 1px;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+}
+
+#sou{
+
+  width: 25%;
+  height: 318px;
+  background: #01a0fa;
+  padding: 1px;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+
+}
+
+.quem{
+  width: 315px;
+  height: 25px;
+  background: #01a0fa;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
 }
