@@ -18,6 +18,7 @@ h1{
   border-radius: 5px;
   color: white;
   font-weight: bold;
+  text-decoration: none
 }
 
 header > nav{
@@ -122,11 +123,11 @@ footer > a {
 
 #sou{
 
-  width: 25%;
-  height: 318px;
+  width: 99%;
+  height: 518px;
   background: #01a0fa;
   padding: 1px;
-  text-align: center;
+  text-align: left;
   border-radius: 5px;
   color: white;
   font-weight: bold;
@@ -143,4 +144,71 @@ footer > a {
   border-radius: 5px;
   color: white;
   font-weight: bold;
+}
+
+.retangulo{
+    border-top: 99px;
+    width: 99%;
+    height: 700px;
+    background-color: #01a0fa;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.compromisso{
+    height: 36px;
+    font-size: 34px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.35;
+    letter-spacing: normal;
+    text-align: left;
+    color: #ffffff;
+}
+
+.depText{
+  text-align: left;
+}
+
+.textDep{
+    width: 421px;
+    height: 366px;
+    font-size: 28px;
+    font-weight: 300;
+    font-style: italic;
+    font-stretch: normal;
+    line-height: 1.71;
+    letter-spacing: normal;
+    text-align: left;
+    color: white;
+
+}
+
+#fotoDep{
+    width: 300px;
+    height: 300px;
+    float: center;
+    margin-right: 25%;
+}
+
+
+
+footer {
+    font-size: 14px;
+    font-weight: bold;
+    font-stretch: normal;
+    line-height: 1.21;
+    letter-spacing: normal;
+    color: #54565a;
+    display: flex;
+    align-items: center;
+    height: 100px;
+    width: 100%;
+  }
+
+footer > div > a{
+  text-align: right;
 }

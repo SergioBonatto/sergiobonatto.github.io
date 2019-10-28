@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -8,17 +8,18 @@
   </head>
 
   <body>
+    <script src = "script.js"></script>
     <header height= 80px>
       <nav>
-        <a class = "botao">Home</a>
-        <a class = "botao">Experiências</a>
-        <a class = "botao">Contato</a>
+        <a class = "botao" href="site.html">Home</a>
+        <a class = "botao" href="experiencias.html">Experiências</a>
+        <a class = "botao" href="contato.html">Contato</a>
       </nav>
     </header>
     <section id ="logo">
       <img class="logomarca" src="eu.png" alt = "Logo"/>
       <p id="sergio" style="font-size: 40px;font-weight: 800;letter-spacing: 0.309em;line-height: 84px;">Sergio Bonatto</p>
-      <a class="botao" style="font-size: 18px;line-height: 108px;">Mande uma mensagem</a>
+      <a class="botao" href="contato.html" style="font-size: 18px;line-height: 108px;">Mande uma mensagem</a>
     </section>
 
     <section>
@@ -33,32 +34,34 @@
         <img src = "debate.png" height="50" width="50" alt = "Contato"/>
         <h1>Contato</h1>
         <p>Entre em contato ou siga-me nas minhas redes sociais</p>
-        <a class = "botao"> Formas de falar comigo</a>
+        <a class = "botao" href="contato.html"> Formas de falar comigo</a>
       </figure>
     </section>
 
 
-    <section>
-        <p id = "perfil"><img src = "eu perfil.jpeg" height="320" width="320" alt = "Foto Perfil"/>
+    <section class  = "retangulo">
+      <figure id = "depText">
+        <h1 class = "compromisso">
+          Quem sou:
+        </h1>
+        <p = class = "textDep">
+          Teólogo por vocação e estudante de programação por amor.
 
-        <p class = "linha"/>
-        <h1 class = "quem">Quem sou</h1>
-        <p id = "sou" font>
-            Teólogo por vocação e estudante de programação por amor.
+          Tenho experiência com atendimento ao público, rotinas administrativas e um pouco de noção em Inglês, Espanhol, manipulação de imagens e Git.
 
-            Tenho experiência com atendimento ao público, rotinas administrativas e um noção em Inglês, Espanhol, manipulação de imagens e Git.
-
-            "Heavy user" do Facebook e amante da filosofia Open Source.
+          Sou "Heavy user" do Facebook e amante da filosofia Open Source.
         </p>
 
+      </figure>
 
-    </section>
+      <figure id = "fotoDep">
+        <img src = "eu perfil.jpeg" alt = "Foto Perfil"/>
+      </figure>
 
-
+    </section
     <p class = "linha"/>
 
     <footer>
-
       <a> Status </a>
       <a> Política de privacidade </a>
       <a> Contate-nos </a>

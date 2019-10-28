@@ -51,4 +51,3 @@ Acompanhe–me nas minhas redes sociais:
 * Python - básico;
 * Facebook - 'Heavy user';
 * GIMP - básico;
-
