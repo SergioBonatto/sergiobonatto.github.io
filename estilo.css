@@ -52,7 +52,7 @@ header{
 }
 
 body{
-  background-image: url("fundo.jpg");
+  background-image: url("imagens/fundo.jpg");
   background-repeat: no-repeat;
   background-position: right top;
   background-size: 100%;
@@ -90,12 +90,13 @@ section > figure{
   font-size: 22px;
 }
 
-footer > div {
-  float: right;
+footer > div > a{
+  float: left;
 }
 
 footer > a {
-  text-align: center;
+  text-align: right;
+
 }
 
 #perfil{
@@ -196,7 +197,7 @@ footer > a {
 
 
 
-footer {
+/*footer {
     font-size: 14px;
     font-weight: bold;
     font-stretch: normal;
@@ -207,8 +208,63 @@ footer {
     align-items: center;
     height: 100px;
     width: 100%;
-  }
+  }*/
 
 footer > div > a{
-  text-align: right;
+  float: right;
+  margin-right: 9px;
+}
+
+.header-menor{
+  float: right;
+}
+
+.header-direita{
+    padding: 25px 10px;
+    text-decoration: none;
+    color: 	#01a0fa;
+    font-weight: bold;
+}
+
+.linha1{
+  margin-top: 525px;
+  width: 99%;
+  height: 1px;
+  background: white;
+  padding: 1px;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+}
+
+.retangulo1{
+    width: 59%;
+    height: 900px;
+    align-content: left;
+    justify-content: left;
+    background: white;
+    padding: 1px;
+    text-align: left;
+    border-radius: 5px;
+    color: #01a0fa;
+    font-weight: bold;
+
+}
+
+#sergio1{
+  font-size: 60px;
+  color: white;
+  font-weight: bold;
+  height: 80px;
+  background: #01a0fa;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+
+footer > section > a{
+  text-align: left;
 }
