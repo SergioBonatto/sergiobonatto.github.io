@@ -41,9 +41,23 @@ header > nav > a {
   text-align: center;
 }
 
-.logomarca{
+#links{
   text-align: center;
-  width: 7%
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  align-items: center;
+  padding-bottom: 38px;
+}
+
+
+.logomarca{
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    align-items: center;
+    width: 7%
 }
 
 header{
@@ -70,6 +84,7 @@ body{
   text-align: center;
   border-radius: 5px;
   font-weight: bold;
+
 }
 
 section > figure{
@@ -88,6 +103,8 @@ section > figure{
   border-radius: 5px;
   font-weight: bold;
   font-size: 22px;
+  display: flex;
+  flex-direction: row;
 }
 
 footer > div > a{
@@ -227,7 +244,7 @@ footer > div > a{
 }
 
 .linha1{
-  margin-top: 525px;
+  margin-top: 45%;
   width: 99%;
   height: 1px;
   background: white;
@@ -249,11 +266,13 @@ footer > div > a{
     border-radius: 5px;
     color: #01a0fa;
     font-weight: bold;
+    display: grid;
+    margin: auto;
 
 }
 
 #sergio1{
-  font-size: 60px;
+  /*font-size: 60px;*/
   color: white;
   font-weight: bold;
   height: 80px;
@@ -262,6 +281,19 @@ footer > div > a{
   text-align: center;
   border-radius: 5px;
   font-weight: bold;
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: 0.094em;
+  line-height: 69px;
+  font-style: normal;
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  align-items: center;
+  width: 398px;
+  padding-bottom: 11px;
+  margin-top: -271px;
+}
 }
 
 
