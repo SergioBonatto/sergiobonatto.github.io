@@ -74,16 +74,18 @@ body{
 }
 
 #sergio{
-  font-size: 60px;
-  color: white;
-  font-weight: bold;
-  margin-top: 90px;
-  height: 80px;
-  background: #01a0fa;
-  padding: 10px;
-  text-align: center;
-  border-radius: 5px;
-  font-weight: bold;
+    color: white;
+    font-weight: bold;
+    margin-top: 90px;
+    height: 80px;
+    background: #01a0fa;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: 0.309em;
+    line-height: 84px;
 
 }
 
