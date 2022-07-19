@@ -405,7 +405,7 @@ section img#grama {
 }
 #about .text  #kindelia  {
 color: var(--base-color-second); 
-font: var(--title-font);
+font: 700 1.75rem;
 }
 
 /* ===== Contacts ===== */
