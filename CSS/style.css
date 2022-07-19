@@ -403,6 +403,10 @@ section img#grama {
   z-index: 99;
   margin-bottom: 14rem;
 }
+#about .text  #kindelia  {
+color: var(--base-color-second); 
+font: var(--title-font);
+}
 
 /* ===== Contacts ===== */
 #contact {
