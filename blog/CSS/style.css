@@ -768,10 +768,10 @@ footer .social a:hover {
 
   #blog .text {
     order: 0;
-    max-width: 80%;
+    max-width: 70%;
     text-align: left;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: 100vw;
     padding-top: 3rem;
   }
 
