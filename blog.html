@@ -43,7 +43,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@sergiofbonatto">
     <meta name="twitter:creator" content="@sergiofbonatto">
-    <meta name="twitter:title" content="Sergio Bonatto - Provas Formais">
+    <meta name="twitter:title" content="Sergio Bonatto - Dev frontend">
     <meta
       name="twitter:description"
       content="Viajante do tempo, madao, caçador de goblins, membro da akatsuki e do partido do pirata que estica, nerd, lindo e vegano não-praticante"
@@ -84,13 +84,13 @@
   <body>
     <header id="header">
       <nav class="container">
-        <a class="logo" href="./index.html"><span>Bonatto</span></a>
+        <a class="logo" href="#"><span>Bonatto</span></a>
         <!-- menu -->
         <div class="menu">
           <ul class="grid">
             <li><a class="title" href="./index.html#home">Início</a></li>
             <li><a class="title" href="./index.html#about">Sobre</a></li>
-            <li><a class="title active" href="./blog.html">Blog</a></li>
+            <li><a class="title" href="#">Blog</a></li>
             <li><a class="title" href="./index.html#contact">Contato</a></li>
           </ul>
         </div>
@@ -101,8 +101,75 @@
     </header>
 
     <main>
-      <!-- Main -->
-      <section class="section" id="blog" >
+      <!-- Parallax -->
+      <!-- Home -->
+      <section class="section show" id="home">
+        <img
+          src="./Imagens/parallax/ceu-estrelado.png"
+          alt="nuvens"
+          id="stars"
+        />
+        <img src="./Imagens/parallax/lua.png" alt="lua" id="moon" />
+        <img
+          src="./Imagens/parallax/montanha-fundo.png"
+          alt="montanha ao fundo"
+          id="mountains_behind"
+        />
+        <img
+          src="./Imagens/parallax/montanha-meio.png"
+          alt="montanha no meio"
+          id="mountains_between"
+        />
+        <img
+          src="./Imagens/parallax/montanha-frente.png"
+          alt="montanha mais a frente"
+          id="mountains_front"
+        />
+        <h2 id="text">Olá tudo bem</h2>
+        <img
+          src="./Imagens/parallax/marco.png"
+          alt="marco da divisa"
+          id="marco"
+        />
+        <img
+          src="./Imagens/parallax/grama1.png"
+          alt="grama"
+          id="grama"
+          style="z-index: 11"
+        />
+      </section>
+
+      <!-- About -->
+<!--       <section class="section" id="about"> -->
+<!--         <div class="container grid"> -->
+<!--           <div class="image"> -->
+<!--             <img -->
+<!--               src="./Imagens/perfil.png" -->
+<!--               alt="Foto minha com casaco com capuz e touca preta, no estilo doomer" -->
+<!--             /> -->
+<!--           </div> -->
+<!--           <div class="text"> -->
+<!--             <h2 class="title">Sobre mim</h2> -->
+<!--             <p> -->
+<!--               Eu sou um santanense estudante de programação funcional na <a id="kindelia" href='https://kindelia.org -->
+<!-- '>Kindelia Foundation</a> -->
+<!--                & gosto de compreender cada vez mais sobre tecnologias descentralizadas, que garantem a privacidade e autonomia do usuário  & busco me especializar como programador funcional para blockchain. -->
+<!--             </p> -->
+<!--             <br /> -->
+<!--             <p> -->
+<!--               Sou pai do Matteo, teólogo reformado, autodidata, amante da -->
+<!--               filosofia de código aberto, nerd e apaixonado por bebidas amargas. -->
+<!--             </p> -->
+<!--             <br/> -->
+<!--             <p> -->
+<!--               Acesse meu <a id="kindelia" href="./blog.html">blog</a> e veja um pouco sobre provas formais e outras coisas que gosto ou acho útil. -->
+<!--             </p> -->
+<!--           </div> -->
+<!--         </div> -->
+<!--       </section> -->
+
+      <!-- Contact -->
+      <section class="section" id="blog">
         <div class="container grid">
           <div class="text">
             <h2 class="title">Meu blog (em construção...)</h2>
@@ -110,44 +177,74 @@
               <!-- <figure></figure> -->
             <!-- </div> -->
               <p>
-              Aqui deixarei as coisas que acho interessantes, a maioria será referente a programação e tecnologias. Cada post levará a uma nova pagina com o texto e imagem referente 
+              Aqui deixarei as coisas que acho interessantes, a maioria será referente a programação e tecnologias. Cada post levará a uma nova pagina com o texto e imagem referente
               </p>
             </div>
           </div>
-        </div>        
-      </section>
-
-      <!-- Footer -->
-      <footer class="section">
-        <div class="container grid">
-          <div class="brand">
-            <a href="#home" class="logo logo-alt"><span>Bonatto</span></a>
-            <p>Bonatto&trade; 2022</p>
-            <p>Todos os direitos reservado.</p>
-          </div>
-          <div class="social grid">
-            <a href="https://www.instagram.com/Sergio_Bonatto/" target="_blanck">
-              <i class="icon-instagram"></i>
-            </a>
-            <a href="https://www.facebook.com/Bonatto785" target="_blanck">
-              <i class="icon-facebook"></i>
-            </a>
-            <a href="https://github.com/SergioBonatto/" target="_blanck">
-              <img src="assets/fonts/github.svg" />
-            </a>
-            <a href="https://twitter.com/SergioFBonatto" target="_blanck">
-              <img src="assets/fonts/twitter.svg" />
-            </a>
-            <a href="https://www.linkedin.com/in/sergiobonatto/" target="_blanck">
-              <img src="assets/fonts/linkedin.svg" />
-            </a>
-          </div>
         </div>
-      </footer>
-      <a href="#home" class="back-to-top">
-        <i class="icon-arrow-up"></i>
-      </a>
-    </body>
-    <!-- JavaScript -->
-    <script src="./JS/script.js" charset="utf-8"></script>
+        <!-- <div class="container grid"> -->
+        <!--   <div class="text"> -->
+        <!--     <h2 class="title">Entre em contato!</h2> -->
+        <!--     <p> -->
+        <!--       Venha falar comigo e saber um pouco mais, expandir a networking e -->
+        <!--       até mesmo tomar um café! -->
+        <!--     </p> -->
+        <!--     <a -->
+        <!--       href="https://api.whatsapp.com/send?phone=+5551981159285&text=Oi! Gostaria de conversar com você sobre a Kindelia Foundation, me fale mais um pouco sobre ela" -->
+        <!--       class="button" -->
+        <!--       target="_blank" -->
+        <!--     > -->
+        <!--       <i class="icon-whatsapp"></i>Me chama no zap</a -->
+        <!--     > -->
+        <!--   </div> -->
+        <!--  -->
+        <!--   <div class="links"> -->
+        <!--     <ul class="grid"> -->
+        <!--       <li> -->
+        <!--         <i class="icon-phone"></i> -->
+        <!--         (51) 98115-9285 -->
+        <!--       </li> -->
+        <!--       <li> -->
+        <!--         <i class="icon-mail"></i> -->
+        <!--         bonatto@tutanota.com -->
+        <!--       </li> -->
+        <!--     </ul> -->
+        <!--   </div> -->
+        <!-- </div> -->
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="section">
+      <div class="container grid">
+        <div class="brand">
+          <a href="#home" class="logo logo-alt"><span>Bonatto</span></a>
+          <p>Bonatto&trade; 2022</p>
+          <p>Todos os direitos reservado.</p>
+        </div>
+        <div class="social grid">
+          <a href="https://www.instagram.com/Sergio_Bonatto/" target="_blanck">
+            <i class="icon-instagram"></i>
+          </a>
+          <a href="https://www.facebook.com/Bonatto785" target="_blanck">
+            <i class="icon-facebook"></i>
+          </a>
+          <a href="https://github.com/SergioBonatto/" target="_blanck">
+            <img src="assets/fonts/github.svg" />
+          </a>
+          <a href="https://twitter.com/SergioFBonatto" target="_blanck">
+            <img src="assets/fonts/twitter.svg" />
+          </a>
+          <a href="https://www.linkedin.com/in/sergiobonatto/" target="_blanck">
+            <img src="assets/fonts/linkedin.svg" />
+          </a>
+        </div>
+      </div>
+    </footer>
+    <a href="#home" class="back-to-top">
+      <i class="icon-arrow-up"></i>
+    </a>
+  </body>
+  <!-- JavaScript -->
+  <script src="./JS/script.js" charset="utf-8"></script>
 </html>
