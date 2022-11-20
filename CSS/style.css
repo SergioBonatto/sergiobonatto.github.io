@@ -389,6 +389,13 @@ section img#grama {
   z-index: 1000;
 }
 
+#about .blog-img img {
+  max-width: 40%;
+  max-height: 40%;
+  height: auto;
+  width: auto;
+}
+
 #about .title {
   color: var(--base-color-second);
   z-index: 99;
@@ -485,9 +492,19 @@ font: 700 1.75rem;
   padding-top: 4rem + var(--header-height);
 }
 
-#blog .blog-img {
+#about .blog-img {
   max-with: 70%;
 }
+#about  .blog-img img {
+  align: center;
+  z-index: 2;
+  position:relative;
+  padding: -4rem;
+  max-width: 40%;
+  max-height: 40%;
+  width: auto;
+  height: auto;
+  } 
 
 #blog figure {
   margin: 2rem 0;
@@ -497,6 +514,7 @@ font: 700 1.75rem;
 #blog .text p {
   margin-bottom: 2rem;
   color: var(--text-color-light);
+  font-size: 1.2rem;
 }
 
 
@@ -683,6 +701,12 @@ footer .social a:hover {
     margin-top: -13rem;
   }
 
+#about .blog-img img {
+  max-width: 40%;
+  max-height: 40%;
+  height: auto;
+  width: auto;
+}
   #about .text .title {
     font-size: 3.5rem;
   }
@@ -698,23 +722,61 @@ footer .social a:hover {
   }
   /* Blog */
 
+#blog {
+  color: var(--text_color-light);
+  /* height: 100vh; */
+  width: 100vw;
+  background: #4896d3;
+  z-index: 99;
+  position: relative;
+  top: 4rem + var(--header-height);
+  padding-top: 8rem;
+}
+
+
   #blog .container {
     margin: 0 auto;
     grid-auto-flow: column;
     justify-content: space-between;
+    padding-top: 8rem;
   }
-  #blog .image {
+  #blog .blog-image {
     order: 1;
-    max-width: 30rem;
+    max-width: 30vw;
   }
+  
 
+
+.blog-img img{
+  align: center;
+  z-index: 2;
+  position:relative;
+  padding: -4rem;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
   #blog .text {
-    order: 0;
-    max-width: 80%;
-    text-align: left;
-    margin-left: auto;
-    margin-right: auto;
+    /* order: 0; */
+    /* max-width: 80%; */
+    /* text-align: left; */
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    color: var(--text-color-light);
+    z-index: 99;
+    padding-bottom: 4rem;
   }
+#blog .text h2 {
+  color: var(--text-color-light);
+  padding-top: 4rem + var(--header-height);
+}
+
+#blog .text p {
+  font-size: 1.2rem;
+}
 
   #blog::before {
     content: '';
