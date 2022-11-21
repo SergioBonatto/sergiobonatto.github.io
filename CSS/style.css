@@ -113,7 +113,6 @@ body {
 #header {
   border-bottom: 1px solid #e4e4e4;
   display: flex;
-
   width: 100%;
   position: fixed;
   top: 0;
@@ -477,7 +476,8 @@ font: 700 1.75rem;
   z-index: 99;
   position: relative;
   top: 4rem + var(--header-height);
-  padding-top: 6rem;
+  padding-top: 2rem;
+  padding-bottom:-100vh;
 }
 #blog .text {
   margin-left: 1.5rem;
@@ -492,23 +492,24 @@ font: 700 1.75rem;
   padding-top: 4rem + var(--header-height);
 }
 
-#about .blog-img {
-  max-with: 70%;
-}
-#about  .blog-img img {
+/* #about .blog-img { */
+  /* max-with: 70%; */
+/* } */
+
+#blog .blog-img {
   align: center;
   z-index: 2;
   position:relative;
   padding: -4rem;
-  max-width: 40%;
-  max-height: 40%;
+  max-width: 80vw;
+  max-height: 80vh;
   width: auto;
   height: auto;
   } 
 
-#blog figure {
-  margin: 2rem 0;
-}
+/* #blog figure { */
+  /* margin: 2rem 0; */
+/* } */
 
 
 #blog .text p {
@@ -517,6 +518,15 @@ font: 700 1.75rem;
   font-size: 1.2rem;
 }
 
+#blog .text a {
+  font: 700 1rem var(--title-font);
+  color: var(--body-color);
+}
+
+.pub {
+  margin-top: -3rem;
+  margin-bottom: -3rem;
+}
 
 /* ===== Footer ===== */
 footer {
@@ -731,29 +741,36 @@ footer .social a:hover {
   position: relative;
   top: 4rem + var(--header-height);
   padding-top: 8rem;
+  padding-bottom: 48rem;
+  /* margin-bottom: 18rem; */
+  height: 100vh;
 }
 
 
-  #blog .container {
-    margin: 0 auto;
-    grid-auto-flow: column;
-    justify-content: space-between;
-    padding-top: 8rem;
-  }
-  #blog .blog-image {
-    order: 1;
-    max-width: 30vw;
-  }
+#blog .container {
+  margin: 0 auto;
+  grid-auto-flow: column;
+  justify-content: space-between;
+  width: 150vw;
+  height: 100vh;
+  background: #4896d3;
+  padding:4rem;
+  position:relative;
+}
+  /* #blog .blog-image { */
+    /* order: 1; */
+    /* max-width: 30vw; */
+  /* } */
   
 
 
-.blog-img img{
+#blog .blog-img {
   align: center;
   z-index: 2;
   position:relative;
   padding: -4rem;
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 50vw;
+  max-height: 50vh;
   width: auto;
   height: auto;
 }
@@ -766,7 +783,7 @@ footer .social a:hover {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
     color: var(--text-color-light);
-    z-index: 99;
+    z-index: 99999;
     padding-bottom: 4rem;
   }
 #blog .text h2 {
@@ -776,6 +793,14 @@ footer .social a:hover {
 
 #blog .text p {
   font-size: 1.2rem;
+  margin-bottom: -14rem;
+  background: #4896d3;
+
+}
+
+#blog .post {
+  padding-top: 17rem;
+  padding-bottom: 6rem;
 }
 
   #blog::before {
@@ -787,6 +812,8 @@ footer .social a:hover {
     z-index: 980;
     top: 99vh;
   }
+
+
   /* Contact */
 
   #contact {
