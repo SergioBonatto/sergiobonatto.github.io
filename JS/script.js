@@ -2,6 +2,7 @@
 // capturo o horario do dispositivo
 let now = new Date()
 let hora = now.getHours()
+// let hora = 10
 //defino os elementos que quero alterar
 let oi = window.document.getElementById('text')
 let satelite = window.document.getElementById('moon')
