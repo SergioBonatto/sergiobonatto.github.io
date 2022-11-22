@@ -470,14 +470,13 @@ font: 700 1.75rem;
 
 #blog {
   color: var(--text_color-light);
-  height: 100vh;
+  height: auto;
   width: 100vw;
   background: #4896d3;
   z-index: 99;
   position: relative;
   top: 4rem + var(--header-height);
   padding-top: 2rem;
-  padding-bottom:-100vh;
 }
 #blog .text {
   margin-left: 1.5rem;
@@ -532,6 +531,7 @@ font: 700 1.75rem;
 footer {
   background: var(--base-color);
   position: relative;
+  /* margin-top: 6.5rem; */
   z-index: 99;
 }
 
