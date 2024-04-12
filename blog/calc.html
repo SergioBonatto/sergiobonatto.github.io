@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .calculator {
+            margin: 50px auto;
+            max-width: 300px;
+            border: 2px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        input[type="text"],
+        input[type="number"],
+        select,
+        input[type="button"] {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        input[type="button"] {
+            width: 48%;
+            padding: 10px;
+            margin: 5px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>Calculadora</h2>
+        <input type="number" id="num1" placeholder="Número 1">
+        <input type="number" id="num2" placeholder="Número 2">
+        <select id="operator">
+            <option value="add">Adição</option>
+            <option value="subtract">Subtração</option>
+            <option value="multiply">Multiplicação</option>
+            <option value="divide">Divisão</option>
+        </select>
+        <br>
+        <input type="button" value="Calcular" onclick="calculate()">
+        <input type="button" value="Limpar" onclick="clearResult()">
+        <br>
+        <input type="text" id="result" placeholder="Resultado" disabled>
+    </div>
+
+    <script>
+        function calculate() {
+            var num1 = parseFloat(document.getElementById('num1').value);
+            var num2 = parseFloat(document.getElementById('num2').value);
+            var operator = document.getElementById('operator').value;
+            document.getElementById('result').value = "Hello World";
+        }
+
+        function clearResult() {
+            document.getElementById('result').value = "";
+        }
+    </script>
+</body>
+</html>
+
