@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguindo Sem Seguir de Volta</title>
+</head>
+<body>
+    <h1>Seguindo Sem Seguir de Volta</h1>
+    <ul id="result"></ul>
+
+    <button onclick="fetchUnfollowers()">Verificar</button>
+
+    <script>
+        // Função para fazer uma requisição HTTP GET
+        async function fetchJSON(url, options = {}) {
+            const response = await fetch(url, options);
+            return response.json();
+        }
+
+        // Função para recuperar a lista de seguidores e seguindo
+        async function fetchUnfollowers() {
+            const username = 'sergio_bonatto'; // Substitua pelo seu nome de usuário do Instagram
+            const following = await fetchFollowing(username);
+            const followers = await fetchFollowers(username);
+            const unfollowers = following.filter(profile => !followers.includes(profile));
+            displayUnfollowers(unfollowers);
+        }
+
+        // Função para recuperar a lista de seguindo
+        async function fetchFollowing(username) {
+            const url = `https://www.instagram.com/${username}/?__a=1`;
+            const response = await fetchJSON(url);
+            return response.graphql.user.edge_follow.edges.map(edge => edge.node.username);
+        }
+
+        // Função para recuperar a lista de seguidores
+        async function fetchFollowers(username) {
+            const url = `https://www.instagram.com/${username}/?__a=1`;
+            const response = await fetchJSON(url);
+            return response.graphql.user.edge_followed_by.edges.map(edge => edge.node.username);
+        }
+
+        // Função para exibir os perfis que você segue, mas que não te seguem de volta
+        function displayUnfollowers(unfollowers) {
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = ''; // Limpar a lista antes de exibir os resultados
+            unfollowers.forEach(profile => {
+                const li = document.createElement('li');
+                li.textContent = profile;
+                resultElement.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
+
