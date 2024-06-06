@@ -1,58 +1,3 @@
-// saudação por horário
-// capturo o horario do dispositivo
-let now = new Date()
-let hora = now.getHours()
-// let hora = 10
-//defino os elementos que quero alterar
-let oi = window.document.getElementById('text')
-let satelite = window.document.getElementById('moon')
-let estrela = window.document.getElementById('stars')
-
-//se for entre 5 horas da manha e 12 horas
-if (hora >= 5 && hora < 12) {
-  // a mensagem é de bom dia
-  oi.innerHTML = 'Bom dia!'
-  //altero o  elemento satélite para o Sol
-  satelite.src = './Imagens/parallax/sol.png'
-  //defino o tamanho
-  satelite.style.height = '100px'
-  satelite.style.marginTop = '100px'
-  // e a posição
-  satelite.style.zIndex = '0'
-  //mudo a cor de fundo para um azul similar ao céu de dia
-  document.body.style.background = '#2fb3eb'
-  // tiro as estrelas e coloco nuvens no lugar
-  estrela.src = './Imagens/parallax/nuvens.png'
-  //altero o tamanho das nuvens
-  estrela.style.height = '90%'
-  // e coloco na frente do sol
-  estrela.style.zIndex = '1'
-}
-// se não, se for entre 12 horas e 18 da tarde
-else if (hora >= 12 && hora < 18) {
-  // mudo a mensagem para "Boa tarde"
-  oi.innerHTML = 'Boa tarde!'
-  // o resto permanece igual ao da manhã
-  satelite.src = './Imagens/parallax/sol.png'
-  satelite.style.height = '100px'
-  satelite.style.marginTop = '100px'
-  satelite.style.zIndex = '0'
-  document.body.style.background = '#2fb3eb'
-  estrela.src = './Imagens/parallax/nuvens.png'
-  estrela.style.height = '90%'
-  estrela.style.zIndex = '1'
-}
-// se não for manhã e nem tarde
-else {
-  // a mensagem vira "Boa noite"
-  oi.innerHTML = 'Boa noite!'
-  // a lua vem para a frente
-  satelite.style.zIndex = '1'
-  // e as estrelas vão para o fundo
-  estrela.style.zIndex = '0'
-}
-
-//movimentação paralax
 let paralax = () => {
   // defino os elementos que movimentarei
   let stars = document.getElementById('stars')
@@ -77,7 +22,86 @@ let paralax = () => {
     text.style.marginTop = `${value * 0.75}px`
   })
 }
-paralax()
+
+
+
+// Objeto contendo os estilos para cada modo
+const estilosModo = {
+  light: {
+    srcSatelite: './Imagens/parallax/sol.png',
+    srcEstrela: './Imagens/parallax/nuvens.png',
+    sateliteZIndex: '0',
+    estrelaZIndex: '1',
+    backgroundColor: '#2fb3eb'
+  },
+  dark: {
+    srcSatelite: './Imagens/parallax/lua.png',
+    srcEstrela: null,
+    sateliteZIndex: '1',
+    estrelaZIndex: '0',
+    backgroundColor: '#1E1E1E'
+  }
+};
+
+// Função para definir o modo de acordo com o horário ou com a escolha do usuário
+function definirModo(modo = null) {
+  let now = new Date();
+  let hora = now.getHours();
+  let oi = document.getElementById('text');
+  let saudacao;
+
+  // Definir saudação com base no horário
+  if (hora >= 5 && hora < 12) {
+    saudacao = 'Bom dia!';
+  } else if (hora >= 12 && hora < 18) {
+    saudacao = 'Boa tarde!';
+  } else {
+    saudacao = 'Boa noite!';
+  }
+
+  // Função para definir os estilos com base no modo
+  function definirEstilo(estilo) {
+    if (estilo.srcSatelite) {
+      satelite.src = estilo.srcSatelite;
+      satelite.style.height = '100px';
+      satelite.style.marginTop = '100px';
+      satelite.style.zIndex = estilo.sateliteZIndex;
+    }
+    if (estilo.srcEstrela) {
+      estrela.src = estilo.srcEstrela;
+      estrela.style.height = '90%';
+      estrela.style.zIndex = estilo.estrelaZIndex;
+    }
+    if (estilo.backgroundColor) {
+      document.body.style.background = estilo.backgroundColor;
+    }
+  }
+
+  // Definir modo com base no horário se modo não for especificado
+  if (modo === null) {
+    if (hora >= 5 && hora < 12) {
+      definirEstilo(estilosModo.light); // Modo light
+    } else if (hora >= 12 && hora < 18) {
+      definirEstilo(estilosModo.light); // Modo light
+    } else {
+      definirEstilo(estilosModo.dark); // Modo dark
+    }
+  } else {
+    // Definir modo com base na escolha do usuário
+    definirEstilo(estilosModo[modo]);
+  }
+
+  // Definir a saudação
+  oi.innerHTML = saudacao;
+  paralax()
+
+}
+
+definirModo(); // Define o modo com base no horário
+paralax() // Movimentação paralax
+
+//movimentação paralax
+// paralax()
 
 const nav = document.querySelector('#header nav')
 const toggle = document.querySelectorAll('nav .toggle')
