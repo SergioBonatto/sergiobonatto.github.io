@@ -5,15 +5,15 @@ let paralax = () => {
   let mountains_behind = document.getElementById('mountains_behind')
   let mountains_between = document.getElementById('mountains_between')
   let mountains_front = document.getElementById('mountains_front')
-  let marco = document.getElementById('marco')
-  let grama = document.getElementById('grama')
   let text = document.getElementById('text')
+  let catedralImg = document.getElementById('catedral');
+
 
   //ao movimentar o scroll, cada elemento se moverá uma distancia
   window.addEventListener('scroll', () => {
     let value = window.scrollY
     stars.style.left = `${value * 0.25}px`
-    stars.style.top = `${-value * 0.25}px`
+    stars.style.top = A`${-value * 0.25}px`
     moon.style.top = `${value * 1.05}px`
     mountains_behind.style.top = `${value * 0.5}px`
     mountains_between.style.top = `${value * 0.75}px`
@@ -59,6 +59,23 @@ function definirModo(modo = null) {
     saudacao = 'Boa noite!';
   }
 
+
+  // Função para definir o modo de acordo com o horário ou com a escolha do usuário
+function definirModo(modo = null) {
+  let now = new Date();
+  let hora = now.getHours();
+  let oi = document.getElementById('text');
+  let saudacao;
+
+  // Definir saudação com base no horário
+  if (hora >= 5 && hora < 12) {
+    saudacao = 'Bom dia!';
+  } else if (hora >= 12 && hora < 18) {
+    saudacao = 'Boa tarde!';
+  } else {
+    saudacao = 'Boa noite!';
+  }
+
   // Função para definir os estilos com base no modo
   function definirEstilo(estilo) {
     if (estilo.srcSatelite) {
@@ -81,21 +98,31 @@ function definirModo(modo = null) {
   if (modo === null) {
     if (hora >= 5 && hora < 12) {
       definirEstilo(estilosModo.light); // Modo light
+      catedralImg.src = './Imagens/Catedral-dia.svg';
     } else if (hora >= 12 && hora < 18) {
       definirEstilo(estilosModo.light); // Modo light
+      catedralImg.src = './Imagens/Catedral-dia.svg';
     } else {
       definirEstilo(estilosModo.dark); // Modo dark
+      catedralImg.src = './Imagens/Catedral-noite.svg';
     }
   } else {
     // Definir modo com base na escolha do usuário
     definirEstilo(estilosModo[modo]);
+    if (modo === 'light') {
+      catedralImg.src = './Imagens/Catedral-dia.svg';
+    } else {
+      catedralImg.src = './Imagens/Catedral-noite.svg';
+    }
   }
 
   // Definir a saudação
   oi.innerHTML = saudacao;
-  paralax()
-
+  paralax();
 }
+
+definirModo(); // Define o modo com base no horário
+paralax(); // Movimentação paralax
 
 definirModo(); // Define o modo com base no horário
 paralax() // Movimentação paralax
