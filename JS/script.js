@@ -1,74 +1,100 @@
-function loadSection(sectionId, filePath) {
-  fetch(filePath)
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById(sectionId).innerHTML = data;
-    })
-    .catch(error => console.error('Erro ao carregar a seção:', error));
-}
+// saudação por horário
+// capturo o horario do dispositivo
+let now = new Date()
+let hora = now.getHours()
+// Constantes para strings repetidas
+const SAUDACOES = {
+	MANHA: 'Bom dia!',
+	TARDE: 'Boa tarde!',
+	NOITE: 'Boa noite!'
+  };
 
-// Carregar a seção home
-loadSection('home-section-container', './home-section.html');
+  const IMAGENS = {
+	SOL: './Imagens/parallax/sol.png',
+	NUVENS: './Imagens/parallax/nuvens.png'
+  };
 
-// Função para definir a saudação e alterar elementos conforme o horário
-function definirSaudacao() {
-  let now = new Date();
-  let hora = now.getHours();
-  let oi = document.getElementById('text');
-  let satelite = document.getElementById('moon');
-  let estrela = document.getElementById('stars');
-  let bandeira = document.getElementById('bandeira');
+  // Função para definir a saudação e alterar elementos conforme o horário
+  const definirSaudacao = () => {
+	const now = new Date();
+	const hora = now.getHours();
+	const oi = document.querySelector('#text');
+	const satelite = document.querySelector('#moon');
+	const estrela = document.querySelector('#stars');
 
-  if (hora >= 5 && hora < 12) {
-    configurarDia(oi, satelite, bandeira, estrela, 'Bom dia!');
-  } else if (hora >= 12 && hora < 18) {
-    configurarDia(oi, satelite, bandeira, estrela, 'Boa tarde!');
-  } else {
-    configurarNoite(oi, satelite, estrela);
-  }
-}
+	if (hora >= 5 && hora < 12) {
+	  configurarPeriodo(SAUDACOES.MANHA, true);
+	} else if (hora >= 12 && hora < 18) {
+	  configurarPeriodo(SAUDACOES.TARDE, true);
+	} else {
+	  configurarPeriodo(SAUDACOES.NOITE, false);
+	}
 
-function configurarDia(oi, satelite, bandeira, estrela, saudacao) {
-  oi.innerHTML = saudacao;
-  satelite.src = './Imagens/parallax/sol.png';
-  bandeira.src = './Imagens/parallax/bandeira_dia.png';
-  satelite.style.height = '100px';
-  satelite.style.marginTop = '100px';
-  satelite.style.zIndex = '0';
-  document.body.style.background = '#2fb3eb';
-  estrela.src = './Imagens/parallax/nuvens.png';
-  estrela.style.height = '90%';
-  estrela.style.zIndex = '1';
-}
+	function configurarPeriodo(saudacao, isDia) {
+	  oi.textContent = saudacao;
+	  if (isDia) {
+		satelite.src = IMAGENS.SOL;
+		satelite.style.height = '100px';
+		satelite.style.marginTop = '100px';
+		satelite.style.zIndex = '0';
+		document.body.style.background = '#2fb3eb';
+		estrela.src = IMAGENS.NUVENS;
+		estrela.style.height = '90%';
+		estrela.style.zIndex = '1';
+	  } else {
+		satelite.style.zIndex = '1';
+		estrela.style.zIndex = '0';
+	  }
+	}
+  };
 
-function configurarNoite(oi, satelite, estrela) {
-  oi.innerHTML = 'Boa noite!';
-  satelite.style.zIndex = '1';
-  estrela.style.zIndex = '0';
-}
+  const parallax = () => {
+    const elements = {
+      stars: document.querySelector('#stars'),
+      moon: document.querySelector('#moon'),
+      bandeira: document.querySelector('#bandeira'),
+      camara: document.querySelector('#camara'),
+      mountains_front: document.querySelector('#mountains_front'),
+      mountains_behind: document.querySelector('#mountains_behind'),
+      grama: document.querySelector('#grama'),
+      text: document.querySelector('#text')
+    };
 
-// Função para movimentação parallax
-function parallax() {
-  let stars = document.getElementById('stars');
-  let moon = document.getElementById('moon');
-  let bandeira = document.getElementById('bandeira');
-  let camara = document.getElementById('camara');
-  let mountains_front = document.getElementById('mountains_front');
-  let text = document.getElementById('text');
+    const maxScroll = window.innerHeight;
 
-  window.addEventListener('scroll', () => {
-    let value = window.scrollY;
-    stars.style.left = `${value * 0.25}px`;
-    stars.style.top = `${-value * 0.25}px`;
-    moon.style.top = `${value * 1.05}px`;
-    bandeira.style.top = `${value / 2.5}px`;
-    camara.style.top = `${value * 0.75}px`;
-    mountains_front.style.top = `${value / 9.5}px`;
-    text.style.marginLeft = `${value * 3.5}px`;
-    text.style.marginTop = `${value * 0.75}px`;
-  });
-}
+    window.addEventListener('scroll', () => {
+      const value = Math.min(window.scrollY, maxScroll);
+      const scrollFactor = value / maxScroll;
 
+      elements.stars.style.left = `${value * 0.25}px`;
+      elements.stars.style.top = `${-value * 0.25}px`;
+      elements.moon.style.top = `${value * 1.05}px`;
+      elements.camara.style.top = `${value * 0.5}px`;
+      elements.camara.style.marginLeft = `${value * 0.09}px`;
+      elements.mountains_behind.style.top = `${value * 1.75}px`;
+      elements.mountains_front.style.top = `${value * 0.75}px`;
+      elements.bandeira.style.top = `${value * 1.5}px`;
+      elements.bandeira.style.marginLeft = `${-value * 0.09}px`;
+      elements.text.style.marginLeft = `${value * 3.5}px`;
+      elements.text.style.marginTop = `${value * 0.75}px`;
+
+      // Fade out dos elementos de parallax após a altura da tela
+      if (window.scrollY > maxScroll) {
+        const fadeOutFactor = 1 - Math.min((window.scrollY - maxScroll) / (maxScroll / 2), 1);
+        Object.values(elements).forEach(el => {
+          if (el !== elements.text) {
+            el.style.opacity = fadeOutFactor;
+          }
+        });
+      } else {
+        Object.values(elements).forEach(el => {
+          if (el !== elements.text) {
+            el.style.opacity = 1;
+          }
+        });
+      }
+    });
+  };
 // Função para alternar o menu
 function toggleMenu() {
   const nav = document.querySelector('#header nav');

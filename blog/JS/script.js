@@ -2,82 +2,81 @@
 // capturo o horario do dispositivo
 let now = new Date()
 let hora = now.getHours()
-//defino os elementos que quero alterar
-let oi = window.document.getElementById('text')
-let satelite = window.document.getElementById('moon')
-let estrela = window.document.getElementById('stars')
+// Constantes para strings repetidas
+const SAUDACOES = {
+	MANHA: 'Bom dia!',
+	TARDE: 'Boa tarde!',
+	NOITE: 'Boa noite!'
+  };
 
-//se for entre 5 horas da manha e 12 horas
-if (hora >= 5 && hora < 12) {
-  // a mensagem é de bom dia
-  oi.innerHTML = 'Bom dia!'
-  //altero o  elemento satélite para o Sol
-  satelite.src = './Imagens/parallax/sol.png'
-  //defino o tamanho
-  satelite.style.height = '100px'
-  satelite.style.marginTop = '100px'
-  // e a posição
-  satelite.style.zIndex = '0'
-  //mudo a cor de fundo para um azul similar ao céu de dia
-  document.body.style.background = '#2fb3eb'
-  // tiro as estrelas e coloco nuvens no lugar
-  estrela.src = './Imagens/parallax/nuvens.png'
-  //altero o tamanho das nuvens
-  estrela.style.height = '90%'
-  // e coloco na frente do sol
-  estrela.style.zIndex = '1'
-}
-// se não, se for entre 12 horas e 18 da tarde
-else if (hora >= 12 && hora < 18) {
-  // mudo a mensagem para "Boa tarde"
-  oi.innerHTML = 'Boa tarde!'
-  // o resto permanece igual ao da manhã
-  satelite.src = './Imagens/parallax/sol.png'
-  satelite.style.height = '100px'
-  satelite.style.marginTop = '100px'
-  satelite.style.zIndex = '0'
-  document.body.style.background = '#2fb3eb'
-  estrela.src = './Imagens/parallax/nuvens.png'
-  estrela.style.height = '90%'
-  estrela.style.zIndex = '1'
-}
-// se não for manhã e nem tarde
-else {
-  // a mensagem vira "Boa noite"
-  oi.innerHTML = 'Boa noite!'
-  // a lua vem para a frente
-  satelite.style.zIndex = '1'
-  // e as estrelas vão para o fundo
-  estrela.style.zIndex = '0'
-}
+  const IMAGENS = {
+	SOL: './Imagens/parallax/sol.png',
+	NUVENS: './Imagens/parallax/nuvens.png'
+  };
 
-//movimentação paralax
-let paralax = () => {
-  // defino os elementos que movimentarei
-  let stars = document.getElementById('stars')
-  let moon = document.getElementById('moon')
-  let mountains_behind = document.getElementById('mountains_behind')
-  let mountains_between = document.getElementById('mountains_between')
-  let mountains_front = document.getElementById('mountains_front')
-  let marco = document.getElementById('marco')
-  let grama = document.getElementById('grama')
-  let text = document.getElementById('text')
+  // Função para definir a saudação e alterar elementos conforme o horário
+  const definirSaudacao = () => {
+	const now = new Date();
+	const hora = now.getHours();
+	const oi = document.querySelector('#text');
+	const satelite = document.querySelector('#moon');
+	const estrela = document.querySelector('#stars');
 
-  //ao movimentar o scroll, cada elemento se moverá uma distancia
-  window.addEventListener('scroll', () => {
-    let value = window.scrollY
-    stars.style.left = `${value * 0.25}px`
-    stars.style.top = `${-value * 0.25}px`
-    moon.style.top = `${value * 1.05}px`
-    mountains_behind.style.top = `${value * 0.5}px`
-    mountains_between.style.top = `${value * 0.75}px`
-    mountains_front.style.top = `${value * 1}px`
-    text.style.marginLeft = `${value * 3.5}px`
-    text.style.marginTop = `${value * 0.75}px`
-  })
-}
-paralax()
+	if (hora >= 5 && hora < 12) {
+	  configurarPeriodo(SAUDACOES.MANHA, true);
+	} else if (hora >= 12 && hora < 18) {
+	  configurarPeriodo(SAUDACOES.TARDE, true);
+	} else {
+	  configurarPeriodo(SAUDACOES.NOITE, false);
+	}
 
+	function configurarPeriodo(saudacao, isDia) {
+	  oi.textContent = saudacao;
+	  if (isDia) {
+		satelite.src = IMAGENS.SOL;
+		satelite.style.height = '100px';
+		satelite.style.marginTop = '100px';
+		satelite.style.zIndex = '0';
+		document.body.style.background = '#2fb3eb';
+		estrela.src = IMAGENS.NUVENS;
+		estrela.style.height = '90%';
+		estrela.style.zIndex = '1';
+	  } else {
+		satelite.style.zIndex = '1';
+		estrela.style.zIndex = '0';
+	  }
+	}
+  };
+
+  // Função para movimentação parallax
+  const parallax = () => {
+	const elements = {
+	  stars: document.querySelector('#stars'),
+	  moon: document.querySelector('#moon'),
+	  mountains_behind: document.querySelector('#mountains_behind'),
+	  mountains_between: document.querySelector('#mountains_between'),
+	  mountains_front: document.querySelector('#mountains_front'),
+	  marco: document.querySelector('#marco'),
+	  grama: document.querySelector('#grama'),
+	  text: document.querySelector('#text')
+	};
+
+	window.addEventListener('scroll', () => {
+	  const value = window.scrollY;
+	  elements.stars.style.left = `${value * 0.25}px`;
+	  elements.stars.style.top = `${-value * 0.25}px`;
+	  elements.moon.style.top = `${value * 1.05}px`;
+	  elements.mountains_behind.style.top = `${value * 0.5}px`;
+	  elements.mountains_between.style.top = `${value * 0.75}px`;
+	  elements.mountains_front.style.top = `${value}px`;
+	  elements.text.style.marginLeft = `${value * 3.5}px`;
+	  elements.text.style.marginTop = `${value * 0.75}px`;
+	});
+  };
+
+  // Inicialização
+  definirSaudacao();
+  parallax();
 const nav = document.querySelector('#header nav')
 const toggle = document.querySelectorAll('nav .toggle')
 
