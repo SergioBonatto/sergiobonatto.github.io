@@ -1,0 +1,36 @@
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+body {
+    font: 400 1rem var(--body-font);
+    color: var(--text-color);
+    background: #213773;
+    -webkit-font-smoothing: antialiased;
+}
+
+.title {
+    font: 700 var(--title-font-size) var(--title-font);
+    color: var(--title-color);
+    -webkit-font-smoothing: auto;
+}
+
+.button {
+    color: var(--text-color-light);
+    background-color: var(--base-color);
+    height: 3.5rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 2rem;
+    border-radius: 0.25rem;
+    font: 500 1rem var(--body-font);
+    transition: background 0.4s;
+    z-index: 999;
+}
+
+.button:hover {
+    background: var(--body-color);
+    color: var(--base-color);
+    z-index: 999;
+}

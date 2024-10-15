@@ -1,3 +1,15 @@
+function loadSection(sectionId, filePath) {
+  fetch(filePath)
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById(sectionId).innerHTML = data;
+    })
+    .catch(error => console.error('Erro ao carregar a seção:', error));
+}
+
+// Carregar a seção home
+loadSection('home-section-container', './home-section.html');
+
 // Função para definir a saudação e alterar elementos conforme o horário
 function definirSaudacao() {
   let now = new Date();
