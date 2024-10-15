@@ -5,40 +5,42 @@ function definirSaudacao() {
   let oi = document.getElementById('text');
   let satelite = document.getElementById('moon');
   let estrela = document.getElementById('stars');
+  let bandeira = document.getElementById('bandeira');
 
   if (hora >= 5 && hora < 12) {
-    oi.innerHTML = 'Bom dia!';
-    satelite.src = './Imagens/parallax/sol.png';
-    satelite.style.height = '100px';
-    satelite.style.marginTop = '100px';
-    satelite.style.zIndex = '0';
-    document.body.style.background = '#2fb3eb';
-    estrela.src = './Imagens/parallax/nuvens.png';
-    estrela.style.height = '90%';
-    estrela.style.zIndex = '1';
+    configurarDia(oi, satelite, bandeira, estrela, 'Bom dia!');
   } else if (hora >= 12 && hora < 18) {
-    oi.innerHTML = 'Boa tarde!';
-    satelite.src = './Imagens/parallax/sol.png';
-    satelite.style.height = '100px';
-    satelite.style.marginTop = '100px';
-    satelite.style.zIndex = '0';
-    document.body.style.background = '#2fb3eb';
-    estrela.src = './Imagens/parallax/nuvens.png';
-    estrela.style.height = '90%';
-    estrela.style.zIndex = '1';
+    configurarDia(oi, satelite, bandeira, estrela, 'Boa tarde!');
   } else {
-    oi.innerHTML = 'Boa noite!';
-    satelite.style.zIndex = '1';
-    estrela.style.zIndex = '0';
+    configurarNoite(oi, satelite, estrela);
   }
+}
+
+function configurarDia(oi, satelite, bandeira, estrela, saudacao) {
+  oi.innerHTML = saudacao;
+  satelite.src = './Imagens/parallax/sol.png';
+  bandeira.src = './Imagens/parallax/bandeira_dia.png';
+  satelite.style.height = '100px';
+  satelite.style.marginTop = '100px';
+  satelite.style.zIndex = '0';
+  document.body.style.background = '#2fb3eb';
+  estrela.src = './Imagens/parallax/nuvens.png';
+  estrela.style.height = '90%';
+  estrela.style.zIndex = '1';
+}
+
+function configurarNoite(oi, satelite, estrela) {
+  oi.innerHTML = 'Boa noite!';
+  satelite.style.zIndex = '1';
+  estrela.style.zIndex = '0';
 }
 
 // Função para movimentação parallax
 function parallax() {
   let stars = document.getElementById('stars');
   let moon = document.getElementById('moon');
-  let mountains_behind = document.getElementById('mountains_behind');
-  let mountains_between = document.getElementById('mountains_between');
+  let bandeira = document.getElementById('bandeira');
+  let camara = document.getElementById('camara');
   let mountains_front = document.getElementById('mountains_front');
   let text = document.getElementById('text');
 
@@ -47,9 +49,9 @@ function parallax() {
     stars.style.left = `${value * 0.25}px`;
     stars.style.top = `${-value * 0.25}px`;
     moon.style.top = `${value * 1.05}px`;
-    mountains_behind.style.top = `${value * 0.5}px`;
-    mountains_between.style.top = `${value * 0.75}px`;
-    mountains_front.style.top = `${value * 1}px`;
+    bandeira.style.top = `${value / 2.5}px`;
+    camara.style.top = `${value * 0.75}px`;
+    mountains_front.style.top = `${value / 9.5}px`;
     text.style.marginLeft = `${value * 3.5}px`;
     text.style.marginTop = `${value * 0.75}px`;
   });
