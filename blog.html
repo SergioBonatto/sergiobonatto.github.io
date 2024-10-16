@@ -74,6 +74,11 @@
       rel="stylesheet"
     />
 
+     <!-- componentsi -->
+     <script src="JS/footer-component.js" defer></script>
+     <script src="JS/parallax-component.js" defer></script>
+     <script src="JS/header-component.js" defer></script>
+
     <!-- Fonte Awesome -->
     <script
       src="https://kit.fontawesome.com/4237bc5923.js"
@@ -82,38 +87,11 @@
   </head>
 
   <body>
-    <header id="header">
-      <nav class="container">
-        <a class="logo" href="./index.html"><span>Bonatto</span></a>
-        <!-- menu -->
-        <div class="menu">
-          <ul class="grid">
-            <li><a class="title" href="./index.html#home">Início</a></li>
-            <li><a class="title" href="./index.html#about">Sobre</a></li>
-            <li><a class="title" href="#">Blog</a></li>
-            <li><a class="title" href="./index.html#contact">Contato</a></li>
-            <li><a class="title" href="https://naoehsavio.github.io/learning/docs/Kind/index.html" target="_blank">Kind Book</a></li>
-          </ul>
-        </div>
-        <!-- end menu-->
-        <div class="toggle icon-menu"></div>
-        <div class="toggle icon-close"></div>
-      </nav>
-    </header>
+    <header-component></header-component>
 
     <main>
-      <!-- Parallax -->
-      <!-- Home -->
-      <section class="section" id="home">
-        <img src="./Imagens/parallax/ceu-estrelado.png" alt="nuvens" id="stars" />
-        <img src="./Imagens/parallax/lua.png" alt="lua" id="moon" />
-        <img src="./Imagens/parallax/morro_fundo.png" alt="morro ao fundo" id="mountains_behind" style="z-index: 7;" />
-        <img src="./Imagens/parallax/bandeira.png" alt="bandeira" id="bandeira" style="z-index: 8;" />
-        <img src="./Imagens/parallax/morro_frente.png" alt="morro ao fundo" id="mountains_behind" style="z-index: 9;" />
-        <h2 id="text" style="z-index: 9;">Olá tudo bem</h2>
-        <img src="./Imagens/parallax/camara.png" alt="congresso" id="camara" style="z-index: 10;" />
-        <img src="./Imagens/parallax/grama.png" alt="grama" id="grama" style="z-index: 11" />
-      </section>
+      <parallax-section></parallax-section>
+
       <!-- Blog -->
       <section class="section" id="blog">
         <div class="container grid">
@@ -145,37 +123,12 @@
       </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="section">
-      <div class="container grid">
-        <div class="brand">
-          <a href="#home" class="logo logo-alt"><span>Bonatto</span></a>
-          <p>Bonatto&trade; 2022</p>
-          <p>Todos os direitos reservado.</p>
-        </div>
-        <div class="social grid">
-          <a href="https://www.instagram.com/Sergio_Bonatto/" target="_blanck">
-            <i class="icon-instagram"></i>
-          </a>
-          <a href="https://www.facebook.com/Bonatto785" target="_blanck">
-            <i class="icon-facebook"></i>
-          </a>
-          <a href="https://github.com/SergioBonatto/" target="_blanck">
-            <img src="assets/fonts/github.svg" />
-          </a>
-          <a href="https://twitter.com/SergioFBonatto" target="_blanck">
-            <img src="assets/fonts/twitter.svg" />
-          </a>
-          <a href="https://www.linkedin.com/in/sergiobonatto/" target="_blanck">
-            <img src="assets/fonts/linkedin.svg" />
-          </a>
-        </div>
-      </div>
-    </footer>
+    <footer-component></footer-component>
+
     <a href="#home" class="back-to-top">
       <i class="icon-arrow-up"></i>
     </a>
   </body>
   <!-- JavaScript -->
-  <script src="./JS/script.js" charset="utf-8"></script>
+  <script src="./JS/back-to-top.js" charset="utf-8"></script>
 </html>

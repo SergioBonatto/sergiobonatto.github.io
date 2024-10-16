@@ -1,0 +1,53 @@
+/* ===== Contacts ===== */
+#contact {
+    height: 100vh;
+    width: 100vw;
+    background: #4896d3;
+    z-index: 99;
+    position: relative;
+    top: 4rem + var(--header-height);
+    padding-top: 8rem;
+}
+
+#contact .grid {
+    gap: 4rem;
+    /* z-index: 99; */
+}
+
+#contact .text h2 {
+    color: var(--text-color-light);
+    padding-top: 4rem + var(--header-height);
+    background: #4896d3;
+    /* z-index: 99; */
+}
+
+#contact .text p {
+    margin-bottom: 2rem;
+    color: var(--text-color-light);
+    background: #4896d3;
+    /* z-index: 9; */
+}
+
+#contact .button i,
+#contact ul li i {
+    font-size: 1.5rem;
+    margin-right: 0.625rem;
+    /*  z-index: 9; */
+}
+
+#contact ul.grid {
+    gap: 2rem;
+    /*  z-index: 9; */
+}
+
+#contact ul li {
+    display: flex;
+    align-items: center;
+    color: var(--text-color-light);
+    /*  z-index: 9; */
+}
+
+#contact ul li i {
+    color: var(--text-color-light);
+    z-index: 9;
+}

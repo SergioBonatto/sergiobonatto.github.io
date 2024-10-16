@@ -1,0 +1,41 @@
+footer {
+    background: var(--base-color);
+    position: relative;
+    /* margin-top: 6.5rem; */
+    z-index: 99;
+}
+
+footer.section {
+    padding: 4rem 0;
+}
+
+footer .logo {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--base-color-second);
+}
+
+footer .brand p {
+    color: var(--text-color-light);
+    margin-bottom: 0.75rem;
+}
+
+footer i {
+    font-size: 1.5rem;
+    color: var(--text-color-light);
+}
+
+footer .social {
+    grid-auto-flow: column;
+    width: fit-content;
+}
+
+footer .social a {
+    /* margin-right: 2rem; */
+    transition: 0.3s;
+    display: inline-block;
+}
+
+footer .social a:hover {
+    transform: translateY(-8px);
+}

@@ -11,10 +11,10 @@ class HeaderComponent extends HTMLElement {
             <a class="logo" href="#"><span>Bonatto</span></a>
             <div class="menu">
               <ul class="grid">
-                <li><a class="title" href="#home">Início</a></li>
-                <li><a class="title" href="#about">Sobre</a></li>
-                <li><a class="title" href="#contact">Contato</a></li>
-                <li><a class="title" href="./blog.html">Blog</a></li>
+                <li><a class="title" href="https://sergiobonatto.github.io/#home">Início</a></li>
+                <li><a class="title" href="https://sergiobonatto.github.io/#about">Sobre</a></li>
+                <li><a class="title" href="https://sergiobonatto.github.io/h#contact">Contato</a></li>
+                <li><a class="title" href="https://sergiobonatto.github.io/blog.html">Blog</a></li>
                 <li><a class="title" href="https://naoehsavio.github.io/learning/docs/Kind/index.html" target="_blank">Kind Book</a></li>
               </ul>
             </div>

@@ -1,59 +1,29 @@
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
-    <!-- -----Meta  ------->
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-    />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="true">
+    <title>Sergio Bonatto - Provas Formais</title>
 
-    <title>Bonatto</title>
-
-    <!-- for SEO -->
-    <meta
-      name="KEYWORDS"
-      content="Dev, terminal, zsh, oh-my-zsh, kitty, linux, arch, programação, produtivo, gruvbox"
-    />
-    <meta name="author" content="Sergio Bonatto" />
-    <meta name="copyright" content="&trade; 2022 Sergio Bonatto" />
-    <meta
-      name="description"
-      content="Seu terminal pode ser muito mais bonito e produtivo, instale o oh-my-zsh no kitty terminal e desfrute de um belo terminal trabalhando por você"
-    />
-
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="Imagens/favicon.png" />
-
-    <!-- Meta para explorer -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="HandheldFriendly" content="true" />
-
-    <!-- Social Meta Facebook -->
-    <meta property="og:image" content="Imagens/cards1.jpg" />
-    <meta property="og:url" content="https://sergiobonatto.github.io/" />
-    <meta property="og:site_name" content="Sergio Bonatto - Provas Formais" />
-    <meta property="title" content="Sergio Bonatto - Provas Formais" />
-    <meta
-      property="og:description"
-      content="Seu terminal pode ser muito mais bonito e produtivo, instale o oh-my-zsh no kitty terminal e desfrute de um belo terminal trabalhando por você"
-    />
-
-    <!-- Social Meta Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
+    <!-- Social Meta Tags -->
+    <meta property="og:image" content="Imagens/cards1.jpg">
+    <meta property="og:url" content="https://sergiobonatto.github.io/">
+    <meta property="og:site_name" content="Sergio Bonatto - Provas Formais">
+    <meta property="title" content="Sergio Bonatto - Provas Formais">
+    <meta property="og:description" content="Dev, frontend, provas formais, kind, kindelia, JavaScript, Viajante do tempo, São Paulo, Higher Order Company, HVM, calculo lambda, UwU tech">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@sergiofbonatto">
     <meta name="twitter:creator" content="@sergiofbonatto">
     <meta name="twitter:title" content="Sergio Bonatto - Provas Formais">
-    <meta
-      name="twitter:description"
-      content="Seu terminal pode ser muito mais bonito e produtivo, instale o oh-my-zsh no kitty terminal e desfrute de um belo terminal trabalhando por você"
-    />
-    <meta name="twitter:image" content="Imagens/cards1.jpg" />
-    <meta name="twitter:url" content="https://sergiobonatto.github.io/" />
-    <meta name="twitter:image:alt" content="Sergio Bonatto" />
+    <meta name="twitter:description" content="Dev, frontend, provas formais, kind, kindelia, JavaScript, Viajante do tempo, São Paulo, Higher Order Company, HVM, calculo lambda, UwU tech">
+    <meta name="twitter:image" content="Imagens/cards1.jpg">
+    <meta name="twitter:url" content="https://sergiobonatto.github.io/">
+    <meta name="twitter:image:alt" content="Sergio Bonatto">
 
     <!-- Estilos CSS -->
-    <link rel="stylesheet" type="text/css" href="./CSS/style.css" />
+    <link rel="stylesheet" type="text/css" href="../CSS/style.css" />
     <script src="https://unpkg.com/feather-icons"></script>
 
     <!-- Fonte Lato -->
@@ -64,7 +34,7 @@
     />
 
     <!-- Icons -->
-    <link rel="stylesheet" href="assets/style.css" />
+    <link rel="stylesheet" href="../CSS/style.css" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -79,260 +49,213 @@
       src="https://kit.fontawesome.com/4237bc5923.js"
       crossorigin="anonymous"
     ></script>
+    <!-- components -->
+    <script src="../JS/footer-component.js" defer></script>
+    <script src="../JS/parallax-component.js" defer></script>
+    <script src="../JS/header-component.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script src="blog/blog.js" defer></script>
   </head>
 
+
   <body>
-    <header id="header">
-      <nav class="container">
-        <a class="logo" href="./../index.html"><span>Bonatto</span></a>
-        <!-- menu -->
-        <div class="menu">
-          <ul class="grid">
-            <li><a class="title" href="./../index.html#home">Início</a></li>
-            <li><a class="title" href="./../index.html#about">Sobre</a></li>
-            <li><a class="title" href="./../blog.html">Blog</a></li>
-            <li><a class="title" href="./../index.html#contact">Contato</a></li>
-          </ul>
-        </div>
-        <!-- end menu-->
-        <div class="toggle icon-menu"></div>
-        <div class="toggle icon-close"></div>
-      </nav>
-    </header>
-
+    <header-component></header-component>
+    <section class="section" id="home">
+      <img src="../Imagens/parallax/ceu-estrelado.png" alt="nuvens" id="stars" />
+      <img src="../Imagens/parallax/lua.png" alt="lua" id="moon" />
+      <img src="../Imagens/parallax/morro_fundo.png" alt="morro ao fundo" id="mountains_behind" style="z-index: 7;" />
+      <img src="../Imagens/parallax/bandeira.png" alt="bandeira" id="bandeira" style="z-index: 8;" />
+      <img src="../Imagens/parallax/morro_frente.png" alt="morro ao fundo" id="mountains_front" style="z-index: 9;" />
+      <h2 id="text" style="z-index: 9;">Olá tudo bem</h2>
+      <img src="../Imagens/parallax/camara.png" alt="congresso" id="camara" style="z-index: 10;" />
+      <img src="../Imagens/parallax/grama.png" alt="grama" id="grama" style="z-index: 11" />
+    </section>
     <main>
-      <!-- Parallax -->
-      <!-- Home -->
-      <section class="section show" id="home">
-        <img
-          src="./Imagens/parallax/ceu-estrelado.png"
-          alt="nuvens"
-          id="stars"
-        />
-        <img src="./Imagens/parallax/lua.png" alt="lua" id="moon" />
-        <img
-          src="./Imagens/parallax/montanha-fundo.png"
-          alt="montanha ao fundo"
-          id="mountains_behind"
-        />
-        <img
-          src="./Imagens/parallax/montanha-meio.png"
-          alt="montanha no meio"
-          id="mountains_between"
-        />
-        <img
-          src="./Imagens/parallax/montanha-frente.png"
-          alt="montanha mais a frente"
-          id="mountains_front"
-        />
-        <h2 id="text">Olá tudo bem</h2>
-        <img
-          src="./Imagens/parallax/marco.png"
-          alt="marco da divisa"
-          id="marco"
-        />
-        <img
-          src="./Imagens/parallax/grama1.png"
-          alt="grama"
-          id="grama"
-          style="z-index: 11"
-        />
-      </section>
-
       <!-- Blog -->
       <section class="section" id="blog">
         <div class="container grid">
-          <div class="text">
-            <h2 class="title">Seu terminal pode ser muito mais produtivo, bonito e amigável!</h2>
-            <!-- <div class="blog-img"> -->
-              <!-- <figure></figure> -->
-            <!-- </div> -->
-              <h3> Que tal deixar pra lá aquele terminal sem graça e "burro", que você precisa fazer tudo "na mão"?
-              </h3>
-              <br></br>
-              <p>
-                Aquele velho terminal em preto e verde, lembrando um monitor de fósforo verde já passou, ficou para o passado e, junto dele, a necessidade de fazer cada coisa repetidamente. Afinal, não é para isso que trabalhamos, automatizar tarefaz repetitivas?
-              </p>
-              <p>
-              As seguintes dicas servem para basicamente todos os terminais e sistemas operacionais, mas eu recomendo fortemente o uso de um Linux (ou ao menos um MacOS) e o terminal Kitty, não posso negar, ele é o meu favorito.
-              </p>
-              <p>Primeiro, para o Ubuntu:</p>
-              <code>
-              sudo add-apt-repository universe
-              </code>
-              <br></br>
-              <code>
-              sudo apt update
-              </code>
-              <br></br>
-              <code>
-              sudo apt install kitty
-              </code>
-              <br></br>
-              <p>Debian:</p>
-              <code>
-              sudo apt-get install kitty
-              </code>
-              <br></br>
-              <p>Arch Linux (vulgo, melhor distro do mundo):</p>
-              <code>
-              sudo pacman -S kitty
-              </code>
-              <br></br>
-              <p>Fedora:</p>
-              <code>
-              sudo dnf install kitty
-              </code>
-              <br></br>
-              <p>OpenSUSE:</p>
-              <code>
-              sudo zypper install kitty
-              </code>
-              <br></br>
-              <p>Após instalar o Kitty, nos falta customizar, ele vem "bem cru", o que é bom no geral, pois é mais simples deixar ele com a nossa cara.</p>
-              <p>Primeiro, devemos preparar a customização, para isso crie uma pasta e o arquivo para guardar as configurações (caso já não tenham sidos criados):</p>
-              <code>
-                mkdir -p ~/.config/kitty/
-              </code>
-              <br></br>
-              <code>
-                touch ~/.config/kitty/kitty.conf
-              </code>
-              <br></br>
-              <p>Após isso clone o repositório do Gruvbox-material (é o que eu recomendo, é o mais agradável para longos períodos de programação)</p>
-              <code>
-                cd ~/.config/kitty              
-              </code>
-              <br></br/>
-              <p>E então clone este <a href="https://github.com/rsaihe/gruvbox-material-kitty" target="_blank" class="kindelia">repositório</a></p>
-              <p>Dentro da pasta do gruvbox há algumas variações do tema, desde os mais claros aos mais escuros, escolha o seu e inclua no final do arquivo kitty.conf</p>
-              <code>
-                include "CAMINHO PARA O ARQUIVO"
-              </code>
-              <br></br>
-              <p>Para deixar seu terminal ainda mais poderoso, recomendo o uso da fonte <a href="https://github.com/tonsky/FiraCode/wiki/Installing" target="_blank" class="kindelia">Fira Code</a></p>
-              <p>Feito isso, falta apenas usar o Oh-my-zsh e para isso, devemos instalar o ZSH</p>
-              <p>Fedora</p>
-              <code>
-               dnf install zsh
-              </code>
-              <br></br>
-              <p>Arch</p> 
-              <code>
-              pacman -S zsh zsh-completions
-              </code>
-              <br></br>
-              <p>OpenSUSE</p>
-              <code>
-              zypper in zsh
-              </code>
-              <br></br>
-              <p>Ubuntu</p> 
-              <code>
-              apt install zsh
-              </code>
-              <br></br>
-              <p>OpenBSD</p> 
-              <code>
-              pkg install zsh bash
-              </code>
-              <br></br>
-              <p>Feito isso, o Oh-my-zsh pré-configurará o restante do nosso terminal</p>
-              <pre>
-curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh; zsh
-              </pre>
-              <br></br>
-              <p>É possível que, após a instalação, seu terminal ainda não tenha alterado o shell padrão, para isso basta digitar o seguinte comando:</p>
-              <pre>
-sudo usermod --shell $(which zsh) $USER
-              </pre>
-              <br></br>
-            <p>Pronto, a parte mais chata já foi feita, basta terminar instalando os plugins desejados, dois que uso são o zsh-syntax-highlighting e o zsh-autosuggestions, para instalar devemos dar os seguintes comandos:</p>
-            <pre>
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting 
-            </pre>
-            <br></br>
-            <p>e</p>
-            <pre>
-git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
-            </pre>
-            <br></br>
-            <p>Para arrematar, falta apenas adicionar na lista dos plugins ativos no seu "~/.zshrc", eis a lista dos que eu uso:</p>
-              <pre>
-plugins=(
-	git
-	zsh-syntax-highlighting
-	zsh-autosuggestions
-	catimg
-	copybuffer
-	copyfile
-	dircycle
-	dirhistory
-	extract
-	git-prompt
-	gitfast
-	gitignore
-	history
-	jsontools
-	fzf
-)
-              </pre>
-              <br></br>
-              <p>Caso deseje usar os mesmos plugins, o Fzf (um buscador de arquivos) deve ser instalado de igual forma aos outros dois, basta dar o seguinte comando e responder "y" para as questões que serão feitas</p>
-              <pre>
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
-              </pre>
-              <br></br>
-              <p>Dica bônus, um tema mais limpo e legal</p>
-              <pre>
-git clone https://github.com/cdimascio/lambda-zsh-theme.git && cp cdimascio-lambda.zsh-theme $ZSH_CUSTOM/themes
-              </pre>
-              <br></br>
-              <p>Depois altere a linha que começa com ZSH_THEME para </p> <pre>ZSH_THEME="cdimascio-lambda" </pre><p> e por fim rode "source ~/.zshrc" para ativar as configurações</p> 
-              <p>Caso tenha seguido os passos necessários, seu terminal estará assim:</p>
+          <div id="blog">
+            # Seu terminal pode ser muito mais produtivo, bonito e amigável!
 
-            <div class="blog-img">
-              <figure>
-                <img src="./Imagens/my_terminal.png" alt="meu terminal">
-              </figure>
-            </div>
-            </div>
+            ## Que tal deixar pra lá aquele terminal sem graça e "burro", que você precisa fazer tudo "na mão"?
+
+            Aquele velho terminal em preto e verde, lembrando um monitor de fósforo verde já passou, ficou para o passado e, junto dele, a necessidade de fazer cada coisa repetidamente. Afinal, não é para isso que trabalhamos, automatizar tarefaz repetitivas?
+
+            As seguintes dicas servem para basicamente todos os terminais e sistemas operacionais, mas eu recomendo fortemente o uso de um Linux (ou ao menos um MacOS) e o terminal Kitty, não posso negar, ele é o meu favorito.
+
+            Primeiro, para o Ubuntu:
+
+            ```bash
+            sudo add-apt-repository universe
+            sudo apt update
+            sudo apt install kitty
+            ```
+
+            Debian:
+
+            ```bash
+            sudo apt-get install kitty
+            ```
+
+            Arch Linux (vulgo, melhor distro do mundo):
+
+            ```bash
+            sudo pacman -S kitty
+            ```
+
+            Fedora:
+
+            ```bash
+            sudo dnf install kitty
+            ```
+
+            OpenSUSE:
+
+            ```bash
+            sudo zypper install kitty
+            ```
+
+            Após instalar o Kitty, nos falta customizar, ele vem "bem cru", o que é bom no geral, pois é mais simples deixar ele com a nossa cara.
+
+            Primeiro, devemos preparar a customização, para isso crie uma pasta e o arquivo para guardar as configurações (caso já não tenham sidos criados):
+
+            ```bash
+            mkdir -p ~/.config/kitty/
+            touch ~/.config/kitty/kitty.conf
+            ```
+
+            Após isso clone o repositório do Gruvbox-material (é o que eu recomendo, é o mais agradável para longos períodos de programação)
+
+            ```bash
+            cd ~/.config/kitty
+            ```
+
+            E então clone este [repositório](https://github.com/rsaihe/gruvbox-material-kitty)
+
+            Dentro da pasta do gruvbox há algumas variações do tema, desde os mais claros aos mais escuros, escolha o seu e inclua no final do arquivo kitty.conf
+
+            ```bash
+            include "CAMINHO PARA O ARQUIVO"
+            ```
+
+            Para deixar seu terminal ainda mais poderoso, recomendo o uso da fonte [Fira Code](https://github.com/tonsky/FiraCode/wiki/Installing)
+
+            Feito isso, falta apenas usar o Oh-my-zsh e para isso, devemos instalar o ZSH
+
+            Fedora:
+
+            ```bash
+            dnf install zsh
+            ```
+
+            Arch:
+
+            ```bash
+            pacman -S zsh zsh-completions
+            ```
+
+            OpenSUSE:
+
+            ```bash
+            zypper in zsh
+            ```
+
+            Ubuntu:
+
+            ```bash
+            apt install zsh
+            ```
+
+            OpenBSD:
+
+            ```bash
+            pkg install zsh bash
+            ```
+
+            Feito isso, o Oh-my-zsh pré-configurará o restante do nosso terminal:
+
+            ```bash
+            curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh; zsh
+            ```
+
+            É possível que, após a instalação, seu terminal ainda não tenha alterado o shell padrão, para isso basta digitar o seguinte comando:
+
+            ```bash
+            sudo usermod --shell $(which zsh) $USER
+            ```
+
+            Pronto, a parte mais chata já foi feita, basta terminar instalando os plugins desejados, dois que uso são o zsh-syntax-highlighting e o zsh-autosuggestions, para instalar devemos dar os seguintes comandos:
+
+            ```bash
+            git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+            ```
+
+            e
+
+            ```bash
+            git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+            ```
+
+            Para arrematar, falta apenas adicionar na lista dos plugins ativos no seu "~/.zshrc", eis a lista dos que eu uso:
+
+            ```bash
+            plugins=(
+            git
+            zsh-syntax-highlighting
+            zsh-autosuggestions
+            catimg
+            copybuffer
+            copyfile
+            dircycle
+            dirhistory
+            extract
+            git-prompt
+            gitfast
+            gitignore
+            history
+            jsontools
+            fzf
+            )
+            ```
+
+            Caso deseje usar os mesmos plugins, o Fzf (um buscador de arquivos) deve ser instalado de igual forma aos outros dois, basta dar o seguinte comando e responder "y" para as questões que serão feitas:
+
+            ```bash
+            git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
+            ```
+
+            Dica bônus, um tema mais limpo e legal:
+
+            ```bash
+            git clone https://github.com/cdimascio/lambda-zsh-theme.git && cp cdimascio-lambda.zsh-theme $ZSH_CUSTOM/themes
+            ```
+
+            Depois altere a linha que começa com ZSH_THEME para:
+
+            ```bash
+            ZSH_THEME="cdimascio-lambda"
+            ```
+
+            e por fim rode "source ~/.zshrc" para ativar as configurações.
+
+            Caso tenha seguido os passos necessários, seu terminal estará assim:
+
+            ![meu terminal](./Imagens/my_terminal.png)
+
+
           </div>
         </div>
       </section>
     </main>
-
-    <!-- Footer -->
-    <footer class="section">
-      <div class="container grid">
-        <div class="brand">
-          <a href="#home" class="logo logo-alt"><span>Bonatto</span></a>
-          <p>Bonatto&trade; 2022</p>
-          <p>Todos os direitos reservado.</p>
-        </div>
-        <div class="social grid">
-          <a href="https://www.instagram.com/Sergio_Bonatto/" target="_blanck">
-            <i class="icon-instagram"></i>
-          </a>
-          <a href="https://www.facebook.com/Bonatto785" target="_blanck">
-            <i class="icon-facebook"></i>
-          </a>
-          <a href="https://github.com/SergioBonatto/" target="_blanck">
-            <img src="assets/fonts/github.svg" />
-          </a>
-          <a href="https://twitter.com/SergioFBonatto" target="_blanck">
-            <img src="assets/fonts/twitter.svg" />
-          </a>
-          <a href="https://www.linkedin.com/in/sergiobonatto/" target="_blanck">
-            <img src="assets/fonts/linkedin.svg" />
-          </a>
-        </div>
-      </div>
-    </footer>
+    <footer-component></footer-component>
     <a href="#home" class="back-to-top">
       <i class="icon-arrow-up"></i>
     </a>
   </body>
   <!-- JavaScript -->
+
   <script src="./JS/script.js" charset="utf-8"></script>
 </html>

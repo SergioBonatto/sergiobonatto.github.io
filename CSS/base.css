@@ -1,7 +1,6 @@
-html {
-    scroll-behavior: smooth;
-    overflow-x: hidden;
-}
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap');
+@import 'reset.css';
+@import 'variables.css';
 
 body {
     font: 400 1rem var(--body-font);

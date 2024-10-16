@@ -1,0 +1,60 @@
+.section #about {
+    background: #1e2d59;
+}
+
+#about {
+    background: #1e2d59;
+    z-index: 11;
+    position: relative;
+}
+
+#about .container {
+    margin: 0;
+    padding-top: 4rem;
+}
+
+#about .container .grid {
+    background-color: #1e2d59;
+    z-index: 100;
+}
+
+#about .image {
+    position: relative;
+    background-color: #1e2d59;
+    margin: auto;
+}
+
+#about .image img {
+    border-radius: 0.25rem;
+    height: 15rem;
+    width: 15rem;
+    position: relative;
+    z-index: 1000;
+}
+
+#about .blog-img img {
+    max-width: 40%;
+    max-height: 40%;
+    height: auto;
+    width: auto;
+}
+
+#about .title {
+    color: var(--base-color-second);
+    z-index: 99;
+    background-color: #1e2d59;
+}
+
+#about .text {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    color: var(--text-color-light);
+    background-color: #1e2d59;
+    z-index: 99;
+    margin-bottom: 14rem;
+}
+
+#about .text #kindelia {
+    color: var(--base-color-second);
+    font: 700 1.75rem;
+}
