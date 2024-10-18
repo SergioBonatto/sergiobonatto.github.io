@@ -1,0 +1,20 @@
+/* src/components/ParallaxSection.css */
+.section {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#stars, #moon, #mountains_behind, #bandeira, #mountains_front, #camara, #grama {
+  position: absolute;
+}
+
+#text {
+  position: absolute;
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+}

@@ -1,0 +1,20 @@
+.not-found-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: grey;
+  background-image: url(https://media.giphy.com/media/TqxcgjbXsId4Qj3wIU/giphy.gif);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: multiply;
+  background-position: center;
+  font-size: 24px;
+  text-align: center;
+  color: white;
+  height: 100vh;
+}
+
+.not-found-page div {
+  margin-top: auto;
+  padding-bottom: 2rem; /* Adicionado para dar um pouco de espaço entre o texto e a borda inferior da tela */
+}
