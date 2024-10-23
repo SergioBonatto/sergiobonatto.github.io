@@ -1,4 +1,7 @@
-#header {
+/* src/CSS/HeaderComponent.css */
+
+/* Estilos gerais para o cabeçalho */
+.header {
     border-bottom: 1px solid #e4e4e4;
     display: flex;
     width: 100%;
@@ -9,14 +12,12 @@
     background-color: var(--body-color);
 }
 
-#header.scroll {
-    /*  background: var(--base-color); */
+.header.scroll {
     box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
     transition: color 0.3s;
 }
 
-
-/* ===== Logo ===== */
+/* Logo */
 .logo {
     font: 700 1.51rem var(--title-font);
     color: var(--title-color);
@@ -30,7 +31,7 @@
     color: var(--body-color);
 }
 
-/* ===== Navigation ===== */
+/* Navegação */
 nav {
     width: 100vw;
     height: var(--header-height);
@@ -39,6 +40,13 @@ nav {
     justify-content: space-between;
     z-index: 1000;
     background-color: var(--text-color-light);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 nav ul li {
@@ -72,17 +80,9 @@ nav ul li a.active::after {
 }
 
 nav .menu {
-    opacity: 0;
-    visibility: hidden;
-    top: -20rem;
-    transition: 0.3s;
-}
-
-nav .menu ul {
     display: none;
 }
 
-/* Mostrar Menu */
 nav.show .menu {
     opacity: 1;
     visibility: visible;
@@ -141,4 +141,59 @@ nav.show div.icon-close {
     visibility: visible;
     opacity: 1;
     top: 1.5rem;
+}
+
+
+/* Responsividade */
+
+/* Dispositivos pequenos: até 767px */
+@media (max-width: 767px) {
+    nav .menu {
+        opacity: 1;
+        visibility: visible;
+        top: 0;
+    }
+
+    nav .menu ul {
+        display: flex;
+        gap: 2rem;
+    }
+
+    nav .menu ul li a.title {
+        font: 400 1rem var(--body-font);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    nav .menu ul li a.title.active {
+        font-weight: 900;
+        -webkit-font-smoothing: auto;
+    }
+
+    nav .icon-menu {
+        display: none;
+    }
+
+    main {
+        margin-top: var(--header-height);
+    }
+}
+
+/* Dispositivos médios: 768px > */
+@media (min-width: 1022px) {
+    nav .menu {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    nav .menu ul {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+    }
+
+    .toggle {
+        display: none;
+    }
 }

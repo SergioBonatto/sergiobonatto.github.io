@@ -7,47 +7,140 @@
     position: relative;
     top: 4rem + var(--header-height);
     padding-top: 8rem;
+    margin-bottom: -20vh;
+    /* Adicionado para responsividade */
 }
 
 #contact .grid {
     gap: 4rem;
-    /* z-index: 99; */
 }
 
 #contact .text h2 {
     color: var(--text-color-light);
     padding-top: 4rem + var(--header-height);
     background: #4896d3;
-    /* z-index: 99; */
 }
 
 #contact .text p {
     margin-bottom: 2rem;
     color: var(--text-color-light);
     background: #4896d3;
-    /* z-index: 9; */
 }
 
 #contact .button i,
 #contact ul li i {
     font-size: 1.5rem;
     margin-right: 0.625rem;
-    /*  z-index: 9; */
 }
 
 #contact ul.grid {
     gap: 2rem;
-    /*  z-index: 9; */
 }
 
 #contact ul li {
     display: flex;
     align-items: center;
     color: var(--text-color-light);
-    /*  z-index: 9; */
 }
 
 #contact ul li i {
     color: var(--text-color-light);
     z-index: 9;
+}
+
+/* Responsividade */
+
+/* Dispositivos pequenos: até 767px */
+@media (max-width: 767px) {
+    #contact {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+    }
+
+    #contact .text h2 {
+        padding-top: 2rem;
+    }
+
+    #contact .text p {
+        margin-bottom: 1rem;
+    }
+
+    #contact .button i,
+    #contact ul li i {
+        font-size: 1.25rem;
+        margin-right: 0.5rem;
+    }
+
+    #contact ul.grid {
+        gap: 1rem;
+    }
+
+    #contact .text {
+        max-width: 20rem;
+    }
+}
+
+/* Dispositivos médios: 768px > */
+@media (min-width: 768px) and (max-width: 1022px) {
+    #contact {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+    }
+
+    #contact .text h2 {
+        padding-top: 3rem;
+    }
+
+    #contact .text p {
+        margin-bottom: 1.5rem;
+    }
+
+    #contact .button i,
+    #contact ul li i {
+        font-size: 1.35rem;
+        margin-right: 0.55rem;
+    }
+
+    #contact ul.grid {
+        gap: 1.5rem;
+    }
+
+    #contact .text {
+        max-width: 22rem;
+    }
+}
+
+/* Dispositivos grandes: 1023px > */
+@media (min-width: 1023px) {
+    #contact {
+        padding-top: 8rem;
+        padding-bottom: 8rem;
+    }
+
+    #contact .text h2 {
+        padding-top: 4rem;
+    }
+
+    #contact .text p {
+        margin-bottom: 2rem;
+    }
+
+    #contact .button i,
+    #contact ul li i {
+        font-size: 1.5rem;
+        margin-right: 0.625rem;
+    }
+
+    #contact ul.grid {
+        gap: 2rem;
+    }
+
+    #contact .text {
+        max-width: 25rem;
+    }
+
+    #contact .container {
+        grid-auto-flow: column;
+        align-items: center;
+    }
 }

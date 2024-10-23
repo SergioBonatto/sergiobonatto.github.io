@@ -28,3 +28,35 @@
 #home .text h1 {
     margin-bottom: 1rem;
 }
+
+@media (min-width: 1023px) {
+    #home .container {
+        margin: 0 auto;
+        grid-auto-flow: column;
+        justify-content: space-between;
+    }
+
+    #home .image {
+        order: 1;
+        max-width: 30rem;
+    }
+
+    #home .text {
+        order: 0;
+        max-width: 24rem;
+        text-align: left;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #home::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 160px;
+        background: #1e2d59;
+        z-index: 980;
+        top: 99vh;
+    }
+}
