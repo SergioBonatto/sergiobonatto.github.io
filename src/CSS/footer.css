@@ -1,6 +1,7 @@
 footer {
     background: var(--base-color);
     position: relative;
+    /* margin-top: 6.5rem; */
     z-index: 99;
 }
 
@@ -30,6 +31,7 @@ footer .social {
 }
 
 footer .social a {
+    /* margin-right: 2rem; */
     transition: 0.3s;
     display: inline-block;
 }
@@ -38,39 +40,8 @@ footer .social a:hover {
     transform: translateY(-8px);
 }
 
+
 /* Responsividade */
-
-/* Dispositivos pequenos: até 767px */
-@media (max-width: 767px) {
-    footer.section {
-        padding: 2rem 0;
-    }
-
-    footer .logo {
-        font-size: 1.5rem;
-    }
-
-    footer .social {
-        gap: 1rem;
-    }
-}
-
-/* Dispositivos médios: 768px > */
-@media (min-width: 768px) and (max-width: 1022px) {
-    footer.section {
-        padding: 2.5rem 0;
-    }
-
-    footer .logo {
-        font-size: 2rem;
-    }
-
-    footer .social {
-        gap: 1.5rem;
-    }
-}
-
-/* Dispositivos grandes: 1023px > */
 @media (min-width: 1023px) {
     footer.section {
         padding: 2.75rem 0;
@@ -84,9 +55,5 @@ footer .social a:hover {
 
     footer .logo {
         font-size: 2.25rem;
-    }
-
-    footer .social {
-        gap: 2rem;
     }
 }

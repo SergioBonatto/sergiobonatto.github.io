@@ -1,4 +1,3 @@
-/* Estilos gerais */
 .section #about {
     background: #1e2d59;
 }
@@ -60,72 +59,32 @@
     font: 700 1.75rem;
 }
 
-/* Responsividade */
-
-/* Dispositivos pequenos: até 767px */
-@media (max-width: 767px) {
-    #about .container {
-        padding-top: 4rem;
-    }
-
-    #about .image img {
-        height: 15rem;
-        width: 15rem;
-        margin-top: -8rem;
-    }
-
-    #about .text {
-        margin-bottom: 6rem;
-    }
-
-    #about .text .title {
-        font-size: 2rem;
-    }
-
-    #about .text p {
-        font-size: 1rem;
-    }
-}
-
-/* Dispositivos médios: 768px > */
-@media (min-width: 768px) and (max-width: 1022px) {
-    #about .container {
-        padding-top: 5rem;
-    }
-
-    #about .image img {
-        height: 18rem;
-        width: 18rem;
-        margin-top: -10rem;
-    }
-
-    #about .text {
-        margin-bottom: 8rem;
-    }
-
-    #about .text .title {
-        font-size: 2.5rem;
-    }
-
-    #about .text p {
-        font-size: 1.15rem;
-    }
-}
-
-/* Dispositivos grandes: 1023px > */
 @media (min-width: 1023px) {
+    #about {
+        padding-bottom: 35vh;
+    }
+
     #about .container {
-        padding-top: 6rem;
+        margin: 0 auto;
+        grid-auto-flow: column;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     #about .image img {
+        border-radius: 0.25rem;
         height: 22rem;
         width: 22rem;
+        position: relative;
+        z-index: 1000;
         margin-top: -13rem;
     }
 
-    #about .text {
-        margin-bottom: 10rem;
+    #about .blog-img img {
+        max-width: 40%;
+        max-height: 40%;
+        height: auto;
+        width: auto;
     }
 
     #about .text .title {

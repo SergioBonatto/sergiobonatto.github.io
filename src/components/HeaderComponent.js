@@ -1,4 +1,3 @@
-// src/components/HeaderComponent.js
 import React, { useEffect } from 'react';
 import '../CSS/HeaderComponent.css'; // Importe o CSS correspondente
 
@@ -74,13 +73,13 @@ const HeaderComponent = () => {
       <nav className="container">
         <a className="logo" href="#"><span>Bonatto</span></a>
         <div className="menu">
-        <ul class="grid">
-                <li><a class="title" href="https://sergiobonatto.github.io/#home">Início</a></li>
-                <li><a class="title" href="https://sergiobonatto.github.io/#about">Sobre</a></li>
-                <li><a class="title" href="https://sergiobonatto.github.io/h#contact">Contato</a></li>
-                <li><a class="title" href="https://sergiobonatto.github.io/blog.html">Blog</a></li>
-                <li><a class="title" href="https://naoehsavio.github.io/learning/docs/Kind/index.html" target="_blank">Kind Book</a></li>
-              </ul>
+          <ul className="grid">
+            <li><a className="title" href="https://sergiobonatto.github.io/#home">Início</a></li>
+            <li><a className="title" href="https://sergiobonatto.github.io/#about">Sobre</a></li>
+            <li><a className="title" href="https://sergiobonatto.github.io/h#contact">Contato</a></li>
+            <li><a className="title" href="https://sergiobonatto.github.io/blog.html">Blog</a></li>
+            <li><a className="title" href="https://naoehsavio.github.io/learning/docs/Kind/index.html" target="_blank">Kind Book</a></li>
+          </ul>
         </div>
         <div className="toggle icon-menu"></div>
         <div className="toggle icon-close"></div>

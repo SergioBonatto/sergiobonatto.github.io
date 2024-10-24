@@ -2,6 +2,11 @@
 @import 'reset.css';
 @import 'variables.css';
 
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
 body {
     font: 400 1rem var(--body-font);
     color: var(--text-color);
@@ -32,4 +37,59 @@ body {
     background: var(--body-color);
     color: var(--base-color);
     z-index: 999;
+}
+
+/* ===== Layout ===== */
+
+.container {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+}
+
+.grid {
+    display: grid;
+    gap: 2rem;
+}
+
+/* .section {
+    padding: calc(5rem + var(--header-height)) 0;
+  } */
+
+.section .title {
+    margin-bottom: 1rem;
+}
+
+.section .subtitle {
+    font-size: var(--subtitle-font-size);
+}
+
+.section header {
+    margin-bottom: 4rem;
+}
+
+.section header strong {
+    color: var(--base-color);
+}
+
+
+@media (min-width: 1023px) {
+
+    /*Reusable classes*/
+    .container {
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .section {
+        padding: 10rem 0;
+    }
+
+    .section header,
+    #testimonials header {
+        max-width: 32rem;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }

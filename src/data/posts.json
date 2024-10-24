@@ -1,0 +1,14 @@
+[
+    {
+      "id": "post1",
+      "title": "My First Post",
+      "image": "/images/post1.jpg",
+      "summary": "This is a summary of my first post."
+    },
+    {
+      "id": "post2",
+      "title": "My Second Post",
+      "image": "/images/post2.jpg",
+      "summary": "This is a summary of my second post."
+    }
+  ]

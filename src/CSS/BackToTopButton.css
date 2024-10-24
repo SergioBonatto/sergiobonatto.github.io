@@ -1,0 +1,30 @@
+/* ===== Back-to-top ===== */
+.back-to-top {
+    color: var(--text-color-light);
+    position: fixed;
+    right: 1.1rem;
+    bottom: 1rem;
+    padding: 0.7rem;
+    clip-path: circle();
+    font-size: 1.5rem;
+    line-height: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s;
+    transform: translateY(100%);
+    z-index: 1000;
+    border-radius: 149px;
+    background: linear-gradient(145deg, #4187be, #4da1e2);
+    box-shadow: 18px 18px 38px #438cc4, -18px -18px 38px #4da1e2;
+}
+
+.back-to-top.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.icon-arrow-up {
+    font-family: 'FontAwesome';
+    content: '\f062';
+}

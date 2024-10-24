@@ -1,20 +1,59 @@
-/* src/components/ParallaxSection.css */
-.section {
-  position: relative;
+/* parallax*/
+section img {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100vh;
+  width: 100vw;
+  object-fit: cover;
+  pointer-events: none;
   overflow: hidden;
 }
 
-#stars, #moon, #mountains_behind, #bandeira, #mountains_front, #camara, #grama {
+section img#stars {
+  margin-right: 75%;
+  height: 100vh;
+  width: 100vw;
+}
+
+section img#moon {
+  max-width: 300px;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  align-items: center;
+  margin-left: 33%;
+  z-index: 9;
+}
+
+section img#marco {
+  z-index: 9;
   position: absolute;
+  max-height: 65vh;
+  margin-top: 31.9vh;
+}
+
+/*
+section img#mountains_between {
+  z-index: 4;
+}
+section img#mountains_behind {
+  z-index: 3;
+}
+
+section img#mountains_front {
+  z-index: 5;
+}
+ */
+section img#grama {
+  z-index: 10;
 }
 
 #text {
   position: absolute;
-  color: white;
-  font-size: 2rem;
-  text-align: center;
-  width: 100%;
-  top: 50%;
-  transform: translateY(-50%);
+  left: -800px;
+  color: #fff;
+  white-space: nowrap;
+  font-size: 7vw;
+  z-index: 2;
 }
