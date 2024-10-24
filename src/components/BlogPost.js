@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
+import '../CSS/BlogPost.css';
 
 const BlogPost = () => {
-  const { postId } = useParams(); // pega o id da URL
+  const { postId } = useParams();
   const [content, setContent] = useState('');
 
   useEffect(() => {
-    // Busca o conteúdo markdown com base no postId
     import(`../data/${postId}.md`)
       .then((res) => {
         fetch(res.default)
@@ -18,7 +18,7 @@ const BlogPost = () => {
   }, [postId]);
 
   return (
-    <article>
+    <article className="blog-post">
       <ReactMarkdown>{content}</ReactMarkdown>
     </article>
   );

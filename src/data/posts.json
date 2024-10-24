@@ -1,14 +1,9 @@
 [
     {
       "id": "post1",
-      "title": "My First Post",
-      "image": "/images/post1.jpg",
-      "summary": "This is a summary of my first post."
-    },
-    {
-      "id": "post2",
-      "title": "My Second Post",
-      "image": "/images/post2.jpg",
-      "summary": "This is a summary of my second post."
+      "title": "Seu terminal pode ser muito mais produtivo, bonito e amigável!",
+      "image": "./images/post1.jpg",
+      "summary": "Que tal deixar pra lá aquele terminal sem graça e `burro`, que você precisa fazer tudo `na mão`?"
     }
+
   ]
