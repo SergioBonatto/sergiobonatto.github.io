@@ -33,7 +33,7 @@ const ParallaxSection = () => {
         satelite.style.height = '100px';
         satelite.style.marginTop = '100px';
         satelite.style.zIndex = '0';
-        document.body.style.background = '#2fb3eb';
+        document.body.style.background = '#0098ec';
         estrela.src = IMAGENS.NUVENS;
         estrela.style.height = '90%';
         estrela.style.zIndex = '1';

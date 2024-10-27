@@ -147,21 +147,6 @@ nav.show div.icon-close {
 
 @media (min-width: 1023px) {
 
-    /*Reusable classes*/
-    .container {
-        max-width: 80%;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .section {
-        padding: 10rem 0;
-    }
-
-    .button {
-        height: 3.125rem;
-    }
-
     /* navigation */
     nav .menu {
         opacity: 1;

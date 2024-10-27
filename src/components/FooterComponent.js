@@ -13,16 +13,16 @@ const FooterComponent = () => (
       </div>
       <div className="social grid">
         <a href="https://www.instagram.com/Sergio_Bonatto/" target="_blank" rel="noopener noreferrer">
-        <img src="/fonts/instagram.svg" alt="GitHub" />
+        <img src="/fonts/instagram.png" alt="GitHub" style={{ width: '24px', height: '24px' }}/>
         </a>
         <a href="https://github.com/SergioBonatto/" target="_blank" rel="noopener noreferrer">
-          <img src="/fonts/github.svg" alt="GitHub" />
+          <img src="/fonts/github.png" alt="GitHub" />
         </a>
         <a href="https://twitter.com/fiBonatto" target="_blank" rel="noopener noreferrer">
-          <img src="/fonts/twitter.svg" alt="Twitter" className="feather feather-twitter" />
+          <img src="/fonts/twitter.png" alt="Twitter" className="feather feather-twitter" />
         </a>
         <a href="https://www.linkedin.com/in/sergiobonatto/" target="_blank" rel="noopener noreferrer">
-          <img src="/fonts/linkedin.svg" alt="LinkedIn" />
+          <img src="/fonts/linkedin.png" alt="LinkedIn" />
         </a>
       </div>
     </div>

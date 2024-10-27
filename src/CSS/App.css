@@ -1,10 +1,12 @@
-@import 'base.css';
+@import 'reset.css';
 @import 'layout.css';
 @import 'HeaderComponent.css';
+@import 'base.css';
 @import 'home.css';
 @import 'about.css';
 @import 'contact.css';
 @import 'footer.css';
+
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
 /* @import 'utilities.css'; */
 /* @import 'responsive.css'; */
