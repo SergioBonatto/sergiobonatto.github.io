@@ -1,109 +1,111 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="HandheldFriendly" content="true">
-    <title>Sergio Bonatto - Provas Formais</title>
+    <title>Sergio Bonatto - Formal Proofs</title>
 
     <!-- Social Meta Tags -->
     <meta property="og:image" content="Imagens/cards1.jpg">
     <meta property="og:url" content="https://sergiobonatto.github.io/">
-    <meta property="og:site_name" content="Sergio Bonatto - Provas Formais">
-    <meta property="title" content="Sergio Bonatto - Provas Formais">
-    <meta property="og:description" content="Dev, frontend, provas formais, kind, kindelia, JavaScript, Viajante do tempo, São Paulo, Higher Order Company, HVM, calculo lambda, UwU tech">
+    <meta property="og:site_name" content="Sergio Bonatto - Formal Proofs">
+    <meta property="title" content="Sergio Bonatto - Formal Proofs">
+    <meta property="og:description" content="Dev, frontend, formal proofs, kind, kindelia, JavaScript, Time Traveler, São Paulo, Higher Order Company, HVM, lambda calculus, UwU tech">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@sergiofbonatto">
     <meta name="twitter:creator" content="@sergiofbonatto">
-    <meta name="twitter:title" content="Sergio Bonatto - Provas Formais">
-    <meta name="twitter:description" content="Dev, frontend, provas formais, kind, kindelia, JavaScript, Viajante do tempo, São Paulo, Higher Order Company, HVM, calculo lambda, UwU tech">
+    <meta name="twitter:title" content="Sergio Bonatto - Formal Proofs">
+    <meta name="twitter:description" content="Dev, frontend, formal proofs, kind, kindelia, JavaScript, Time Traveler, São Paulo, Higher Order Company, HVM, lambda calculus, UwU tech">
     <meta name="twitter:image" content="Imagens/cards1.jpg">
     <meta name="twitter:url" content="https://sergiobonatto.github.io/">
     <meta name="twitter:image:alt" content="Sergio Bonatto">
 
     <!-- CSS Styles -->
-    <link rel="stylesheet" href="assets/style.css">
-    <link rel="stylesheet" type="text/css" href="./CSS/style.css">
+    <link rel="stylesheet" href="CSS/style.css">
 
-
-    <!-- Fonte Lato -->
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-
-    <!-- Fonte Awesome -->
+    <!-- Font for retro style -->
+    <link href="https://fonts.googleapis.com/css?family=Courier+Prime:400,700" rel="stylesheet">
+    <script src="JS/footer-component.js" defer></script>
+    <script src="JS/header-component.js" defer></script>
+    <script src="https://kit.fontawesome.com/4237bc5923.js" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/4237bc5923.js" crossorigin="anonymous" async></script>
     <script src="https://unpkg.com/feather-icons" async></script>
-
-    <!-- componentsi -->
-    <script src="JS/footer-component.js" defer></script>
-    <script src="JS/parallax-component.js" defer></script>
-    <script src="JS/header-component.js" defer></script>
-
-
-</head>
+  </head>
   <body>
+    <!-- Typical elements of old websites -->
+    <div class="visitor-counter">
+      Visitors: 0069420
+    </div>
+
     <header-component></header-component>
-    <main>
-      <parallax-section></parallax-section>
+
+    <marquee scrollamount="3">Welcome to my personal website! ~ Last update: 11/20/2024</marquee>
+
+    <main class="container">
       <section class="section" id="about">
-        <div class="container grid">
+        <div class="grid">
           <div class="image">
-            <img src="./Imagens/perfil.png" alt="Foto minha com casaco com capuz e touca preta, no estilo doomer" />
+            <img src="./Imagens/perfil.png" alt="Photo of me wearing a hoodie and black beanie, in doomer style" class="perfil-img"/>
           </div>
           <div class="text">
-            <h2 class="title">Sobre mim</h2>
-            <p>
-              Eu sou um programador na
-              <a id="kindelia" href="https://higherorderco.com/">Higher Order Company</a>,
-              um entusiasta da programação funcional e das tecnologias descentralizadas, que garantem a privacidade & autonomia do usuário.
-            </p>
-            <br />
-            <p>
-              Sou pai do Matteo, teólogo reformado & autodidata, estou escrevendo um livro sobre Kind e provas formais, sou amante da filosofia de código aberto, nerd, lindo, vegano não-praticante e apaixonado por café.
-            </p>
-            <br />
-            <p>
-              Acesse meu <a id="kindelia" href="./blog.html">blog</a> e veja um pouco sobre provas formais, tecnologia e outras coisas que gosto ou acho útil.
-            </p>
+            <h2 class="title">About me</h2>
+            <div class="under-construction">
+              <p>
+                I am a programmer at
+                <a href="https://higherorderco.com/">Higher Order Company</a>,
+                an enthusiast of functional programming and decentralized technologies.
+              </p>
+              <br />
+              <p>
+                I am Matteo's father, a reformed theologian & autodidact, I am writing a book about Kind and formal proofs,
+                I am a lover of open-source philosophy, a nerd, handsome, non-practicing vegan, and a coffee enthusiast.
+              </p>
+              <br />
+              <p>
+                Visit my <a href="./blog.html">blog</a> to see a bit about formal proofs, technology,
+                and other things I like or find useful.
+              </p>
+            </div>
           </div>
         </div>
       </section>
+
+      <hr>
+
       <section class="section" id="contact">
-        <div class="container grid">
+        <div class="grid">
           <div class="text">
-            <h2 class="title">Entre em contato!</h2>
+            <h2 class="title">Get in touch!</h2>
             <p>
-              Venha falar comigo e saber um pouco mais, expandir a networking e até mesmo tomar um café!
+              Come talk to me and learn a bit more, expand your network, and even have a coffee!
             </p>
-            <a href="https://api.whatsapp.com/send?phone=+5511937071628&text=Oi! Gostaria de conversar com você sobre o livro de Kind, me fale mais um pouco sobre a linguagem" class="button" target="_blank">
-              <i class="icon-whatsapp"></i>Me chama no zap
-            </a>
+            <div class="button-container">
+              <a href="https://api.whatsapp.com/send?phone=+5511937071628" class="button" target="_blank">
+                <img src="Imagens/phone.png" width="40" height="40" alt="New!" class="blink"> Message me on WhatsApp
+              </a>
+            </div>
           </div>
           <div class="links">
-            <ul class="grid">
-              <li>
-                <i class="icon-phone"></i>
-                (11) 93707-1628
-              </li>
-              <li>
-                <i class="icon-mail"></i>
-                bonatto@tutanota.com
-              </li>
-            </ul>
+            <table border="1" cellpadding="5" cellspacing="0">
+              <tr>
+                <td><iframe src="https://giphy.com/embed/RHlm0r4VlDCgg" width="80" height="60" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></td>
+                <td>(11) 93707-1628</td>
+              </tr>
+              <tr>
+                <td><iframe src="https://giphy.com/embed/YmjleYhDTUiYw" width="80" height="80" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></td>
+                <td>bonatto@tutanota.com</td>
+              </tr>
+            </table>
           </div>
         </div>
       </section>
     </main>
+
     <footer-component></footer-component>
-    <a href="#home" class="back-to-top">
-      <i class="icon-arrow-up"></i>
-    </a>
-    <!-- JavaScript -->
-    <script src="./JS/back-to-top.js" charset="utf-8" defer></script>
+
+    <div class="bottom-buttons">
+      <a href="#home" class="button back-to-top">↑ Top</a>
+      <img src="valid-html.gif" alt="Valid HTML">
+    </div>
   </body>
 </html>
