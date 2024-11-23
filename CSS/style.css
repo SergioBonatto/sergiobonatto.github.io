@@ -31,7 +31,8 @@ body {
 nav.show .menu {
   opacity: 1;
   visibility: visible;
-  background: #c0c0c0; /* Cor clássica do Windows */
+  background: #c0c0c0;
+  /* Cor clássica do Windows */
   height: 100vh;
   width: 100vw;
   position: fixed;
@@ -52,7 +53,8 @@ nav.show ul.grid {
 
 /* Toggle menu */
 .toggle {
-  color: #000080; /* Cor clássica do Windows */
+  color: #000080;
+  /* Cor clássica do Windows */
   font-size: 1.5rem;
   cursor: pointer;
 }
@@ -157,6 +159,18 @@ marquee {
   border: 2px inset #d4d0c8;
   margin: 10px;
   padding: 15px;
+  position: relative;
+}
+
+.section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .title {
@@ -416,8 +430,176 @@ footer .brand p:nth-child(2) {
   font-family: "Courier New", monospace;
 }
 
+:root {
+  --system-scale: 1;
+}
+
+#solar-system {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.sun {
+  position: absolute;
+  width: calc(100px * var(--system-scale));
+  height: calc(100px * var(--system-scale));
+  background: yellow;
+  border-radius: 50%;
+  box-shadow: 0 0 calc(50px * var(--system-scale)) rgba(255, 255, 0, 0.5);
+  z-index: 2;
+}
+
+.planet {
+  position: absolute;
+  border-radius: 50%;
+  animation: orbit linear infinite;
+  z-index: 1;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+}
+
+.mercury {
+  width: calc(20px * var(--system-scale));
+  height: calc(20px * var(--system-scale));
+  background: gray;
+  animation-duration: 5s;
+  transform-origin: calc(100px * var(--system-scale));
+  left: calc(42% * var(--system-scale));
+}
+
+.venus {
+  width: calc(30px * var(--system-scale));
+  height: calc(30px * var(--system-scale));
+  background: orange;
+  animation-duration: 7s;
+  transform-origin: calc(150px * var(--system-scale));
+  left: calc(38% * var(--system-scale));
+}
+
+.earth-system {
+  position: absolute;
+  width: calc(60px * var(--system-scale));
+  height: calc(60px * var(--system-scale));
+  animation: orbit linear infinite;
+  animation-duration: 10s;
+  transform-origin: calc(200px * var(--system-scale));
+  left: calc(35% * var(--system-scale));
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.earth {
+  position: absolute;
+  width: calc(35px * var(--system-scale));
+  height: calc(35px * var(--system-scale));
+  background: blue;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.moon {
+  width: calc(10px * var(--system-scale));
+  height: calc(10px * var(--system-scale));
+  background: whitesmoke;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  animation: moonOrbit linear infinite 2.5s;
+}
+
+.mars {
+  width: calc(25px * var(--system-scale));
+  height: calc(25px * var(--system-scale));
+  background: red;
+  animation-duration: 12s;
+  transform-origin: calc(250px * var(--system-scale));
+  left: calc(32% * var(--system-scale));
+}
+
+.jupiter {
+  width: calc(50px * var(--system-scale));
+  height: calc(50px * var(--system-scale));
+  background: brown;
+  animation-duration: 15s;
+  transform-origin: calc(350px * var(--system-scale));
+  left: calc(27% * var(--system-scale));
+}
+
+.saturn {
+  width: calc(45px * var(--system-scale));
+  height: calc(45px * var(--system-scale));
+  background: goldenrod;
+  animation-duration: 18s;
+  transform-origin: calc(430px * var(--system-scale));
+  left: calc(22% * var(--system-scale));
+}
+
+.uranus {
+  width: calc(40px * var(--system-scale));
+  height: calc(40px * var(--system-scale));
+  background: lightblue;
+  animation-duration: 22s;
+  transform-origin: calc(480px * var(--system-scale));
+  left: calc(17% * var(--system-scale));
+}
+
+.neptune {
+  width: calc(40px * var(--system-scale));
+  height: calc(40px * var(--system-scale));
+  background: darkblue;
+  animation-duration: 27s;
+  transform-origin: calc(530px * var(--system-scale));
+  left: calc(12% * var(--system-scale));
+}
+
+@keyframes orbit {
+  from {
+    transform: rotate(0deg) translate(-50%, -50%);
+  }
+
+  to {
+    transform: rotate(360deg) translate(-50%, -50%);
+  }
+}
+
+@keyframes moonOrbit {
+  from {
+    transform: rotate(0deg) translate(calc(20px * var(--system-scale)));
+  }
+
+  to {
+    transform: rotate(360deg) translate(calc(20px * var(--system-scale)));
+  }
+}
+
+@media (max-width: 1200px) {
+  :root {
+    --system-scale: 0.8;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --system-scale: 0.4;
+  }
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
+
+  :root {
+    --system-scale: 0.6;
+  }
 
   footer .grid,
   footer .brand,
@@ -434,39 +616,7 @@ footer .brand p:nth-child(2) {
   footer .social a {
     margin: 5px;
   }
-}
 
-/* Links visitados */
-footer .social a:visited {
-  color: #000080;
-  /* Mantém a cor original para ícones */
-}
-
-/* Efeito hover */
-footer .social a:hover {
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* Linha separadora */
-footer::before {
-  content: '';
-  display: block;
-  height: 2px;
-  background: #000080;
-  border: 1px inset #d4d0c8;
-  margin-bottom: 10px;
-}
-
-/* Bordas 3D para o container */
-footer .container {
-  border: 1px inset #d4d0c8;
-  padding: 2px;
-  background: #c0c0c0;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
   body {
     padding: 10px;
   }
@@ -531,6 +681,35 @@ footer .container {
   }
 }
 
+/* Links visitados */
+footer .social a:visited {
+  color: #000080;
+  /* Mantém a cor original para ícones */
+}
+
+/* Efeito hover */
+footer .social a:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Linha separadora */
+footer::before {
+  content: '';
+  display: block;
+  height: 2px;
+  background: #000080;
+  border: 1px inset #d4d0c8;
+  margin-bottom: 10px;
+}
+
+/* Bordas 3D para o container */
+footer .container {
+  border: 1px inset #d4d0c8;
+  padding: 2px;
+  background: #c0c0c0;
+}
+
 /* Ícones */
 .icon-whatsapp,
 .icon-phone,
@@ -562,20 +741,4 @@ footer .container {
 
 .text p {
   margin-bottom: 10px;
-}
-
-/* Sombras e efeitos 3D extras */
-.section {
-  position: relative;
-}
-
-.section::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
