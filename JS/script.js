@@ -42,3 +42,18 @@ document.addEventListener('DOMContentLoaded', () => {
     closeButton.style.display = 'none';
   });
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function updateVisitorCounter() {
+    const visitorCounter = document.querySelector('.visitor-counter');
+    const randomNumber = getRandomNumber(68, 421);
+    visitorCounter.textContent = `Visitors: ${String(randomNumber).padStart(7, '0')}`;
+  }
+
+  setInterval(updateVisitorCounter, 2500);
+});
