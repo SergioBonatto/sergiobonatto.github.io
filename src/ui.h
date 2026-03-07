@@ -25,8 +25,9 @@ void add_image(const char* path, const char* alt, int width, int height);
  * Creates a text toggle in the header.
  *
  * label - initial text (e.g., ":light")
+ * style - CSS style string
  */
-void add_theme_toggle(const char* label);
+void add_theme_toggle(const char* label, const char* style);
 
 /*
  * update_theme_toggle_label(label)

@@ -17,10 +17,31 @@ static const TimingConfig TIMING = {
     .scanline_speed = 120.0f
 };
 
-// Style Configuration (SSoT)
-static const char* COLOR_BG           = "#2E3440";
-static const char* COLOR_TEXT_PRIMARY = "#ECEFF4";
-static const char* COLOR_SCANLINE     = "rgba(236,239,244,0.035)";
+typedef struct {
+    const char* bg;
+    const char* text;
+    const char* scanline;
+} Theme;
+
+static const Theme THEME_DARK = {
+    .bg       = "#2E3440",
+    .text     = "#ECEFF4",
+    .scanline = "rgba(236,239,244,0.035)"
+};
+
+static const Theme THEME_LIGHT = {
+    .bg       = "#ECEFF4",
+    .text     = "#2E3440",
+    .scanline = "rgba(46,52,64,0.035)"
+};
+
+// SSoT: UI Styles managed by C
+static const char* CSS_THEME_TOGGLE = 
+    "position: fixed; top: 20px; right: 30px; "
+    "font-size: 14px; user-select: none; cursor: pointer;";
+
+static const char* CSS_FEED = 
+    "padding: 20px; max-width: 900px; margin-top: 180px;";
 
 static const int   HEADER_HEIGHT      = 180;
 

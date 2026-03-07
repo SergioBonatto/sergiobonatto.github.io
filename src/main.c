@@ -7,52 +7,34 @@
 
 static float runtime = 0.0f;
 static bool  is_dark = true;
+static const Theme* cur_theme;
 
-static const char* cur_bg;
-static const char* cur_text;
-static const char* cur_scanline;
-
-static const char* SCANLINE_DARK = "rgba(236,239,244,0.035)";
-static const char* SCANLINE_LIGHT = "rgba(46,52,64,0.035)";
-
-EMSCRIPTEN_KEEPALIVE
+/* EMSCRIPTEN_KEEPALIVE */
 void toggle_theme(void)
 {
     is_dark = !is_dark;
+    cur_theme = is_dark ? &THEME_DARK : &THEME_LIGHT;
 
-    if (is_dark) {
-        cur_bg       = COLOR_BG;
-        cur_text     = COLOR_TEXT_PRIMARY;
-        cur_scanline = SCANLINE_DARK;
-        update_theme_toggle_label(":light");
-    } else {
-        cur_bg       = COLOR_TEXT_PRIMARY;
-        cur_text     = COLOR_BG;
-        cur_scanline = SCANLINE_LIGHT;
-        update_theme_toggle_label(":dark");
-    }
-
-    update_theme_colors(cur_bg, cur_text, cur_scanline);
+    update_theme_toggle_label(is_dark ? ":light" : ":dark");
+    update_theme_colors(cur_theme->bg, cur_theme->text, cur_theme->scanline);
 }
 
 void main_tick(void)
 {
     runtime += TIMING.tick_delta;
-
-    draw_frame(runtime, MSG_HEADER, cur_text, cur_scanline);
+    draw_frame(runtime, MSG_HEADER, cur_theme->text, cur_theme->scanline);
 }
 
 int main(void)
 {
-    // Initial theme state
-    cur_bg       = COLOR_BG;
-    cur_text     = COLOR_TEXT_PRIMARY;
-    cur_scanline = SCANLINE_DARK;
+    // SSoT: Centralized Theme & UI state
+    cur_theme = &THEME_DARK;
 
-    // SSoT: Centralized style initialization from C
-    init_graphics(cur_bg, cur_text, HEADER_HEIGHT);
-
-    add_theme_toggle(":light");
+    init_graphics(cur_theme->bg, cur_theme->text, HEADER_HEIGHT);
+    
+    // Applying CSS styles directly from C constants
+    apply_style("#feed", CSS_FEED);
+    add_theme_toggle(":light", CSS_THEME_TOGGLE);
 
     add_image("pfp.png", NULL, -1, -1);
     add_paragraph(MSG_WHOAMI);

@@ -35,6 +35,13 @@ EM_JS(void, init_graphics, (const char* bg_cstr, const char* text_cstr, int head
     onResize();
 });
 
+EM_JS(void, apply_style, (const char* selector_cstr, const char* style_cstr), {
+    const selector = UTF8ToString(selector_cstr);
+    const style    = UTF8ToString(style_cstr);
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(el => el.style.cssText = style);
+});
+
 EM_JS(void, update_theme_colors, (const char* bg_cstr, const char* text_cstr, const char* scanline_cstr), {
     const bg        = UTF8ToString(bg_cstr);
     const text      = UTF8ToString(text_cstr);

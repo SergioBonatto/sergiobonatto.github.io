@@ -1,10 +1,4 @@
-        :root {
-            /* Fallbacks if JS injection fails */
-            --bg-color  : #2E3440;
-            --text-color: #ECEFF4;
-        }
-
-        body {
+body {
             margin:0;
             background: var(--bg-color);
             color: var(--text-color);
@@ -21,20 +15,10 @@
         }
 
         #feed {
-            padding: 20px;
-            max-width: 900px;
-            margin-top: 180px;
+            /* Structural defaults, specific values now managed in C */
+            overflow-y: auto;
         }
 
         .para {
             margin:6px 0;
-        }
-
-        #theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 30px;
-            font-size: 14px;
-            user-select: none;
-            color: var(--text-color);
         }

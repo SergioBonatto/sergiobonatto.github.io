@@ -67,14 +67,15 @@ EM_JS(void, add_image, (const char* path_cstr, const char* alt_cstr, int width, 
 
 });
 
-EM_JS(void, add_theme_toggle, (const char* label_cstr), {
+EM_JS(void, add_theme_toggle, (const char* label_cstr, const char* style_cstr), {
     try {
         const label = UTF8ToString(label_cstr);
+        const style = UTF8ToString(style_cstr);
 
         const btn = document.createElement("div");
         btn.id = "theme-toggle";
         btn.textContent = label;
-        btn.style.cursor = "pointer";
+        btn.style.cssText = style;
 
         btn.onclick = () => {
             if (Module._toggle_theme) {
