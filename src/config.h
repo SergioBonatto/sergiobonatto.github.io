@@ -10,10 +10,10 @@ typedef struct {
 } TimingConfig;
 
 static const TimingConfig TIMING = {
-    .tick_delta = 0.016f,
-    .flicker_speed = 12.0f,
-    .flicker_base = 0.8f,
-    .flicker_amp = 0.15f,
+    .tick_delta     = 0.016f,
+    .flicker_speed  = 12.0f,
+    .flicker_base   = 0.8f,
+    .flicker_amp    = 0.15f,
     .scanline_speed = 120.0f
 };
 

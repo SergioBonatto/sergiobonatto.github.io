@@ -66,3 +66,37 @@ EM_JS(void, add_image, (const char* path_cstr, const char* alt_cstr, int width, 
     }
 
 });
+
+EM_JS(void, add_theme_toggle, (const char* label_cstr), {
+    try {
+        const label = UTF8ToString(label_cstr);
+
+        const btn = document.createElement("div");
+        btn.id = "theme-toggle";
+        btn.textContent = label;
+        btn.style.cursor = "pointer";
+
+        btn.onclick = () => {
+            if (Module._toggle_theme) {
+                Module._toggle_theme();
+            } else {
+                console.error("toggle_theme not found in Module");
+            }
+        };
+
+        document.body.appendChild(btn);
+
+    } catch (e) {
+        console.error("add_theme_toggle failed:", e);
+    }
+});
+
+EM_JS(void, update_theme_toggle_label, (const char* label_cstr), {
+    try {
+        const label = UTF8ToString(label_cstr);
+        const btn = document.getElementById("theme-toggle");
+        if (btn) btn.textContent = label;
+    } catch (e) {
+        console.error("update_theme_toggle_label failed:", e);
+    }
+});

@@ -20,4 +20,18 @@ void add_paragraph(const char* text);
  */
 void add_image(const char* path, const char* alt, int width, int height);
 
+/*
+ * add_theme_toggle(label)
+ * Creates a text toggle in the header.
+ *
+ * label - initial text (e.g., ":light")
+ */
+void add_theme_toggle(const char* label);
+
+/*
+ * update_theme_toggle_label(label)
+ * Updates the text content of the theme toggle.
+ */
+void update_theme_toggle_label(const char* label);
+
 #endif

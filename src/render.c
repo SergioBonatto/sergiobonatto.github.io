@@ -2,68 +2,89 @@
 #include "render.h"
 
 EM_JS(void, init_graphics, (const char* bg_cstr, const char* text_cstr, int header_h), {
-    
-    // Convert C/WASM strings to JS strings
-    const bg    = UTF8ToString(bg_cstr);
-    const text  = UTF8ToString(text_cstr);
+    const bg        = UTF8ToString(bg_cstr);
+    const text      = UTF8ToString(text_cstr);
+    const rootStyle = document.documentElement.style;
 
-    // Inject colors into global CSS variables
-    document.documentElement.style.setProperty('--bg-color', bg);
-    document.documentElement.style.setProperty('--text-color', text);
+    rootStyle.setProperty('--bg-color', bg);
+    rootStyle.setProperty('--text-color', text);
 
     const cvs = document.getElementById("screen");
     if (!cvs) return;
 
-    // Persist references in the Module object (Emscripten scope)
     Module.gfx = {
-        cvs: cvs,
+        cvs,
         ctx: cvs.getContext("2d", { alpha: false }),
-        height: header_h
+        header_h,
+        bg,
+        // Pointer caching to avoid UTF8ToString() allocations at 60fps
+        lastLabelPtr    : 0,
+        cachedLabel     : "",
+        lastTextColorPtr: 0,
+        cachedTextColor : "",
+        lastScanlinePtr : 0,
+        cachedScanline  : ""
     };
 
     const onResize = () => {
-        Module.gfx.cvs.width = window.innerWidth;
-        Module.gfx.cvs.height = Module.gfx.height;
+        cvs.width   = window.innerWidth;
+        cvs.height = window.innerHeight;
     };
 
     window.addEventListener('resize', onResize);
     onResize();
 });
 
-EM_JS(void, draw_frame, (float t, const char* label_cstr, const char* text_color_cstr, const char* scanline_color_cstr), {
-    
-    if (!Module.gfx || !Module.gfx.ctx) return;
+EM_JS(void, update_theme_colors, (const char* bg_cstr, const char* text_cstr, const char* scanline_cstr), {
+    const bg        = UTF8ToString(bg_cstr);
+    const text      = UTF8ToString(text_cstr);
+    const rootStyle = document.documentElement.style;
 
-    const ctx = Module.gfx.ctx;
-    const W = Module.gfx.cvs.width;
-    const H = Module.gfx.cvs.height;
+    rootStyle.setProperty('--bg-color', bg);
+    rootStyle.setProperty('--text-color', text);
 
-    const label = UTF8ToString(label_cstr);
-    const textColor = UTF8ToString(text_color_cstr);
-    const scanlineColor = UTF8ToString(scanline_color_cstr);
+    if (Module.gfx) {
+        Module.gfx.bg = bg;
+    }
+});
 
-    // Animation parameters 
-    // TODO: move to config
-    const flickerSpeed  = 12.0;
-    const flickerBase   = 0.8;
-    const flickerAmp    = 0.15;
-    const scanlineSpeed = 120.0;
+EM_JS(void, draw_frame, (float t, const char* label_ptr, const char* text_color_ptr, const char* scanline_color_ptr), {
+    const gfx = Module.gfx;
+    if (!gfx?.ctx) return;
 
-    // Background
-    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg-color');
+    const { ctx, cvs, header_h, bg } = gfx;
+    const W = cvs.width;
+    const H = cvs.height;
+
+    // String allocation only on pointer change
+    if (label_ptr !== gfx.lastLabelPtr) {
+        gfx.cachedLabel     = UTF8ToString(label_ptr);
+        gfx.lastLabelPtr    = label_ptr;
+    }
+    if (text_color_ptr !== gfx.lastTextColorPtr) {
+        gfx.cachedTextColor     = UTF8ToString(text_color_ptr);
+        gfx.lastTextColorPtr    = text_color_ptr;
+    }
+    if (scanline_color_ptr !== gfx.lastScanlinePtr) {
+        gfx.cachedScanline  = UTF8ToString(scanline_color_ptr);
+        gfx.lastScanlinePtr = scanline_color_ptr;
+    }
+
+    const FLICKER_SPEED     = 12.0;
+    const FLICKER_BASE      = 0.8;
+    const FLICKER_AMP       = 0.15;
+    const SCANLINE_SPEED    = 120.0;
+
+    ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
 
-    // Text with Flicker effect
-    ctx.font = "bold 40px 'Courier New', monospace";
-    ctx.fillStyle   = textColor;
+    ctx.font        = "bold 40px 'Courier New', monospace";
+    ctx.fillStyle   = gfx.cachedTextColor;
     ctx.textAlign   = "center";
-    ctx.globalAlpha = flickerBase + Math.sin(t * flickerSpeed) * flickerAmp;
-    
-    ctx.fillText(label, W/2, H/2);
+    ctx.globalAlpha = FLICKER_BASE + Math.sin(t * FLICKER_SPEED) * FLICKER_AMP;
+    ctx.fillText(gfx.cachedLabel, W / 2, header_h / 2);
 
-    // Scanline effect
     ctx.globalAlpha = 1.0;
-    ctx.fillStyle   = scanlineColor;
-    const scanlineY = (t * scanlineSpeed) % H;
-    ctx.fillRect(0, scanlineY, W, 2);
+    ctx.fillStyle   = gfx.cachedScanline;
+    ctx.fillRect(0, (t * SCANLINE_SPEED) % H, W, 2);
 });
