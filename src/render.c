@@ -1,62 +1,69 @@
 #include <emscripten.h>
 #include "render.h"
 
-EM_JS(void, draw_frame, (float t), {
+EM_JS(void, init_graphics, (const char* bg_cstr, const char* text_cstr, int header_h), {
+    
+    // Convert C/WASM strings to JS strings
+    const bg    = UTF8ToString(bg_cstr);
+    const text  = UTF8ToString(text_cstr);
 
-    const CONFIG = {
-        headerHeight: 180,
-
-        colors: {
-            // Polar Night (backgrounds)
-            bg      : "#2E3440",        // nord0
-            bgSoft  : "#3B4252",        // nord1
-            bgPanel : "#434C5E",        // nord2
-
-            // Snow Storm (text)
-            textPrimary : "#ECEFF4",    // nord6
-            textSoft    : "#E5E9F0",    // nord5
-            textMuted   : "#D8DEE9",    // nord4
-
-            // other efects
-            scanline: "rgba(236,239,244,0.035)",
-            glow    : "rgba(236,239,244,0.08)"
-        },
-
-        flickerSpeed    : 10,
-        flickerBase     : 0.82,
-        flickerAmp      : 0.12,
-        scanlineSpeed   : 100
-    };
+    // Inject colors into global CSS variables
+    document.documentElement.style.setProperty('--bg-color', bg);
+    document.documentElement.style.setProperty('--text-color', text);
 
     const cvs = document.getElementById("screen");
     if (!cvs) return;
 
-    const ctx = cvs.getContext("2d");
+    // Persist references in the Module object (Emscripten scope)
+    Module.gfx = {
+        cvs: cvs,
+        ctx: cvs.getContext("2d", { alpha: false }),
+        height: header_h
+    };
 
-    cvs.width = window.innerWidth;
-    cvs.height = CONFIG.headerHeight;
+    const onResize = () => {
+        Module.gfx.cvs.width = window.innerWidth;
+        Module.gfx.cvs.height = Module.gfx.height;
+    };
 
-    const W = cvs.width;
-    const H = cvs.height;
+    window.addEventListener('resize', onResize);
+    onResize();
+});
 
-    ctx.fillStyle = CONFIG.colors.bg;
-    ctx.fillRect(0,0,W,H);
+EM_JS(void, draw_frame, (float t, const char* label_cstr, const char* text_color_cstr, const char* scanline_color_cstr), {
+    
+    if (!Module.gfx || !Module.gfx.ctx) return;
 
+    const ctx = Module.gfx.ctx;
+    const W = Module.gfx.cvs.width;
+    const H = Module.gfx.cvs.height;
+
+    const label = UTF8ToString(label_cstr);
+    const textColor = UTF8ToString(text_color_cstr);
+    const scanlineColor = UTF8ToString(scanline_color_cstr);
+
+    // Animation parameters 
+    // TODO: move to config
+    const flickerSpeed  = 12.0;
+    const flickerBase   = 0.8;
+    const flickerAmp    = 0.15;
+    const scanlineSpeed = 120.0;
+
+    // Background
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg-color');
+    ctx.fillRect(0, 0, W, H);
+
+    // Text with Flicker effect
     ctx.font = "bold 40px 'Courier New', monospace";
-    ctx.fillStyle = CONFIG.colors.textPrimary;
-    ctx.textAlign = "center";
+    ctx.fillStyle   = textColor;
+    ctx.textAlign   = "center";
+    ctx.globalAlpha = flickerBase + Math.sin(t * flickerSpeed) * flickerAmp;
+    
+    ctx.fillText(label, W/2, H/2);
 
-    ctx.globalAlpha =
-        CONFIG.flickerBase +
-        Math.sin(t * CONFIG.flickerSpeed) * CONFIG.flickerAmp;
-
-    ctx.fillText("BONATTO", W/2, H/2);
-
+    // Scanline effect
     ctx.globalAlpha = 1.0;
-
-    ctx.fillStyle = CONFIG.colors.scanline;
-
-    const scanlineY = (t * CONFIG.scanlineSpeed) % H;
-
+    ctx.fillStyle   = scanlineColor;
+    const scanlineY = (t * scanlineSpeed) % H;
     ctx.fillRect(0, scanlineY, W, 2);
 });

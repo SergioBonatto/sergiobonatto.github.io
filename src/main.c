@@ -10,12 +10,15 @@ void main_tick(void)
 {
     runtime += TIMING.tick_delta;
 
-    draw_frame(runtime);
+    draw_frame(runtime, MSG_HEADER, COLOR_TEXT_PRIMARY, COLOR_SCANLINE);
 }
 
 int main(void)
 {
-    add_image("../pfp.png", NULL, -1, -1);
+    // SSoT: Centralized style initialization from C
+    init_graphics(COLOR_BG, COLOR_TEXT_PRIMARY, HEADER_HEIGHT);
+
+    add_image("pfp.png", NULL, -1, -1);
     add_paragraph(MSG_WHOAMI);
     add_paragraph(MSG_BIO);
 
