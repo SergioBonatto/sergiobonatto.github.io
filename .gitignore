@@ -1,0 +1,5 @@
+# OS-specific files
+.DS_Store
+
+# Explicitly include the build directory even if global rules ignore it
+!build/

@@ -4,10 +4,16 @@
     <meta charset="utf-8">
     <title>Bonatto</title>
     <style>
+        :root {
+            /* Fallbacks if JS injection fails */
+            --bg-color  : #2E3440;
+            --text-color: #ECEFF4;
+        }
+
         body {
             margin:0;
-            background:#2E3440;
-            color:#ECEFF4;
+            background: var(--bg-color);
+            color: var(--text-color);
             font-family: "Courier New", monospace;
         }   
 
@@ -28,6 +34,6 @@
     <body>
         <canvas id="screen"></canvas>
         <div id="feed"></div>
-        <script src="../build/app.js"></script>
+        <script src="./build/app.js"></script>
     </body>
 </html>
