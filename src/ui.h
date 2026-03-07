@@ -10,15 +10,14 @@
 void add_paragraph(const char *text);
 
 /*
- * add_image(path, alt, width, height)
+ * add_image(path, alt, scale)
  * Appends an image to the feed element.
  *
  * path   - URL or path to the image
  * alt    - alt text for the image
- * width  - display width in pixels, or -1 for default
- * height - display height in pixels, or -1 for default
+ * scale  - scale factor (1.0f for original size, 0.5f for half, etc.)
  */
-void add_image(const char *path, const char *alt, int width, int height);
+void add_image(const char *path, const char *alt, float scale);
 
 /*
  * add_theme_toggle(label)

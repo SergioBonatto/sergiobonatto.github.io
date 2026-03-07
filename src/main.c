@@ -33,7 +33,7 @@ int main(void) {
 	apply_style("#feed", css_feed);
 	add_theme_toggle(":light", css_theme_toggle);
 
-	add_image("pfp.png", NULL, -1, -1);
+	add_image("pfp.png", NULL, 1.0f);
 	add_paragraph(msg_whoami);
 	add_paragraph(msg_bio);
 
