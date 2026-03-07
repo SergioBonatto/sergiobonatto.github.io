@@ -3,6 +3,7 @@
 mkdir -p build
 
 emcc \
+src/config.c \
 src/main.c \
 src/render.c \
 src/ui.c \

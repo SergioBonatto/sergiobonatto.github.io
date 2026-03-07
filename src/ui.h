@@ -1,5 +1,5 @@
-#ifndef UI_H
-#define UI_H
+#ifndef PROJECT_SRC_UI_H
+#define PROJECT_SRC_UI_H
 
 /*
  * add_paragraph(text)
@@ -7,7 +7,7 @@
  *
  * text - the string to display
  */
-void add_paragraph(const char* text);
+void add_paragraph(const char *text);
 
 /*
  * add_image(path, alt, width, height)
@@ -18,7 +18,7 @@ void add_paragraph(const char* text);
  * width  - display width in pixels, or -1 for default
  * height - display height in pixels, or -1 for default
  */
-void add_image(const char* path, const char* alt, int width, int height);
+void add_image(const char *path, const char *alt, int width, int height);
 
 /*
  * add_theme_toggle(label)
@@ -27,12 +27,12 @@ void add_image(const char* path, const char* alt, int width, int height);
  * label - initial text (e.g., ":light")
  * style - CSS style string
  */
-void add_theme_toggle(const char* label, const char* style);
+void add_theme_toggle(const char *label, const char *style);
 
 /*
  * update_theme_toggle_label(label)
  * Updates the text content of the theme toggle.
  */
-void update_theme_toggle_label(const char* label);
+void update_theme_toggle_label(const char *label);
 
 #endif

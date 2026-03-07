@@ -1,24 +1,24 @@
 body {
-            margin:0;
-            background: var(--bg-color);
-            color: var(--text-color);
-            font-family: "Courier New", monospace;
-        }   
+	margin: 0;
+	background: var(--bg-color);
+	color: var(--text-color);
+	font-family: "Courier New", monospace;
+}
 
-        #screen {
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            pointer-events: none;
-        }
+#screen {
+	display: block;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	pointer-events: none;
+}
 
-        #feed {
-            /* Structural defaults, specific values now managed in C */
-            overflow-y: auto;
-        }
+#feed {
+	/* Structural defaults, specific values now managed in C */
+	overflow-y: auto;
+}
 
-        .para {
-            margin:6px 0;
-        }
+.para {
+	margin: 6px 0;
+}
