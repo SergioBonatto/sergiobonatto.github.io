@@ -30,6 +30,12 @@ void add_image(const char *path, const char *alt, int width, int height);
 void add_theme_toggle(const char *label, const char *style);
 
 /*
+ * add_footer(year, style)
+ * Appends a footer element to the body.
+ */
+void add_footer(int year, const char *style);
+
+/*
  * update_theme_toggle_label(label)
  * Updates the text content of the theme toggle.
  */

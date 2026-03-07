@@ -91,6 +91,37 @@ EM_JS(void, add_theme_toggle, (const char *label_cstr, const char *style_cstr), 
 	}
 });
 
+EM_JS(void, add_footer, (int year, const char *style_cstr), {
+	try {
+		const style = UTF8ToString(style_cstr);
+
+		const footer = document.createElement("footer");
+		footer.id    = "main-footer";
+		footer.style.cssText = style;
+
+		footer.innerHTML = `
+			<div style="max-width: 1280px; margin: 0 auto; padding: 0 8px;">
+				<div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 16px;">
+					<div style="display: flex; align-items: center; gap: 12px;">
+						<div style="font-size: 14px; display: flex; align-items: center; gap: 8px;">
+							<span>&copy; ${year}</span>
+							<span style="color: var(--dim-text-color)">&bull;</span>
+							<span>[Bonatto]</span>
+							<span style="color: var(--dim-text-color)">&bull;</span>
+							<span>Vim powered</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		`;
+
+		document.body.appendChild(footer);
+
+	} catch (e) {
+		console.error("add_footer failed:", e);
+	}
+});
+
 EM_JS(void, update_theme_toggle_label, (const char *label_cstr), {
 	try {
 		const label = UTF8ToString(label_cstr);

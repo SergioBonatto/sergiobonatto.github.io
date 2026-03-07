@@ -1,13 +1,15 @@
 #include <emscripten.h>
 #include "render.h"
 
-EM_JS(void, init_graphics, (const char *bg_cstr, const char *text_cstr, int header_h), {
+EM_JS(void, init_graphics, (const char *bg_cstr, const char *text_cstr, const char *dim_cstr, int header_h), {
 	const bg	= UTF8ToString(bg_cstr);
 	const text	= UTF8ToString(text_cstr);
+	const dim	= UTF8ToString(dim_cstr);
 	const rootStyle = document.documentElement.style;
 
 	rootStyle.setProperty('--bg-color', bg);
 	rootStyle.setProperty('--text-color', text);
+	rootStyle.setProperty('--dim-text-color', dim);
 
 	const cvs = document.getElementById("screen");
 	if (!cvs)
@@ -43,13 +45,15 @@ EM_JS(void, apply_style, (const char *selector_cstr, const char *style_cstr), {
 	elements.forEach(el => el.style.cssText = style);
 });
 
-EM_JS(void, update_theme_colors, (const char *bg_cstr, const char *text_cstr, const char *scanline_cstr), {
+EM_JS(void, update_theme_colors, (const char *bg_cstr, const char *text_cstr, const char *dim_cstr, const char *scanline_cstr), {
 	const bg	= UTF8ToString(bg_cstr);
 	const text	= UTF8ToString(text_cstr);
+	const dim	= UTF8ToString(dim_cstr);
 	const rootStyle = document.documentElement.style;
 
 	rootStyle.setProperty('--bg-color', bg);
 	rootStyle.setProperty('--text-color', text);
+	rootStyle.setProperty('--dim-text-color', dim);
 
 	if (Module.gfx) {
 		Module.gfx.bg = bg;

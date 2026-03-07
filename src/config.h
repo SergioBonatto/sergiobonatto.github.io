@@ -14,6 +14,7 @@ extern const struct timing_config timing;
 struct theme {
 	const char *bg;
 	const char *text;
+	const char *dim_text;
 	const char *scanline;
 };
 
@@ -22,6 +23,7 @@ extern const struct theme theme_light;
 
 extern const char *css_theme_toggle;
 extern const char *css_feed;
+extern const char *css_footer;
 
 #define UI_HEADER_HEIGHT 180
 
