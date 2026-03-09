@@ -92,11 +92,15 @@ void render_markdown(const char *content)
 
 EM_JS(void, fetch_article_internal, (const char *slug_cstr), {
 	const slug = UTF8ToString(slug_cstr);
-	const url = `contents/${slug}.md`;
+	
+	/* Use absolute path resolution based on the document location */
+	const url = new URL(`contents/${slug}.md`, window.location.href).href;
+
+	console.log(`Markdown Fetch: loading ${url}`);
 
 	fetch(url)
 		.then(res => {
-			if (!res.ok) throw new Error(`HTTP ${res.status} loading ${url}`);
+			if (!res.ok) throw new Error(`HTTP ${res.status} at ${url}`);
 			return res.text();
 		})
 		.then(text => {
@@ -109,9 +113,9 @@ EM_JS(void, fetch_article_internal, (const char *slug_cstr), {
 			}
 		})
 		.catch(err => {
-			console.error("Markdown Error:", err);
+			console.error("Markdown Error:", err.message);
 			if (typeof Module._add_paragraph === 'function') {
-				const msg = `Error: Could not load '${slug}'.`;
+				const msg = `Error: Could not load '${slug}'. See console.`;
 				const length = lengthBytesUTF8(msg) + 1;
 				const ptr = Module._malloc(length);
 				stringToUTF8(msg, ptr, length);
