@@ -18,21 +18,26 @@ enum page_state {
 
 static enum page_state cur_page = PAGE_HOME;
 
-static void render_home(void) {
-	add_image("public/pfp.png", NULL, 1.0f);
+static void render_home(void)
+{
+	add_image("public/pfp.avif", NULL, 1.0f);
 	add_paragraph(msg_whoami);
 	add_paragraph(msg_bio);
 }
 
-static void render_blog(void) {
+static void render_blog(void)
+{
+	int i;
+
 	add_paragraph("Blog Index");
-	for (int i = 0; i < posts_count; i++) {
+	for (i = 0; i < posts_count; i++) {
 		add_blog_entry(posts[i].title, posts[i].date, i);
 	}
 }
 
 EMSCRIPTEN_KEEPALIVE
-void open_article(int index) {
+void open_article(int index)
+{
 	if (index < 0 || index >= posts_count)
 		return;
 
@@ -42,7 +47,8 @@ void open_article(int index) {
 }
 
 EMSCRIPTEN_KEEPALIVE
-void switch_page(bool blog) {
+void switch_page(bool blog)
+{
 	enum page_state next_page = blog ? PAGE_BLOG_INDEX : PAGE_HOME;
 
 	if (cur_page == next_page)
@@ -51,15 +57,15 @@ void switch_page(bool blog) {
 	cur_page = next_page;
 	clear_feed();
 
-	if (cur_page == PAGE_BLOG_INDEX) {
+	if (cur_page == PAGE_BLOG_INDEX)
 		render_blog();
-	} else {
+	else
 		render_home();
-	}
 }
 
 EMSCRIPTEN_KEEPALIVE
-void toggle_theme(void) {
+void toggle_theme(void)
+{
 	is_dark = !is_dark;
 	cur_theme = is_dark ? &theme_dark : &theme_light;
 
@@ -68,12 +74,18 @@ void toggle_theme(void) {
 			    cur_theme->dim_text, cur_theme->scanline);
 }
 
-void main_tick(void) {
+void main_tick(void)
+{
 	runtime += timing.tick_delta;
 	draw_frame(runtime, msg_header, cur_theme->text, cur_theme->scanline);
 }
 
-int main(void) {
+int main(void)
+{
+	time_t t;
+	struct tm tm;
+	int year;
+
 	cur_theme = &theme_dark;
 
 	init_graphics(cur_theme->bg, cur_theme->text, cur_theme->dim_text, UI_HEADER_HEIGHT);
@@ -85,9 +97,9 @@ int main(void) {
 
 	render_home();
 
-	time_t t = time(NULL);
-	struct tm tm = *localtime(&t);
-	int year = tm.tm_year + 1900;
+	t = time(NULL);
+	tm = *localtime(&t);
+	year = tm.tm_year + 1900;
 
 	add_footer(year, css_footer);
 

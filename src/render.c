@@ -20,7 +20,6 @@ EM_JS(void, init_graphics, (const char *bg_cstr, const char *text_cstr, const ch
 		ctx: cvs.getContext("2d", {alpha: false}),
 		header_h,
 		bg,
-		// Pointer caching to avoid UTF8ToString() allocations at 60fps
 		lastLabelPtr: 0,
 		cachedLabel: "",
 		lastTextColorPtr: 0,
@@ -69,7 +68,6 @@ EM_JS(void, draw_frame, (float t, const char *label_ptr, const char *text_color_
 	const W			       = cvs.width;
 	const H			       = cvs.height;
 
-	// String allocation only on pointer change
 	if (label_ptr !== gfx.lastLabelPtr) {
 		gfx.cachedLabel  = UTF8ToString(label_ptr);
 		gfx.lastLabelPtr = label_ptr;

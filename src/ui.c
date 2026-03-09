@@ -1,17 +1,12 @@
 #include <emscripten.h>
 #include "ui.h"
 
-/*
- * Internal JS helpers to reduce boilerplate and follow "Dry" principles.
- * These are attached to Module to be accessible across EM_JS blocks.
- */
 EM_JS(void, ui_init_internal, (void), {
 	if (Module.ui_initialized) return;
 
 	Module.ui_get_feed = () => {
 		if (!Module.ui_feed) {
 			Module.ui_feed = document.getElementById("feed");
-			if (!Module.ui_feed) console.error("UI: #feed not found");
 		}
 		return Module.ui_feed;
 	};
@@ -39,7 +34,6 @@ EM_JS(void, ui_init_internal, (void), {
 EM_JS(void, add_paragraph, (const char *cstr), {
 	ui_init_internal();
 	let text = UTF8ToString(cstr);
-	// Basic cleanup for carriage returns avoiding regex literals to bypass C preprocessor
 	text = text.split(String.fromCharCode(13)).join("");
 	Module.ui_append_para(text);
 });
@@ -54,7 +48,6 @@ EM_JS(void, add_image, (const char *path_cstr, const char *alt_cstr, float scale
 	img.alt	  = alt;
 	img.style.maxWidth = "100%";
 
-	// Scale image proportionally once loaded
 	if (scale > 0 && scale !== 1.0) {
 		img.onload = () => {
 			img.style.width = (img.naturalWidth * scale) + "px";
@@ -76,8 +69,6 @@ EM_JS(void, add_theme_toggle, (const char *label_cstr, const char *style_cstr), 
 	btn.onclick = () => {
 		if (Module._toggle_theme) {
 			Module._toggle_theme();
-		} else {
-			console.warn("UI: toggle_theme symbol not exported");
 		}
 	};
 
@@ -127,7 +118,6 @@ EM_JS(void, add_nav_link, (const char *label_cstr, const char *style_cstr, const
 
 	btn.onclick = () => {
 		if (Module._switch_page) {
-			// Navigate based on button ID
 			const isBlog = btn.id === "nav-blog";
 			Module._switch_page(isBlog);
 		}
