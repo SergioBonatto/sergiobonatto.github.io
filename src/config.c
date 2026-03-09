@@ -26,6 +26,14 @@ const char *css_theme_toggle =
 	"position: fixed; top: 20px; right: 30px; "
 	"font-size: 14px; user-select: none; cursor: pointer;";
 
+const char *css_nav_blog =
+	"position: fixed; top: 20px; right: 90px; "
+	"font-size: 14px; user-select: none; cursor: pointer;";
+
+const char *css_nav_home =
+	"position: fixed; top: 20px; right: 140px; "
+	"font-size: 14px; user-select: none; cursor: pointer;";
+
 const char *css_feed = "padding: 20px; max-width: 900px; margin-top: 100px; min-height: calc(100vh - 180px - 100px);";
 
 const char *css_footer =
@@ -33,6 +41,36 @@ const char *css_footer =
 	"align-items: center; justify-content: space-between; "
 	"background-color: var(--bg-color); color: var(--text-color); "
 	"font-size: 14px; margin-top: 40px;";
+
+const struct blog_post posts[] = {
+	{
+		.title = "A bíblia e o argumento circular da autoridade: uma análise crítica",
+		.date  = "2026-03-04",
+		.slug  = "post1"
+	},
+	{
+		.title = "DeepFake e a desumanização na época das IAs",
+		.date  = "2026-01-02",
+		.slug  = "post2"
+	},
+	{
+		.title = "O Estado Como Motor da Economia: Uma Falácia Sustentada pela Tecnologia Descentralizada",
+		.date  = "2025-12-30",
+		.slug  = "o_estado_como_motor_da_economia"
+	},
+	{
+		.title = "Minha Noite Estrelada",
+		.date  = "2025-12-09",
+		.slug  = "minha-noite-estrelada"
+	},
+	{
+		.title = "Como entender a existência da morte antes do pecado de Adão?",
+		.date  = "2025-09-05",
+		.slug  = "Criacionismo-Evolutivo-1"
+	}
+};
+
+const int posts_count = sizeof(posts) / sizeof(posts[0]);
 
 const char *msg_header = "BONATTO";
 const char *msg_whoami = "whoami";

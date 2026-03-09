@@ -10,6 +10,54 @@ static float runtime = 0.0f;
 static bool is_dark = true;
 static const struct theme *cur_theme;
 
+enum page_state {
+	PAGE_HOME,
+	PAGE_BLOG_INDEX,
+	PAGE_ARTICLE
+};
+
+static enum page_state cur_page = PAGE_HOME;
+
+static void render_home(void) {
+	add_image("public/pfp.png", NULL, 1.0f);
+	add_paragraph(msg_whoami);
+	add_paragraph(msg_bio);
+}
+
+static void render_blog(void) {
+	add_paragraph("Blog Index");
+	for (int i = 0; i < posts_count; i++) {
+		add_blog_entry(posts[i].title, posts[i].date, i);
+	}
+}
+
+EMSCRIPTEN_KEEPALIVE
+void open_article(int index) {
+	if (index < 0 || index >= posts_count)
+		return;
+
+	cur_page = PAGE_ARTICLE;
+	clear_feed();
+	load_article(posts[index].slug);
+}
+
+EMSCRIPTEN_KEEPALIVE
+void switch_page(bool blog) {
+	enum page_state next_page = blog ? PAGE_BLOG_INDEX : PAGE_HOME;
+
+	if (cur_page == next_page)
+		return;
+
+	cur_page = next_page;
+	clear_feed();
+
+	if (cur_page == PAGE_BLOG_INDEX) {
+		render_blog();
+	} else {
+		render_home();
+	}
+}
+
 EMSCRIPTEN_KEEPALIVE
 void toggle_theme(void) {
 	is_dark = !is_dark;
@@ -32,10 +80,10 @@ int main(void) {
 
 	apply_style("#feed", css_feed);
 	add_theme_toggle(":light", css_theme_toggle);
+	add_nav_link(":blog", css_nav_blog, "nav-blog");
+	add_nav_link(":home", css_nav_home, "nav-home");
 
-	add_image("pfp.png", NULL, 1.0f);
-	add_paragraph(msg_whoami);
-	add_paragraph(msg_bio);
+	render_home();
 
 	time_t t = time(NULL);
 	struct tm tm = *localtime(&t);

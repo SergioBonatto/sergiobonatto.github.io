@@ -38,7 +38,9 @@ EM_JS(void, ui_init_internal, (void), {
 
 EM_JS(void, add_paragraph, (const char *cstr), {
 	ui_init_internal();
-	const text = UTF8ToString(cstr);
+	let text = UTF8ToString(cstr);
+	// Basic cleanup for carriage returns avoiding regex literals to bypass C preprocessor
+	text = text.split(String.fromCharCode(13)).join("");
 	Module.ui_append_para(text);
 });
 
@@ -106,6 +108,69 @@ EM_JS(void, add_footer, (int year, const char *style_cstr), {
 	`;
 
 	document.body.appendChild(footer);
+});
+
+EM_JS(void, clear_feed, (void), {
+	const feed = (Module.ui_get_feed) ? Module.ui_get_feed() : document.getElementById("feed");
+	if (feed) feed.innerHTML = "";
+});
+
+EM_JS(void, add_nav_link, (const char *label_cstr, const char *style_cstr, const char *id_cstr), {
+	const label = UTF8ToString(label_cstr);
+	const style = UTF8ToString(style_cstr);
+	const id	= UTF8ToString(id_cstr);
+
+	const btn	  = document.createElement("div");
+	btn.id		  = id;
+	btn.textContent	  = label;
+	btn.style.cssText = style;
+
+	btn.onclick = () => {
+		if (Module._switch_page) {
+			// Navigate based on button ID
+			const isBlog = btn.id === "nav-blog";
+			Module._switch_page(isBlog);
+		}
+	};
+
+	document.body.appendChild(btn);
+});
+
+EM_JS(void, add_blog_entry, (const char *title_cstr, const char *date_cstr, int index), {
+	ui_init_internal();
+	const title = UTF8ToString(title_cstr);
+	const date  = UTF8ToString(date_cstr);
+
+	const container = document.createElement("div");
+	container.style.marginBottom = "20px";
+	container.style.display = "flex";
+	container.style.gap = "20px";
+
+	const dateEl = document.createElement("span");
+	dateEl.style.color = "var(--dim-text-color)";
+	dateEl.style.minWidth = "100px";
+	dateEl.textContent = date;
+
+	const link = document.createElement("a");
+	link.href = "#";
+	link.textContent = title;
+	link.style.color = "var(--text-color)";
+	link.style.textDecoration = "none";
+	link.style.cursor = "pointer";
+	link.onmouseover = () => link.style.textDecoration = "underline";
+	link.onmouseout = () => link.style.textDecoration = "none";
+
+	link.onclick = (e) => {
+		e.preventDefault();
+		if (Module._open_article) {
+			Module._open_article(index);
+		}
+	};
+
+	container.appendChild(dateEl);
+	container.appendChild(link);
+
+	Module.ui_append_para(container);
 });
 
 EM_JS(void, update_theme_toggle_label, (const char *label_cstr), {

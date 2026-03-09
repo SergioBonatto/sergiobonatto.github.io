@@ -35,8 +35,25 @@ void add_theme_toggle(const char *label, const char *style);
 void add_footer(int year, const char *style);
 
 /*
+ * clear_feed()
+ * Removes all content from the feed element.
+ */
+void clear_feed(void);
+
+/*
+ * add_nav_link(label, style, id)
+ * Creates a text link in the header.
+ */
+void add_nav_link(const char *label, const char *style, const char *id);
+
+/*
+ * add_blog_entry(title, date, index)
+ * Appends a blog entry link to the feed element.
+ */
+void add_blog_entry(const char *title, const char *date, int index);
+
+/*
  * update_theme_toggle_label(label)
- * Updates the text content of the theme toggle.
  */
 void update_theme_toggle_label(const char *label);
 

@@ -22,8 +22,21 @@ extern const struct theme theme_dark;
 extern const struct theme theme_light;
 
 extern const char *css_theme_toggle;
+extern const char *css_nav_home;
+extern const char *css_nav_blog;
 extern const char *css_feed;
 extern const char *css_footer;
+
+struct blog_post {
+	const char *title;
+	const char *date;
+	const char *slug;
+};
+
+extern const struct blog_post posts[];
+extern const int posts_count;
+
+void load_article(const char *slug);
 
 #define UI_HEADER_HEIGHT 180
 
