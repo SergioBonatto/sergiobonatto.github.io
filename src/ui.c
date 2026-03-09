@@ -31,17 +31,27 @@ EM_JS(void, ui_init_internal, (void), {
 	Module.ui_initialized = true;
 });
 
-EM_JS(void, add_paragraph, (const char *cstr), {
+EM_JS(void, add_paragraph, (const char *ptr, size_t len), {
 	ui_init_internal();
-	let text = UTF8ToString(cstr);
-	text = text.split(String.fromCharCode(13)).join("");
+	
+	// Zero-copy view into WASM memory
+	const view = HEAPU8.subarray(ptr, ptr + len);
+	const decoder = new TextDecoder("utf-8");
+	const text = decoder.decode(view);
+	
 	Module.ui_append_para(text);
 });
 
-EM_JS(void, add_image, (const char *path_cstr, const char *alt_cstr, float scale), {
+EM_JS(void, add_image, (const char *path_ptr, size_t path_len, const char *alt_ptr, size_t alt_len, float scale), {
 	ui_init_internal();
-	const url = UTF8ToString(path_cstr);
-	const alt = UTF8ToString(alt_cstr);
+	
+	const decoder = new TextDecoder("utf-8");
+	const url = decoder.decode(HEAPU8.subarray(path_ptr, path_ptr + path_len));
+	
+	let alt = "";
+	if (alt_ptr && alt_len > 0) {
+		alt = decoder.decode(HEAPU8.subarray(alt_ptr, alt_ptr + alt_len));
+	}
 
 	const img = document.createElement("img");
 	img.src	  = url;

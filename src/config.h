@@ -33,6 +33,7 @@ struct blog_post {
 	const char *slug;
 };
 
+/* Defined in contents_data.h (auto-generated) */
 extern const struct blog_post posts[];
 extern const int posts_count;
 

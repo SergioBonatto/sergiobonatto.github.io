@@ -1,6 +1,7 @@
 #include <emscripten.h>
 #include <stdbool.h>
 #include <time.h>
+#include <string.h>
 
 #include "config.h"
 #include "render.h"
@@ -20,16 +21,19 @@ static enum page_state cur_page = PAGE_HOME;
 
 static void render_home(void)
 {
-	add_image("public/pfp.avif", NULL, 1.0f);
-	add_paragraph(msg_whoami);
-	add_paragraph(msg_bio);
+	const char *pfp = "public/pfp.avif";
+	add_image(pfp, strlen(pfp), NULL, 0, 1.0f);
+	
+	add_paragraph(msg_whoami, strlen(msg_whoami));
+	add_paragraph(msg_bio, strlen(msg_bio));
 }
 
 static void render_blog(void)
 {
 	int i;
+	const char *header = "Blog Index";
 
-	add_paragraph("Blog Index");
+	add_paragraph(header, strlen(header));
 	for (i = 0; i < posts_count; i++) {
 		add_blog_entry(posts[i].title, posts[i].date, i);
 	}

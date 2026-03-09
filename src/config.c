@@ -42,35 +42,10 @@ const char *css_footer =
 	"background-color: var(--bg-color); color: var(--text-color); "
 	"font-size: 14px; margin-top: 40px;";
 
-const struct blog_post posts[] = {
-	{
-		.title = "A bíblia e o argumento circular da autoridade: uma análise crítica",
-		.date  = "2026-03-04",
-		.slug  = "post1"
-	},
-	{
-		.title = "DeepFake e a desumanização na época das IAs",
-		.date  = "2026-01-02",
-		.slug  = "post2"
-	},
-	{
-		.title = "O Estado Como Motor da Economia: Uma Falácia Sustentada pela Tecnologia Descentralizada",
-		.date  = "2025-12-30",
-		.slug  = "o_estado_como_motor_da_economia"
-	},
-	{
-		.title = "Minha Noite Estrelada",
-		.date  = "2025-12-09",
-		.slug  = "minha-noite-estrelada"
-	},
-	{
-		.title = "Como entender a existência da morte antes do pecado de Adão?",
-		.date  = "2025-09-05",
-		.slug  = "Criacionismo-Evolutivo-1"
-	}
-};
-
-const int posts_count = sizeof(posts) / sizeof(posts[0]);
+/* 
+ * NOTE: The 'posts' array and 'posts_count' are now auto-generated
+ * by tools/packer.c and reside in src/contents_data.h
+ */
 
 const char *msg_header = "BONATTO";
 const char *msg_whoami = "whoami";

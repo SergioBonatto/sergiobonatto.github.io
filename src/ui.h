@@ -2,22 +2,20 @@
 #define PROJECT_SRC_UI_H
 
 /*
- * add_paragraph(text)
- * Appends a text paragraph to the feed element.
+ * add_paragraph(text_ptr, len)
+ * Appends a text paragraph to the feed element using a raw pointer view.
  *
- * text - the string to display
+ * text_ptr - pointer to the string in WASM memory
+ * len      - length of the string
  */
-void add_paragraph(const char *text);
+void add_paragraph(const char *text_ptr, size_t len);
 
 /*
- * add_image(path, alt, scale)
- * Appends an image to the feed element.
- *
- * path   - URL or path to the image
- * alt    - alt text for the image
- * scale  - scale factor (1.0f for original size, 0.5f for half, etc.)
+ * add_image(path_ptr, path_len, alt_ptr, alt_len, scale)
+ * Appends an image using raw pointer views.
  */
-void add_image(const char *path, const char *alt, float scale);
+void add_image(const char *path_ptr, size_t path_len,
+	       const char *alt_ptr, size_t alt_len, float scale);
 
 /*
  * add_theme_toggle(label)

@@ -7,21 +7,19 @@
 #include "contents_data.h"
 
 /*
- * Kernel-style: Zero-copy markdown parser using static buffers
- * to avoid heap fragmentation and runtime overhead.
+ * Kernel-style: Zero-copy markdown parser.
+ * Directly passes pointers from the read-only data segment to the UI layer.
  */
 
 static void render_line_view(const char *line, size_t len)
 {
-	static char buf[4096];
-	size_t copy_len;
-
+	/* Empty line check */
 	if (len == 0) {
-		add_paragraph("");
+		add_paragraph(line, 0);
 		return;
 	}
 
-	/* Heading # */
+	/* Heading # detection (skip hashes and spaces) */
 	if (line[0] == '#') {
 		const char *text = line;
 		size_t text_len = len;
@@ -31,19 +29,17 @@ static void render_line_view(const char *line, size_t len)
 			text_len--;
 		}
 		
-		copy_len = text_len < sizeof(buf) - 1 ? text_len : sizeof(buf) - 1;
-		memcpy(buf, text, copy_len);
-		buf[copy_len] = '\0';
-		add_paragraph(buf);
+		add_paragraph(text, text_len);
 		return;
 	}
 
-	/* Image ![alt](url) */
+	/* Image detection: ![alt](url) */
 	if (len > 4 && line[0] == '!' && line[1] == '[') {
 		const char *alt_start = line + 2;
 		const char *alt_end = NULL;
 		size_t i;
 		
+		/* Find end of alt text */
 		for (i = 0; i < len - 2; i++) {
 			if (alt_start[i] == ']') {
 				alt_end = alt_start + i;
@@ -51,11 +47,13 @@ static void render_line_view(const char *line, size_t len)
 			}
 		}
 
+		/* Check for URL start */
 		if (alt_end && *(alt_end + 1) == '(') {
 			const char *url_start = alt_end + 2;
 			const char *url_end = NULL;
 			const char *p;
 
+			/* Find end of URL */
 			for (p = url_start; p < line + len; p++) {
 				if (*p == ')') {
 					url_end = p;
@@ -64,29 +62,16 @@ static void render_line_view(const char *line, size_t len)
 			}
 
 			if (url_end) {
-				static char url_buf[1024], alt_buf[1024];
-				size_t alt_len = alt_end - alt_start;
-				size_t url_len = url_end - url_start;
-
-				size_t a_copy = alt_len < 1023 ? alt_len : 1023;
-				size_t u_copy = url_len < 1023 ? url_len : 1023;
-
-				memcpy(alt_buf, alt_start, a_copy);
-				alt_buf[a_copy] = '\0';
-				memcpy(url_buf, url_start, u_copy);
-				url_buf[u_copy] = '\0';
-
-				add_image(url_buf, alt_buf, 1.0f);
+				add_image(url_start, (size_t)(url_end - url_start),
+					  alt_start, (size_t)(alt_end - alt_start),
+					  1.0f);
 				return;
 			}
 		}
 	}
 
-	/* Default paragraph */
-	copy_len = len < sizeof(buf) - 1 ? len : sizeof(buf) - 1;
-	memcpy(buf, line, copy_len);
-	buf[copy_len] = '\0';
-	add_paragraph(buf);
+	/* Default paragraph: Pass direct pointer and length */
+	add_paragraph(line, len);
 }
 
 EMSCRIPTEN_KEEPALIVE
@@ -105,9 +90,11 @@ void render_markdown(const char *content)
 		size_t line_len = next_line ? (size_t)(next_line - cursor) : strlen(cursor);
 		size_t actual_len = line_len;
 
+		/* Handle CRLF or LF */
 		if (actual_len > 0 && cursor[actual_len - 1] == '\r')
 			actual_len--;
 
+		/* Frontmatter skipping logic */
 		if (actual_len >= 3 && strncmp(cursor, "---", 3) == 0) {
 			separator_count++;
 			in_frontmatter = (separator_count == 1);
