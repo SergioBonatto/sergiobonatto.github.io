@@ -4,128 +4,126 @@
 #include <stdio.h>
 #include "ui.h"
 #include "config.h"
+#include "contents_data.h"
 
-static void render_line(char *line)
+/*
+ * Kernel-style: Zero-copy markdown parser using static buffers
+ * to avoid heap fragmentation and runtime overhead.
+ */
+
+static void render_line_view(const char *line, size_t len)
 {
-	size_t len;
+	static char buf[4096];
+	size_t copy_len;
 
-	if (!line)
-		return;
-
-	len = strlen(line);
 	if (len == 0) {
 		add_paragraph("");
 		return;
 	}
 
-	/* Simple heading # */
+	/* Heading # */
 	if (line[0] == '#') {
-		char *text = line;
-		while (*text == '#' || *text == ' ')
+		const char *text = line;
+		size_t text_len = len;
+
+		while (text_len > 0 && (*text == '#' || *text == ' ')) {
 			text++;
-		add_paragraph(text);
+			text_len--;
+		}
+		
+		copy_len = text_len < sizeof(buf) - 1 ? text_len : sizeof(buf) - 1;
+		memcpy(buf, text, copy_len);
+		buf[copy_len] = '\0';
+		add_paragraph(buf);
 		return;
 	}
 
-	/* Simple image ![alt](url) */
-	if (line[0] == '!' && line[1] == '[') {
-		char *alt_start = line + 2;
-		char *alt_end = strchr(alt_start, ']');
-		if (alt_end) {
-			*alt_end = '\0';
-			char *url_start = strchr(alt_end + 1, '(');
-			if (url_start) {
-				url_start++;
-				char *url_end = strchr(url_start, ')');
-				if (url_end) {
-					*url_end = '\0';
-					add_image(url_start, alt_start, 1.0f);
-					return;
+	/* Image ![alt](url) */
+	if (len > 4 && line[0] == '!' && line[1] == '[') {
+		const char *alt_start = line + 2;
+		const char *alt_end = NULL;
+		size_t i;
+		
+		for (i = 0; i < len - 2; i++) {
+			if (alt_start[i] == ']') {
+				alt_end = alt_start + i;
+				break;
+			}
+		}
+
+		if (alt_end && *(alt_end + 1) == '(') {
+			const char *url_start = alt_end + 2;
+			const char *url_end = NULL;
+			const char *p;
+
+			for (p = url_start; p < line + len; p++) {
+				if (*p == ')') {
+					url_end = p;
+					break;
 				}
+			}
+
+			if (url_end) {
+				static char url_buf[1024], alt_buf[1024];
+				size_t alt_len = alt_end - alt_start;
+				size_t url_len = url_end - url_start;
+
+				size_t a_copy = alt_len < 1023 ? alt_len : 1023;
+				size_t u_copy = url_len < 1023 ? url_len : 1023;
+
+				memcpy(alt_buf, alt_start, a_copy);
+				alt_buf[a_copy] = '\0';
+				memcpy(url_buf, url_start, u_copy);
+				url_buf[u_copy] = '\0';
+
+				add_image(url_buf, alt_buf, 1.0f);
+				return;
 			}
 		}
 	}
 
-	add_paragraph(line);
+	/* Default paragraph */
+	copy_len = len < sizeof(buf) - 1 ? len : sizeof(buf) - 1;
+	memcpy(buf, line, copy_len);
+	buf[copy_len] = '\0';
+	add_paragraph(buf);
 }
 
 EMSCRIPTEN_KEEPALIVE
 void render_markdown(const char *content)
 {
-	char *copy, *cursor;
+	const char *cursor;
 	int in_frontmatter = 0;
 	int separator_count = 0;
 
 	if (!content)
 		return;
 
-	copy = strdup(content);
-	if (!copy)
-		return;
+	cursor = content;
+	while (*cursor) {
+		const char *next_line = strchr(cursor, '\n');
+		size_t line_len = next_line ? (size_t)(next_line - cursor) : strlen(cursor);
+		size_t actual_len = line_len;
 
-	cursor = copy;
+		if (actual_len > 0 && cursor[actual_len - 1] == '\r')
+			actual_len--;
 
-	while (cursor && *cursor) {
-		char *next_line = strchr(cursor, '\n');
-		if (next_line) {
-			*next_line = '\0';
-			next_line++;
-		}
-
-		/* Check for Frontmatter separator "---" */
-		int is_separator = (strncmp(cursor, "---", 3) == 0);
-		if (is_separator && (cursor[3] == '\0' || cursor[3] == '\r' || cursor[3] == ' ')) {
+		if (actual_len >= 3 && strncmp(cursor, "---", 3) == 0) {
 			separator_count++;
-			if (separator_count == 1)
-				in_frontmatter = 1;
-			else if (separator_count == 2)
-				in_frontmatter = 0;
+			in_frontmatter = (separator_count == 1);
 		} else if (!in_frontmatter) {
-			render_line(cursor);
+			render_line_view(cursor, actual_len);
 		}
 
-		cursor = next_line;
+		if (!next_line)
+			break;
+		cursor = next_line + 1;
 	}
-
-	free(copy);
 }
-
-EM_JS(void, fetch_article_internal, (const char *slug_cstr), {
-	const slug = UTF8ToString(slug_cstr);
-	
-	/* Use absolute path resolution based on the document location */
-	const url = new URL(`contents/${slug}.md`, window.location.href).href;
-
-	console.log(`Markdown Fetch: loading ${url}`);
-
-	fetch(url)
-		.then(res => {
-			if (!res.ok) throw new Error(`HTTP ${res.status} at ${url}`);
-			return res.text();
-		})
-		.then(text => {
-			if (typeof Module._render_markdown === 'function') {
-				const length = lengthBytesUTF8(text) + 1;
-				const ptr = Module._malloc(length);
-				stringToUTF8(text, ptr, length);
-				Module._render_markdown(ptr);
-				Module._free(ptr);
-			}
-		})
-		.catch(err => {
-			console.error("Markdown Error:", err.message);
-			if (typeof Module._add_paragraph === 'function') {
-				const msg = `Error: Could not load '${slug}'. See console.`;
-				const length = lengthBytesUTF8(msg) + 1;
-				const ptr = Module._malloc(length);
-				stringToUTF8(msg, ptr, length);
-				Module._add_paragraph(ptr);
-				Module._free(ptr);
-			}
-		});
-});
 
 void load_article(const char *slug)
 {
-	fetch_article_internal(slug);
+	const char *body = get_article_body(slug);
+	if (body)
+		render_markdown(body);
 }
