@@ -6,6 +6,7 @@
 #include "config.h"
 #include "render.h"
 #include "ui.h"
+#include "graph.h"
 
 static float runtime = 0.0f;
 static bool is_dark = true;
@@ -22,14 +23,14 @@ static enum page_state cur_page = PAGE_HOME;
 static void render_home(void)
 {
 	const char *pfp = "public/pfp.avif";
+
 	add_image(pfp, strlen(pfp), NULL, 0, 1.0f);
 	
 	add_paragraph(msg_whoami, strlen(msg_whoami));
 	add_paragraph(msg_bio, strlen(msg_bio));
 }
 
-static void render_blog(void)
-{
+static void render_blog(void){
 	int i;
 	const char *header = "Blog Index";
 
@@ -40,8 +41,7 @@ static void render_blog(void)
 }
 
 EMSCRIPTEN_KEEPALIVE
-void open_article(int index)
-{
+void open_article(int index){
 	if (index < 0 || index >= posts_count)
 		return;
 
@@ -51,8 +51,7 @@ void open_article(int index)
 }
 
 EMSCRIPTEN_KEEPALIVE
-void switch_page(bool blog)
-{
+void switch_page(bool blog){
 	enum page_state next_page = blog ? PAGE_BLOG_INDEX : PAGE_HOME;
 
 	if (cur_page == next_page)
@@ -74,8 +73,7 @@ void toggle_theme(void)
 	cur_theme = is_dark ? &theme_dark : &theme_light;
 
 	update_theme_toggle_label(is_dark ? ":light" : ":dark");
-	update_theme_colors(cur_theme->bg, cur_theme->text,
-			    cur_theme->dim_text, cur_theme->scanline);
+	update_theme_colors(cur_theme);
 }
 
 void main_tick(void)
@@ -92,7 +90,7 @@ int main(void)
 
 	cur_theme = &theme_dark;
 
-	init_graphics(cur_theme->bg, cur_theme->text, cur_theme->dim_text, UI_HEADER_HEIGHT);
+	init_graphics(cur_theme, UI_HEADER_HEIGHT);
 
 	apply_style("#feed", css_feed);
 	add_theme_toggle(":light", css_theme_toggle);

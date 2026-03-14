@@ -16,6 +16,25 @@ struct theme {
 	const char *text;
 	const char *dim_text;
 	const char *scanline;
+	const char *accent;
+
+	/* Nord Palette */
+	const char *nord0;  /* #2E3440 - Polar Night */
+	const char *nord1;  /* #3B4252 */
+	const char *nord2;  /* #434C5E */
+	const char *nord3;  /* #4C566A */
+	const char *nord4;  /* #D8DEE9 - Snow Storm */
+	const char *nord5;  /* #E5E9F0 */
+	const char *nord6;  /* #ECEFF4 */
+	const char *nord7;  /* #8FBCBB - Frost */
+	const char *nord8;  /* #88C0D0 */
+	const char *nord9;  /* #81A1C1 */
+	const char *nord10; /* #5E81AC */
+	const char *nord11; /* #BF616A - Aurora */
+	const char *nord12; /* #D08770 */
+	const char *nord13; /* #EBCB8B */
+	const char *nord14; /* #A3BE8C */
+	const char *nord15; /* #B48EAD */
 };
 
 extern const struct theme theme_dark;

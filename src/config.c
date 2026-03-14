@@ -9,18 +9,55 @@ const struct timing_config timing = {
 };
 
 const struct theme theme_dark = {
-	.bg	  		= "#2E3440",
-	.text	  	= "#ECEFF4",
-	.dim_text 	= "#81A1C1",
-	.scanline 	= "rgba(236,239,244,0.035)"
+	.bg			= "#2E3440",
+	.text		= "#ECEFF4",
+	.dim_text	= "#81A1C1",
+	.scanline	= "rgba(236,239,244,0.035)",
+	.accent		= "#A3BE8C",
+
+	.nord0		= "#2E3440",
+	.nord1		= "#3B4252",
+	.nord2		= "#434C5E",
+	.nord3		= "#4C566A",
+	.nord4		= "#D8DEE9",
+	.nord5		= "#E5E9F0",
+	.nord6		= "#ECEFF4",
+	.nord7		= "#8FBCBB",
+	.nord8		= "#88C0D0",
+	.nord9		= "#81A1C1",
+	.nord10		= "#5E81AC",
+	.nord11		= "#BF616A",
+	.nord12		= "#D08770",
+	.nord13		= "#EBCB8B",
+	.nord14		= "#A3BE8C",
+	.nord15		= "#B48EAD"
 };
 
 const struct theme theme_light = {
-	.bg	  		= "#ECEFF4",
-	.text	  	= "#2E3440",
-	.dim_text 	= "#4C566A",
-	.scanline 	= "rgba(46,52,64,0.035)"
+	.bg			= "#ECEFF4",
+	.text		= "#2E3440",
+	.dim_text	= "#4C566A",
+	.scanline	= "rgba(46,52,64,0.035)",
+	.accent		= "#A3BE8C",
+
+	.nord0		= "#2E3440",
+	.nord1		= "#3B4252",
+	.nord2		= "#434C5E",
+	.nord3		= "#4C566A",
+	.nord4		= "#D8DEE9",
+	.nord5		= "#E5E9F0",
+	.nord6		= "#ECEFF4",
+	.nord7		= "#8FBCBB",
+	.nord8		= "#88C0D0",
+	.nord9		= "#81A1C1",
+	.nord10		= "#5E81AC",
+	.nord11		= "#BF616A",
+	.nord12		= "#D08770",
+	.nord13		= "#EBCB8B",
+	.nord14		= "#A3BE8C",
+	.nord15		= "#B48EAD"
 };
+
 
 const char *css_theme_toggle =
 	"position: fixed; top: 20px; right: 30px; "
