@@ -213,6 +213,9 @@ EM_JS(void, update_seo_metadata, (const char *title_ptr, const char *desc_ptr, c
 	const title = UTF8ToString(title_ptr);
 	const desc = UTF8ToString(desc_ptr);
 	const url = UTF8ToString(url_ptr);
+	const baseUrl = "https://bonatto.vercel.app";
+	const imgUrl = baseUrl + "/public/SEO.png";
+	const fullUrl = baseUrl + (url.startsWith('/') ? url : '/' + url);
 
 	document.title = title;
 
@@ -229,9 +232,23 @@ EM_JS(void, update_seo_metadata, (const char *title_ptr, const char *desc_ptr, c
 	setMeta('name', 'description', desc);
 	setMeta('property', 'og:title', title);
 	setMeta('property', 'og:description', desc);
-	setMeta('property', 'og:url', window.location.origin + window.location.pathname + url);
+	setMeta('property', 'og:url', fullUrl);
+	setMeta('property', 'og:image', imgUrl);
+	setMeta('property', 'og:site_name', 'Sergio Bonatto');
 	setMeta('name', 'twitter:title', title);
 	setMeta('name', 'twitter:description', desc);
+	setMeta('name', 'twitter:image', imgUrl);
+	setMeta('name', 'twitter:card', 'summary_large_image');
+	setMeta('name', 'twitter:site', '@fibonatto');
+	setMeta('name', 'twitter:creator', '@fibonatto');
+
+	let canonical = document.querySelector('link[rel="canonical"]');
+	if (!canonical) {
+		canonical = document.createElement('link');
+		canonical.setAttribute('rel', 'canonical');
+		document.head.appendChild(canonical);
+	}
+	canonical.setAttribute('href', fullUrl);
 });
 
 EM_JS(void, add_bar, (int height, int width, const struct bar_segment *segs, int n), {
