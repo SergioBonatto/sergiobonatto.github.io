@@ -29,6 +29,8 @@ static void render_home(void) {
 	
 	add_paragraph(msg_whoami, strlen(msg_whoami));
 	add_paragraph(msg_bio, strlen(msg_bio));
+
+	update_seo_metadata("Bonatto - Home", msg_bio, "#/");
 }
 
 static void render_blog(void){
@@ -39,6 +41,8 @@ static void render_blog(void){
 	for (i = 0; i < posts_count; i++) {
 		add_blog_entry(posts[i].title, posts[i].date, i);
 	}
+
+	update_seo_metadata("Bonatto - Blog", "Blog archive and articles about formal methods, programming languages, and systems.", "#/blog");
 }
 
 EMSCRIPTEN_KEEPALIVE
@@ -53,6 +57,8 @@ void open_article(int index){
 	char buf[256];
 	snprintf(buf, sizeof(buf), "#/post/%s", posts[index].slug);
 	ui_sync_url(buf);
+
+	update_seo_metadata(posts[index].title, posts[index].description, buf);
 }
 
 void open_article_by_slug(const char *slug) {

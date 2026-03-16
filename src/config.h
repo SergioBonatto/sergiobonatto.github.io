@@ -50,6 +50,7 @@ struct blog_post {
 	const char *title;
 	const char *date;
 	const char *slug;
+	const char *description;
 };
 
 /* Defined in contents_data.h (auto-generated) */

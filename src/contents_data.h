@@ -2437,37 +2437,44 @@ const struct blog_post posts[] = {
 	{
 		.title = "Ceticismo tecnologico",
 		.date  = "2026-03-14",
-		.slug  = "ceticismo_tecnologico"
+		.slug  = "ceticismo_tecnologico",
+		.description = "Confiar cegamente nunca foi uma boa prática na vída política e nem relogiosa, por que seria na tecnológica? Manter um ceticismo sobre as maravilhas das IAs é um passo excencial para um desenvolvimento de qualidade"
 	},
 	{
 		.title = "A tirania e sua máscara de bondade",
 		.date  = "2026-03-09",
-		.slug  = "post3"
+		.slug  = "post3",
+		.description = "Regimes tirânicos costumam usar a defesa do bem para impor sua opressão, por isso devemos sempre ficar atentos a qualquer sinal de perda de liberdade"
 	},
 	{
 		.title = "A bíblia e o argumento circular",
 		.date  = "2026-03-04",
-		.slug  = "post1"
+		.slug  = "post1",
+		.description = "Uma Defesa sobre o uso da bíblia como princípio primeiro e como é impossível gerar informação sem a adoção de axiomas"
 	},
 	{
 		.title = "DeepFake e a desmanização na época das IAs",
 		.date  = "2026-01-02",
-		.slug  = "post2"
+		.slug  = "post2",
+		.description = "Uma reflexão sobre o uso de IA para a produção e divulgação de pornografia"
 	},
 	{
 		.title = "O Estado Como Motor da Economia: Uma Falácia Sustentada pela Tecnologia Descentralizada",
 		.date  = "2025-12-30",
-		.slug  = "o_estado_como_motor_da_economia"
+		.slug  = "o_estado_como_motor_da_economia",
+		.description = "Uma análise crítica sobre o mito da necessidade estatal na economia, explorando como a tecnologia descentralizada e as criptomoedas demonstram que o monopólio do estado é apenas contingente, não essencial."
 	},
 	{
 		.title = "Minha Noite Estrelada",
 		.date  = "2025-12-09",
-		.slug  = "minha_noite_estrelada"
+		.slug  = "minha_noite_estrelada",
+		.description = "Um poema que celebra o encontro apaixonado entre o dia e a noite, onde o amor e a paixão queimam no horizonte em labaredas que consomem o tempo."
 	},
 	{
 		.title = "Criação Evolutiva pela Providência Divina - 1",
 		.date  = "2025-09-05",
-		.slug  = "Criacionismo_Evolutivo_1"
+		.slug  = "Criacionismo_Evolutivo_1",
+		.description = "Uma Defesa Ortodoxa da Harmonia entre Revelação Especial e Geral. Questão 1: Como entender a existência da morte antes do pecado de Adão?"
 	}
 };
 

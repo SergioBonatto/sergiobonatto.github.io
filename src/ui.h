@@ -94,4 +94,12 @@ void add_named_graph(const char *name, size_t len);
  */
 void add_bar(int height, int width, const struct bar_segment *segs, int n);
 
+/*
+ * update_seo_metadata - Updates the document title and meta tags for SEO.
+ * @title: new page title
+ * @description: new page description
+ * @url: canonical URL or current path
+ */
+void update_seo_metadata(const char *title, const char *description, const char *url);
+
 #endif

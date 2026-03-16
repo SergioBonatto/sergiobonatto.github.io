@@ -60,6 +60,7 @@ static void parse_meta(char *buf, struct post *p){
 
 	strcpy(p->title, "Untitled");
 	strcpy(p->date, "1970-01-01");
+	strcpy(p->description, "");
 
 	while (line && *line) {
 		next = strchr(line, '\n');
@@ -89,6 +90,13 @@ static void parse_meta(char *buf, struct post *p){
 			strncpy(p->date, val, MAX_DATE - 1);
 			p->date[MAX_DATE - 1] = '\0';
 			val = strrchr(p->date, '"');
+			if (val) *val = '\0';
+		} else if (!strncmp(line, "description:", 12)) {
+			val = line + 12;
+			while (*val == ' ' || *val == '"') val++;
+			strncpy(p->description, val, MAX_DESCRIPTION - 1);
+			p->description[MAX_DESCRIPTION - 1] = '\0';
+			val = strrchr(p->description, '"');
 			if (val) *val = '\0';
 		}
 
@@ -178,7 +186,8 @@ int main(int argc, char **argv){
 		printf("\t{\n");
 		printf("\t\t.title = \"%s\",\n", posts[i].title);
 		printf("\t\t.date  = \"%s\",\n", posts[i].date);
-		printf("\t\t.slug  = \"%s\"\n", posts[i].slug);
+		printf("\t\t.slug  = \"%s\",\n", posts[i].slug);
+		printf("\t\t.description = \"%s\"\n", posts[i].description);
 		printf("\t}%s\n", (i < nr_posts - 1) ? "," : "");
 	}
 	printf("};\n\n");

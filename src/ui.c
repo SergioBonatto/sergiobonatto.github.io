@@ -58,6 +58,7 @@ EM_JS(void, add_image, (const char *path_ptr, size_t path_len, const char *alt_p
 	const img 			= document.createElement("img");
 	img.src 			= url;
 	img.alt 			= alt;
+	img.loading 		= "lazy";
 	img.style.maxWidth 	= "100%";
 
 	if (scale > 0 && scale !== 1.0) {
@@ -206,6 +207,31 @@ EM_JS(void, ui_sync_url, (const char *path_cstr), {
 EM_JS(void, ui_get_current_hash, (char *buf, int max_len), {
 	const hash = window.location.hash || "#/";
 	stringToUTF8(hash, buf, max_len);
+});
+
+EM_JS(void, update_seo_metadata, (const char *title_ptr, const char *desc_ptr, const char *url_ptr), {
+	const title = UTF8ToString(title_ptr);
+	const desc = UTF8ToString(desc_ptr);
+	const url = UTF8ToString(url_ptr);
+
+	document.title = title;
+
+	const setMeta = (attr, name, content) => {
+		let el = document.querySelector(`meta[${attr}="${name}"]`);
+		if (!el) {
+			el = document.createElement('meta');
+			el.setAttribute(attr, name);
+			document.head.appendChild(el);
+		}
+		el.setAttribute('content', content);
+	};
+
+	setMeta('name', 'description', desc);
+	setMeta('property', 'og:title', title);
+	setMeta('property', 'og:description', desc);
+	setMeta('property', 'og:url', window.location.origin + window.location.pathname + url);
+	setMeta('name', 'twitter:title', title);
+	setMeta('name', 'twitter:description', desc);
 });
 
 EM_JS(void, add_bar, (int height, int width, const struct bar_segment *segs, int n), {
