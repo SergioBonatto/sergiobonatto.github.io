@@ -2475,7 +2475,7 @@ const int posts_count = 7;
 
 struct embedded_post {
 	const char *slug;
-	const char *data;
+	const char *payload;
 };
 
 static const struct embedded_post embedded_posts[] = {
@@ -2494,6 +2494,6 @@ const char *get_article_body(const char *slug)
 	const struct embedded_post *p;
 	for (p = embedded_posts; p->slug; p++)
 		if (!strcmp(p->slug, slug))
-			return p->data;
+			return p->payload;
 	return NULL;
 }

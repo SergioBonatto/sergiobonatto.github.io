@@ -9,8 +9,7 @@
 static struct post posts[MAX_POSTS];
 static int nr_posts;
 
-static void sanitize_slug(char *dst, const char *src)
-{
+static void sanitize_slug(char *dst, const char *src){
 	while (*src) {
 		if (isalnum(*src))
 			*dst = *src;
@@ -22,8 +21,7 @@ static void sanitize_slug(char *dst, const char *src)
 	*dst = '\0';
 }
 
-static char *read_file(const char *path, size_t *len)
-{
+static char *read_file(const char *path, size_t *len){
 	FILE *f;
 	char *buf;
 	size_t sz;
@@ -54,8 +52,7 @@ static char *read_file(const char *path, size_t *len)
 	return buf;
 }
 
-static void parse_meta(char *buf, struct post *p)
-{
+static void parse_meta(char *buf, struct post *p){
 	char *line = buf;
 	char *next;
 	char *val;
@@ -102,8 +99,7 @@ next_iter:
 	}
 }
 
-static void dump_hex(const char *slug, const char *buf, size_t len)
-{
+static void dump_hex(const char *slug, const char *buf, size_t len){
 	size_t i;
 
 	printf("static const char post_data_%s[] = {\n\t", slug);
@@ -115,15 +111,13 @@ static void dump_hex(const char *slug, const char *buf, size_t len)
 	printf("0x00\n};\n\n");
 }
 
-static int cmp_date(const void *a, const void *b)
-{
+static int cmp_date(const void *a, const void *b){
 	const struct post *pa = a;
 	const struct post *pb = b;
 	return strcmp(pb->date, pa->date);
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv){
 	DIR *d;
 	struct dirent *de;
 	char *buf;
@@ -193,7 +187,7 @@ int main(int argc, char **argv)
 
 	printf("struct embedded_post {\n");
 	printf("\tconst char *slug;\n");
-	printf("\tconst char *data;\n");
+	printf("\tconst char *payload;\n");
 	printf("};\n\n");
 
 	printf("static const struct embedded_post embedded_posts[] = {\n");
@@ -208,7 +202,7 @@ int main(int argc, char **argv)
 	printf("\tconst struct embedded_post *p;\n");
 	printf("\tfor (p = embedded_posts; p->slug; p++)\n");
 	printf("\t\tif (!strcmp(p->slug, slug))\n");
-	printf("\t\t\treturn p->data;\n");
+	printf("\t\t\treturn p->payload;\n");
 	printf("\treturn NULL;\n}\n");
 
 	return 0;

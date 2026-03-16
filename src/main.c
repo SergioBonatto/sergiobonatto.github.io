@@ -22,8 +22,7 @@ enum page_state {
 
 static enum page_state cur_page = PAGE_INITIAL;
 
-static void render_home(void)
-{
+static void render_home(void) {
 	const char *pfp = "public/pfp.avif";
 
 	add_image(pfp, strlen(pfp), NULL, 0, 1.0f);
@@ -84,6 +83,8 @@ void switch_page(bool blog){
 	}
 }
 
+#define ROUTE_POST_PREFIX "#/post/"
+
 EMSCRIPTEN_KEEPALIVE
 void handle_route(const char *path) {
 	if (!path || !*path) return;
@@ -92,14 +93,13 @@ void handle_route(const char *path) {
 		switch_page(false);
 	} else if (strcmp(path, "#/blog") == 0) {
 		switch_page(true);
-	} else if (strncmp(path, "#/post/", 7) == 0) {
-		open_article_by_slug(path + 7);
+	} else if (strncmp(path, ROUTE_POST_PREFIX, strlen(ROUTE_POST_PREFIX)) == 0) {
+		open_article_by_slug(path + strlen(ROUTE_POST_PREFIX));
 	}
 }
 
 EMSCRIPTEN_KEEPALIVE
-void toggle_theme(void)
-{
+void toggle_theme(void){
 	is_dark = !is_dark;
 	cur_theme = is_dark ? &theme_dark : &theme_light;
 
@@ -107,17 +107,12 @@ void toggle_theme(void)
 	update_theme_colors(cur_theme);
 }
 
-void main_tick(void)
-{
+void main_tick(void){
 	runtime += timing.tick_delta;
 	draw_frame(runtime, msg_header, cur_theme->text, cur_theme->scanline);
 }
 
-int main(void)
-{
-	time_t t;
-	struct tm tm;
-	int year;
+int main(void){
 	char initial_hash[256];
 
 	cur_theme = &theme_dark;
@@ -138,11 +133,17 @@ int main(void)
 		switch_page(false);
 	}
 
-	t = time(NULL);
-	tm = *localtime(&t);
-	year = tm.tm_year + 1900;
+	{
+		time_t t;
+		struct tm tm;
+		int year;
 
-	add_footer(year, css_footer);
+		t = time(NULL);
+		tm = *localtime(&t);
+		year = tm.tm_year + 1900;
+
+		add_footer(year, css_footer);
+	}
 
 	emscripten_set_main_loop(main_tick, 0, 1);
 

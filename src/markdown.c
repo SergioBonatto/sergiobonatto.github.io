@@ -6,8 +6,7 @@
 #include "graph.h"
 #include "contents_data.h"
 
-static void render_graph_shortcode(const char *data, size_t len)
-{
+static void render_graph_shortcode(const char *payload, size_t len){
 	struct bar_segment segs[16];
 	char buf[256];
 	char *p, *tok, *saveptr1, *saveptr2;
@@ -16,7 +15,7 @@ static void render_graph_shortcode(const char *data, size_t len)
 	if (len >= sizeof(buf))
 		return;
 
-	memcpy(buf, data, len);
+	memcpy(buf, payload, len);
 	buf[len] = '\0';
 
 	p = buf;
@@ -62,8 +61,7 @@ static void render_graph_shortcode(const char *data, size_t len)
 		add_bar(h, w, segs, n);
 }
 
-static void render_line(const char *line, size_t len)
-{
+static void render_line(const char *line, size_t len){
 	const char *p, *alt_s, *alt_e, *url_s, *url_e;
 
 	if (!len) {
@@ -127,7 +125,7 @@ void render_markdown(const char *content){
 
 		if (len >= 3 && !strncmp(cur, "---", 3)) {
 			fm_count++;
-		} else if (!(fm_count % 2)) {
+		} else if (fm_count % 2 == 0) {
 			render_line(cur, len);
 		}
 
