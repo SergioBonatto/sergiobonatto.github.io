@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "config.h"
 #include "render.h"
@@ -13,12 +14,13 @@ static bool is_dark = true;
 static const struct theme *cur_theme;
 
 enum page_state {
+	PAGE_INITIAL,
 	PAGE_HOME,
 	PAGE_BLOG_INDEX,
 	PAGE_ARTICLE
 };
 
-static enum page_state cur_page = PAGE_HOME;
+static enum page_state cur_page = PAGE_INITIAL;
 
 static void render_home(void)
 {
@@ -48,6 +50,19 @@ void open_article(int index){
 	cur_page = PAGE_ARTICLE;
 	clear_feed();
 	load_article(posts[index].slug);
+
+	char buf[256];
+	snprintf(buf, sizeof(buf), "#/post/%s", posts[index].slug);
+	ui_sync_url(buf);
+}
+
+void open_article_by_slug(const char *slug) {
+	for (int i = 0; i < posts_count; i++) {
+		if (strcmp(posts[i].slug, slug) == 0) {
+			open_article(i);
+			return;
+		}
+	}
 }
 
 EMSCRIPTEN_KEEPALIVE
@@ -60,10 +75,26 @@ void switch_page(bool blog){
 	cur_page = next_page;
 	clear_feed();
 
-	if (cur_page == PAGE_BLOG_INDEX)
+	if (cur_page == PAGE_BLOG_INDEX) {
 		render_blog();
-	else
+		ui_sync_url("#/blog");
+	} else {
 		render_home();
+		ui_sync_url("#/");
+	}
+}
+
+EMSCRIPTEN_KEEPALIVE
+void handle_route(const char *path) {
+	if (!path || !*path) return;
+
+	if (strcmp(path, "#/") == 0 || strcmp(path, "#/home") == 0 || strcmp(path, "") == 0) {
+		switch_page(false);
+	} else if (strcmp(path, "#/blog") == 0) {
+		switch_page(true);
+	} else if (strncmp(path, "#/post/", 7) == 0) {
+		open_article_by_slug(path + 7);
+	}
 }
 
 EMSCRIPTEN_KEEPALIVE
@@ -87,6 +118,7 @@ int main(void)
 	time_t t;
 	struct tm tm;
 	int year;
+	char initial_hash[256];
 
 	cur_theme = &theme_dark;
 
@@ -97,7 +129,14 @@ int main(void)
 	add_nav_link(":blog", css_nav_blog, "nav-blog");
 	add_nav_link(":home", css_nav_home, "nav-home");
 
-	render_home();
+	ui_init_router();
+	ui_get_current_hash(initial_hash, sizeof(initial_hash));
+	
+	if (initial_hash[0] != '\0' && strcmp(initial_hash, "#/") != 0) {
+		handle_route(initial_hash);
+	} else {
+		switch_page(false);
+	}
 
 	t = time(NULL);
 	tm = *localtime(&t);

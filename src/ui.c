@@ -183,6 +183,31 @@ EM_JS(void, update_theme_toggle_label, (const char *label_cstr), {
 		btn.textContent = label;
 });
 
+EM_JS(void, ui_init_router, (void), {
+	window.addEventListener('hashchange', () => {
+		if (Module._handle_route) {
+			const hash 		= window.location.hash || "#/";
+			const length 	= lengthBytesUTF8(hash) + 1;
+			const pathPtr 	= _malloc(length);
+			stringToUTF8(hash, pathPtr, length);
+			Module._handle_route(pathPtr);
+			_free(pathPtr);
+		}
+	});
+});
+
+EM_JS(void, ui_sync_url, (const char *path_cstr), {
+	const path = UTF8ToString(path_cstr);
+	if (window.location.hash !== path) {
+		history.pushState(null, "", path);
+	}
+});
+
+EM_JS(void, ui_get_current_hash, (char *buf, int max_len), {
+	const hash = window.location.hash || "#/";
+	stringToUTF8(hash, buf, max_len);
+});
+
 EM_JS(void, add_bar, (int height, int width, const struct bar_segment *segs, int n), {
 	ui_init_internal();
 

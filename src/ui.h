@@ -64,6 +64,21 @@ void add_blog_entry(const char *title, const char *date, int index);
 void update_theme_toggle_label(const char *label);
 
 /*
+ * ui_init_router - Initializes the JS hashchange listener.
+ */
+void ui_init_router(void);
+
+/*
+ * ui_sync_url - Updates the browser URL hash.
+ */
+void ui_sync_url(const char *path);
+
+/*
+ * ui_get_current_hash - Returns the current URL hash into the provided buffer.
+ */
+void ui_get_current_hash(char *buf, int max_len);
+
+/*
  * add_named_graph - Injects a predefined graph by its identifier.
  * @name: identifier string
  * @len: length of the identifier
