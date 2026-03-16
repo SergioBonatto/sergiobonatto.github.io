@@ -210,12 +210,12 @@ EM_JS(void, ui_get_current_hash, (char *buf, int max_len), {
 });
 
 EM_JS(void, update_seo_metadata, (const char *title_ptr, const char *desc_ptr, const char *url_ptr), {
-	const title = UTF8ToString(title_ptr);
-	const desc = UTF8ToString(desc_ptr);
-	const url = UTF8ToString(url_ptr);
-	const baseUrl = "https://bonatto.vercel.app";
-	const imgUrl = baseUrl + "/public/SEO.png";
-	const fullUrl = baseUrl + (url.startsWith('/') ? url : '/' + url);
+	const title 	= UTF8ToString(title_ptr);
+	const desc 		= UTF8ToString(desc_ptr);
+	const url 		= UTF8ToString(url_ptr);
+	const baseUrl 	= "https://sergiobonatto.github.io";
+	const imgUrl 	= baseUrl + "/public/SEO.png";
+	const fullUrl 	= baseUrl + (url.startsWith('/') ? url : '/' + url);
 
 	document.title = title;
 
