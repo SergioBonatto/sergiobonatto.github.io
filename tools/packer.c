@@ -52,15 +52,39 @@ static char *read_file(const char *path, size_t *len){
 	return buf;
 }
 
+static void extract_value(char *dest, const char *src, size_t max){
+	while (*src && (isspace((unsigned char)*src) || *src == '\x22'))
+		src++;
+
+	strncpy(dest, src, max - 1);
+	dest[max - 1] = '\0';
+
+	char *end = dest + strlen(dest) - 1;
+	while (end >= dest && (isspace((unsigned char)*end) || *end == '\x22')) {
+		*end = '\0';
+		end--;
+	}
+}
+
 static void parse_meta(char *buf, struct post *p){
 	char *line = buf;
 	char *next;
-	char *val;
 	int state = 0;
+
+	struct {
+		const char *key;
+		char *dest;
+		size_t len;
+	} map[] = {
+		{ "title:",       p->title,       MAX_TITLE },
+		{ "date:",        p->date,        MAX_DATE },
+		{ "description:", p->description, MAX_DESCRIPTION },
+		{ NULL, NULL, 0 }
+	};
 
 	strcpy(p->title, "Untitled");
 	strcpy(p->date, "1970-01-01");
-	strcpy(p->description, "");
+	p->description[0] = '\0';
 
 	while (line && *line) {
 		next = strchr(line, '\n');
@@ -71,39 +95,17 @@ static void parse_meta(char *buf, struct post *p){
 			state++;
 			if (state == 2)
 				break;
-			goto next_iter;
+		} else if (state == 1) {
+			for (int i = 0; map[i].key; i++) {
+				size_t klen = strlen(map[i].key);
+				if (!strncmp(line, map[i].key, klen)) {
+					extract_value(map[i].dest, line + klen, map[i].len);
+					break;
+				}
+			}
 		}
 
-		if (state != 1)
-			goto next_iter;
-
-		if (!strncmp(line, "title:", 6)) {
-			val = line + 6;
-			while (*val == ' ' || *val == '"') val++;
-			strncpy(p->title, val, MAX_TITLE - 1);
-			p->title[MAX_TITLE - 1] = '\0';
-			val = strrchr(p->title, '"');
-			if (val) *val = '\0';
-		} else if (!strncmp(line, "date:", 5)) {
-			val = line + 5;
-			while (*val == ' ' || *val == '"') val++;
-			strncpy(p->date, val, MAX_DATE - 1);
-			p->date[MAX_DATE - 1] = '\0';
-			val = strrchr(p->date, '"');
-			if (val) *val = '\0';
-		} else if (!strncmp(line, "description:", 12)) {
-			val = line + 12;
-			while (*val == ' ' || *val == '"') val++;
-			strncpy(p->description, val, MAX_DESCRIPTION - 1);
-			p->description[MAX_DESCRIPTION - 1] = '\0';
-			val = strrchr(p->description, '"');
-			if (val) *val = '\0';
-		}
-
-next_iter:
-		if (!next)
-			break;
-		line = next + 1;
+		line = next ? next + 1 : NULL;
 	}
 }
 
