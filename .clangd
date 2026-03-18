@@ -1,0 +1,5 @@
+CompileFlags:
+  CompilationDatabase: .
+  Add:
+    - --target=wasm32-unknown-emscripten
+    - -I/opt/homebrew/opt/emscripten/libexec/cache/sysroot/include

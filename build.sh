@@ -7,7 +7,7 @@ gcc tools/packer.c -O2 -o tools/packer
 
 ./tools/packer contents > src/contents_data.h
 
-emcc \
+bear -- emcc \
 src/config.c \
 src/main.c \
 src/render.c \
@@ -26,13 +26,10 @@ src/markdown.c \
 -s EXPORTED_RUNTIME_METHODS='["UTF8ToString","ccall","cwrap"]' \
 -o build/app.js
 
-# Extra optimization passes
 wasm-opt -Oz --all-features build/app.wasm -o build/app.wasm
 
-# Minify JS
 terser build/app.js -c -m -o build/app.js
 
-# Optional compression
 brotli -f -Z build/app.js
 brotli -f -Z build/app.wasm
 
