@@ -4,9 +4,15 @@
 #include "config.h"
 #include "render.h"
 #include "ui.h"
-#include "state.h"
 #include "router.h"
 #include "pages.h"
+
+struct site_state state = {
+	.runtime = 0.0f,
+	.is_dark = true,
+	.theme = &theme_dark,
+	.page = PAGE_INITIAL
+};
 
 int main(void)
 {
@@ -29,7 +35,7 @@ int main(void)
 
 	page_add_footer();
 
-	emscripten_set_main_loop(main_tick, 0, 1);
+	emscripten_set_main_loop(render_tick, 0, 1);
 
 	return 0;
 }

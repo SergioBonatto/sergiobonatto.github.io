@@ -3,3 +3,9 @@
 
 # Explicitly include the build directory even if global rules ignore it
 !build/
+
+.cache/
+.vscode
+.exrc
+.clangd
+.clang-format

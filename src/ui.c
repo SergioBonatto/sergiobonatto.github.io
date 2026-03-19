@@ -1,6 +1,7 @@
 #include <emscripten.h>
 #include "ui.h"
 #include "graph.h"
+#include "render.h"
 
 EM_JS(void, ui_init_internal, (void), {
 	if (Module.ui_initialized)
@@ -80,8 +81,8 @@ EM_JS(void, add_theme_toggle, (const char *label_cstr, const char *style_cstr), 
 	btn.style.cssText 	= style;
 
 	btn.onclick = () => {
-		if (Module._toggle_theme) {
-			Module._toggle_theme();
+		if (Module._ui_toggle_theme) {
+			Module._ui_toggle_theme();
 		}
 	};
 
@@ -300,3 +301,13 @@ EM_JS(void, add_bar, (int height, int width, const struct bar_segment *segs, int
 
 	Module.ui_append_para(container);
 });
+
+EMSCRIPTEN_KEEPALIVE
+void ui_toggle_theme(void)
+{
+	state.is_dark = !state.is_dark;
+	state.theme = state.is_dark ? &theme_dark : &theme_light;
+
+	update_theme_toggle_label(state.is_dark ? ":light" : ":dark");
+	update_theme_colors(state.theme);
+}

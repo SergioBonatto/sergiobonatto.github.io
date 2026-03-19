@@ -122,3 +122,10 @@ EM_JS(void, draw_frame, (float t, const char *label_ptr, const char *text_color_
 	ctx.fillStyle 	= gfx.cachedScanline;
 	ctx.fillRect(0, (t * SCANLINE_SPEED) % H, W, 2);
 });
+
+void render_tick(void)
+{
+	state.runtime += timing.tick_delta;
+	draw_frame(state.runtime, msg_header, state.theme->text,
+		   state.theme->scanline);
+}

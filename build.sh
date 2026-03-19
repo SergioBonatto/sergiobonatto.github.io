@@ -26,7 +26,6 @@ src/main.c \
 src/render.c \
 src/ui.c \
 src/markdown.c \
-src/state.c \
 src/pages.c \
 src/router.c \
 -Oz \
@@ -38,7 +37,7 @@ src/router.c \
 -s STACK_OVERFLOW_CHECK=0 \
 -s FILESYSTEM=0 \
 -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
--s EXPORTED_FUNCTIONS='["_main","_toggle_theme","_switch_page","_render_markdown","_open_article","_handle_route","_malloc","_free"]' \
+-s EXPORTED_FUNCTIONS='["_main","_ui_toggle_theme","_switch_page","_render_markdown","_open_article","_handle_route","_malloc","_free"]' \
 -s EXPORTED_RUNTIME_METHODS='["UTF8ToString","ccall","cwrap"]' \
 -o build/app.js
 

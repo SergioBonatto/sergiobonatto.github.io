@@ -64,6 +64,11 @@ void add_blog_entry(const char *title, const char *date, int index);
 void update_theme_toggle_label(const char *label);
 
 /*
+ * ui_toggle_theme - Toggles between dark and light themes.
+ */
+void ui_toggle_theme(void);
+
+/*
  * ui_init_router - Initializes the JS hashchange listener.
  */
 void ui_init_router(void);

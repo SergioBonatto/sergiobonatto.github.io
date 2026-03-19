@@ -3,9 +3,8 @@
 #include <stdio.h>
 
 #include "router.h"
-#include "state.h"
-#include "pages.h"
 #include "config.h"
+#include "pages.h"
 #include "ui.h"
 
 #define ROUTE_POST_PREFIX "#/post/"

@@ -1,6 +1,8 @@
 #ifndef PROJECT_SRC_CONFIG_H
 #define PROJECT_SRC_CONFIG_H
 
+#include <stdbool.h>
+
 struct timing_config {
 	float tick_delta;
 	float flicker_speed;
@@ -58,6 +60,23 @@ extern const struct blog_post posts[];
 extern const int posts_count;
 
 void load_article(const char *slug);
+
+enum page_state {
+	PAGE_INITIAL,
+	PAGE_HOME,
+	PAGE_BLOG_INDEX,
+	PAGE_ARTICLE,
+	PAGE_404
+};
+
+struct site_state {
+	float runtime;
+	bool is_dark;
+	const struct theme *theme;
+	enum page_state page;
+};
+
+extern struct site_state state;
 
 #define UI_HEADER_HEIGHT 180
 
