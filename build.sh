@@ -7,7 +7,20 @@ gcc tools/packer.c -O2 -o tools/packer
 
 ./tools/packer contents > src/contents_data.h
 
-bear -- emcc \
+# Compila individualmente para gerar o compile_commands.json (apenas para o linter)
+echo "[" > compile_commands.json
+for file in src/*.c; do
+    emcc "$file" -Isrc -DEMSCRIPTEN -MJ "$file.json" -c -o "build/$(basename "$file" .c).o"
+    cat "$file.json" >> compile_commands.json
+    rm "$file.json"
+done
+# Remove a última vírgula (emcc -MJ adiciona vírgulas no final de cada objeto)
+# e fecha o array. O sed remove a última vírgula do arquivo.
+sed -i '' '$ s/,$//' compile_commands.json
+echo "]" >> compile_commands.json
+
+# Build final (o comando original sem o bear)
+emcc \
 src/config.c \
 src/main.c \
 src/render.c \
@@ -26,11 +39,10 @@ src/markdown.c \
 -s EXPORTED_RUNTIME_METHODS='["UTF8ToString","ccall","cwrap"]' \
 -o build/app.js
 
-wasm-opt -Oz --all-features build/app.wasm -o build/app.wasm
-
-terser build/app.js -c -m -o build/app.js
-
-brotli -f -Z build/app.js
-brotli -f -Z build/app.wasm
+# Comandos de pós-processamento (ignora falhas se as ferramentas não existirem)
+wasm-opt -Oz --all-features build/app.wasm -o build/app.wasm || echo "wasm-opt skipped"
+terser build/app.js -c -m -o build/app.js || echo "terser skipped"
+brotli -f -Z build/app.js || echo "brotli skipped"
+brotli -f -Z build/app.wasm || echo "brotli skipped"
 
 echo "Build successful."
