@@ -26,6 +26,9 @@ src/main.c \
 src/render.c \
 src/ui.c \
 src/markdown.c \
+src/state.c \
+src/pages.c \
+src/router.c \
 -Oz \
 -flto \
 -Isrc \

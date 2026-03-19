@@ -91,3 +91,6 @@ const char *msg_bio =
 	"Work spans formal methods, functional programming, and operating systems. "
 	"Main interests include dependent type theory, proof languages, language "
 	"interpreters, virtual machines, and minimalist kernels.";
+
+const char *msg_404_title = "404 - NOT FOUND";
+const char *msg_404_body = "The page you are looking for does not exist or has been moved.";

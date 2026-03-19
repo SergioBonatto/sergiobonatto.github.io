@@ -64,5 +64,7 @@ void load_article(const char *slug);
 extern const char *msg_header;
 extern const char *msg_whoami;
 extern const char *msg_bio;
+extern const char *msg_404_title;
+extern const char *msg_404_body;
 
 #endif
