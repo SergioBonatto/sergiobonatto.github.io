@@ -5,10 +5,11 @@
 #include "pages.h"
 #include "config.h"
 #include "ui.h"
+#include "assets.h"
 
 void page_render_home(void)
 {
-	const char *pfp = "public/pfp.avif";
+	const char *pfp = ASSET_PFP;
 
 	add_image(pfp, strlen(pfp), NULL, 0, 1.0f, 463, 512, 1);
 	add_paragraph(msg_whoami, strlen(msg_whoami));
