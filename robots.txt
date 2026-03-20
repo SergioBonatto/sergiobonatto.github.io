@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Bloqueia arquivos de código e ferramentas internas
+Disallow: /src/
+Disallow: /tools/
+Disallow: /build/*.o
+Disallow: /build/*.json
+Disallow: /contents/
+
+Sitemap: https://sergiobonatto.github.io/sitemap.xml
