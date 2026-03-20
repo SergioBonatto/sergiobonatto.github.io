@@ -5,55 +5,70 @@
 #include "config.h"
 #include "contents_data.h"
 
-static void render_graph_shortcode(const char *payload, size_t len){
+static int fast_atoi(const char **s) {
+	int res = 0;
+	while (**s >= '0' && **s <= '9') {
+		res = res * 10 + (**s - '0');
+		(*s)++;
+	}
+	return res;
+}
+
+static float fast_atof(const char **s) {
+	float res = 0.0f;
+	while (**s >= '0' && **s <= '9') {
+		res = res * 10.0f + (**s - '0');
+		(*s)++;
+	}
+	if (**s == '.') {
+		(*s)++;
+		float frac = 0.1f;
+		while (**s >= '0' && **s <= '9') {
+			res += (**s - '0') * frac;
+			frac /= 10.0f;
+			(*s)++;
+		}
+	}
+	return res;
+}
+
+static void render_graph_shortcode(const char *p, size_t len) {
 	float pcts[16], opacities[16];
 	const char *colors[16];
 	int styles[16];
-	char buf[256];
-	char *p, *tok, *saveptr1, *saveptr2;
+	char color_names[256];
+	char *cn_ptr = color_names;
 	int h, w, n = 0;
+	const char *end = p + len;
 
-	if (len >= sizeof(buf))
-		return;
+	h = fast_atoi(&p);
+	if (p < end && *p == ',') p++;
+	w = fast_atoi(&p);
 
-	memcpy(buf, payload, len);
-	buf[len] = '\0';
+	while (p < end && n < 16) {
+		while (p < end && (*p == ';' || *p == ' ')) p++;
+		if (p >= end) break;
 
-	p = buf;
-	tok = strtok_r(p, ";", &saveptr1);
-	if (!tok)
-		return;
+		pcts[n] = fast_atof(&p);
+		if (p < end && *p == ',') p++;
 
-	/* Parse height and width */
-	h = atoi(tok);
-	p = strchr(tok, ',');
-	if (!p)
-		return;
-	w = atoi(p + 1);
+		colors[n] = cn_ptr;
+		while (p < end && *p != ',') {
+			*cn_ptr++ = *p++;
+		}
+		*cn_ptr++ = '\0';
 
-	/* Parse segments */
-	while ((tok = strtok_r(NULL, ";", &saveptr1)) && n < 16) {
-		char *field;
+		if (p < end && *p == ',') p++;
+		opacities[n] = fast_atof(&p);
+		if (p < end && *p == ',') p++;
 
-		field = strtok_r(tok, ",", &saveptr2);
-		if (!field) continue;
-		pcts[n] = (float)atof(field);
-
-		field = strtok_r(NULL, ",", &saveptr2);
-		if (!field) continue;
-		colors[n] = field;
-
-		field = strtok_r(NULL, ",", &saveptr2);
-		if (!field) continue;
-		opacities[n] = (float)atof(field);
-
-		field = strtok_r(NULL, ",", &saveptr2);
-		if (!field) continue;
-
-		switch (field[0]) {
-		case 's': styles[n] = BAR_SEG_SOLID;   break;
-		case 'h': styles[n] = BAR_SEG_HATCHED; break;
-		default:  styles[n] = BAR_SEG_EMPTY;   break;
+		if (p < end) {
+			switch (*p) {
+			case 's': styles[n] = BAR_SEG_SOLID;   break;
+			case 'h': styles[n] = BAR_SEG_HATCHED; break;
+			default:  styles[n] = BAR_SEG_EMPTY;   break;
+			}
+			while (p < end && *p != ';') p++;
 		}
 		n++;
 	}
@@ -62,53 +77,53 @@ static void render_graph_shortcode(const char *payload, size_t len){
 		add_bar(h, w, pcts, colors, opacities, styles, n);
 }
 
-static void render_line(const char *line, size_t len){
-	const char *p, *alt_s, *alt_e, *url_s, *url_e;
-
+static void render_line(const char *line, size_t len) {
 	if (!len) {
 		add_paragraph(line, 0);
 		return;
 	}
 
-	/* Detect graph shortcode [[graph:...]] */
-	if (len > 10 && !strncmp(line, "[[graph:", 8)) {
-		p = memchr(line, ']', len);
-		if (p && p[1] == ']') {
-			render_graph_shortcode(line + 8, (p - line) - 8);
-			return;
-		}
-	}
-
-	if (line[0] == '#') {
-
-		p = line;
-		while (len && (*p == '#' || *p == ' ')) {
+	switch (line[0]) {
+	case '#': {
+		const char *p = line;
+		size_t l = len;
+		while (l && (*p == '#' || *p == ' ')) {
 			p++;
-			len--;
+			l--;
 		}
-		add_paragraph(p, len);
+		add_paragraph(p, l);
 		return;
 	}
-
-	if (len > 4 && line[0] == '!' && line[1] == '[') {
-		alt_s = line + 2;
-		alt_e = memchr(alt_s, ']', len - 2);
-		if (alt_e && alt_e[1] == '(') {
-			url_s = alt_e + 2;
-			url_e = memchr(url_s, ')', len - (url_s - line));
-			if (url_e) {
-				add_image(url_s, url_e - url_s, alt_s,
-					  alt_e - alt_s, 1.0f);
+	case '!':
+		if (len > 4 && line[1] == '[') {
+			const char *alt_s = line + 2;
+			const char *alt_e = memchr(alt_s, ']', len - 2);
+			if (alt_e && alt_e[1] == '(') {
+				const char *url_s = alt_e + 2;
+				const char *url_e = memchr(url_s, ')', len - (url_s - line));
+				if (url_e) {
+					add_image(url_s, url_e - url_s, alt_s, alt_e - alt_s, 1.0f);
+					return;
+				}
+			}
+		}
+		break;
+	case '[':
+		if (len > 10 && line[1] == '[' && !strncmp(line + 2, "graph:", 6)) {
+			const char *p = memchr(line, ']', len);
+			if (p && p[1] == ']') {
+				render_graph_shortcode(line + 8, (p - line) - 8);
 				return;
 			}
 		}
+		break;
 	}
 
 	add_paragraph(line, len);
 }
 
 EMSCRIPTEN_KEEPALIVE
-void render_markdown(const char *content){
+void render_markdown(const char *content) {
 	const char *cur = content;
 	const char *next;
 	size_t len;
@@ -124,7 +139,7 @@ void render_markdown(const char *content){
 		if (len > 0 && cur[len - 1] == '\r')
 			len--;
 
-		if (len >= 3 && !strncmp(cur, "---", 3)) {
+		if (len >= 3 && cur[0] == '-' && cur[1] == '-' && cur[2] == '-') {
 			fm_count++;
 		} else if (fm_count % 2 == 0) {
 			render_line(cur, len);
@@ -136,9 +151,8 @@ void render_markdown(const char *content){
 	}
 }
 
-void load_article(int index){
+void load_article(int index) {
 	const char *body = get_article_body(index);
-
 	if (body)
 		render_markdown(body);
 }
