@@ -310,4 +310,5 @@ void ui_toggle_theme(void)
 
 	update_theme_toggle_label(state.is_dark ? ":light" : ":dark");
 	update_theme_colors(state.theme);
+	render_update_strings(msg_header, state.theme->text, state.theme->scanline);
 }

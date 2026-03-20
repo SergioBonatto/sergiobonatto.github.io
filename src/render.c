@@ -1,68 +1,48 @@
 #include <emscripten.h>
 #include "render.h"
 
+/* 
+ * Sincroniza a struct theme (C) com as CSS Variables (JS) 
+ * e atualiza o cache do renderizador.
+ */
 EM_JS(void, update_theme_colors, (const struct theme *t), {
+	if (!t || !Module.gfx) return;
+	
 	const rootStyle = document.documentElement.style;
 	const getStr = (offset) => UTF8ToString(HEAP32[(t + offset) >> 2]);
 
 	const bg = getStr(0);
 	const text = getStr(4);
-	const dim = getStr(8);
 	const scanline = getStr(12);
-	const accent = getStr(16);
 
 	rootStyle.setProperty('--bg-color', bg);
 	rootStyle.setProperty('--text-color', text);
-	rootStyle.setProperty('--dim-text-color', dim);
+	rootStyle.setProperty('--dim-text-color', getStr(8));
 	rootStyle.setProperty('--scanline-color', scanline);
-	rootStyle.setProperty('--accent-color', accent);
+	rootStyle.setProperty('--accent-color', getStr(16));
 
 	for (let i = 0; i < 16; i++) {
-		const color = getStr(20 + i * 4);
-		rootStyle.setProperty('--nord' + i, color);
+		rootStyle.setProperty('--nord' + i, getStr(20 + i * 4));
 	}
 
-	if (Module.gfx) {
-		Module.gfx.bg = bg;
-	}
+	/* Atualiza cache de renderização */
+	Module.gfx.bg = bg;
+	Module.gfx.textColor = text;
+	Module.gfx.scanlineColor = scanline;
 });
 
 EM_JS(void, init_graphics, (const struct theme *t, int header_h), {
-	const rootStyle = document.documentElement.style;
-	const getStr = (offset) => UTF8ToString(HEAP32[(t + offset) >> 2]);
-
-	const bg = getStr(0);
-	const text = getStr(4);
-	const dim = getStr(8);
-	const scanline = getStr(12);
-	const accent = getStr(16);
-
-	rootStyle.setProperty('--bg-color', bg);
-	rootStyle.setProperty('--text-color', text);
-	rootStyle.setProperty('--dim-text-color', dim);
-	rootStyle.setProperty('--scanline-color', scanline);
-	rootStyle.setProperty('--accent-color', accent);
-
-	for (let i = 0; i < 16; i++) {
-		const color = getStr(20 + i * 4);
-		rootStyle.setProperty('--nord' + i, color);
-	}
-
 	const cvs = document.getElementById("screen");
-	if (!cvs)
-		return;
+	if (!cvs) return;
 
 	Module.gfx = {
 		cvs,
 		ctx: cvs.getContext("2d", {alpha: false}),
 		header_h,
-		bg,
-		lastLabelPtr: 0,
-		cachedLabel: "",
-		lastTextColorPtr: 0,
-		cachedTextColor: "",
-		lastScanlinePtr: 0,
-		cachedScanline: ""
+		bg: "",
+		label: "",
+		textColor: "",
+		scanlineColor: ""
 	};
 
 	const onResize = () => {
@@ -74,6 +54,13 @@ EM_JS(void, init_graphics, (const struct theme *t, int header_h), {
 	onResize();
 });
 
+EM_JS(void, render_update_strings, (const char *label_ptr, const char *text_color_ptr, const char *scanline_color_ptr), {
+	if (!Module.gfx) return;
+	Module.gfx.label         = UTF8ToString(label_ptr);
+	Module.gfx.textColor     = UTF8ToString(text_color_ptr);
+	Module.gfx.scanlineColor = UTF8ToString(scanline_color_ptr);
+});
+
 EM_JS(void, apply_style, (const char *selector_cstr, const char *style_cstr), {
 	const selector = UTF8ToString(selector_cstr);
 	const style = UTF8ToString(style_cstr);
@@ -81,27 +68,13 @@ EM_JS(void, apply_style, (const char *selector_cstr, const char *style_cstr), {
 	elements.forEach(el => el.style.cssText = style);
 });
 
-EM_JS(void, draw_frame, (float t, const char *label_ptr, const char *text_color_ptr, const char *scanline_color_ptr), {
+EM_JS(void, draw_frame, (float t), {
 	const gfx = Module.gfx;
-	if (!gfx?.ctx)
-		return;
+	if (!gfx?.ctx) return;
 
-	const {ctx, cvs, header_h, bg} = gfx;
+	const {ctx, cvs, header_h, bg, label, textColor, scanlineColor} = gfx;
 	const W = cvs.width;
 	const H = cvs.height;
-
-	if (label_ptr !== gfx.lastLabelPtr) {
-		gfx.cachedLabel 	= UTF8ToString(label_ptr);
-		gfx.lastLabelPtr 	= label_ptr;
-	}
-	if (text_color_ptr !== gfx.lastTextColorPtr) {
-		gfx.cachedTextColor 	= UTF8ToString(text_color_ptr);
-		gfx.lastTextColorPtr 	= text_color_ptr;
-	}
-	if (scanline_color_ptr !== gfx.lastScanlinePtr) {
-		gfx.cachedScanline 	= UTF8ToString(scanline_color_ptr);
-		gfx.lastScanlinePtr = scanline_color_ptr;
-	}
 
 	const FLICKER_SPEED 	= 12.0;
 	const FLICKER_BASE 		= 0.8;
@@ -112,20 +85,12 @@ EM_JS(void, draw_frame, (float t, const char *label_ptr, const char *text_color_
 	ctx.fillRect(0, 0, W, H);
 
 	ctx.font 		= "bold 40px 'Courier New', monospace";
-	ctx.fillStyle 	= gfx.cachedTextColor;
+	ctx.fillStyle 	= textColor;
 	ctx.textAlign 	= "center";
-	ctx.globalAlpha =
-		FLICKER_BASE + Math.sin(t * FLICKER_SPEED) * FLICKER_AMP;
-	ctx.fillText(gfx.cachedLabel, W / 2, header_h / 2);
+	ctx.globalAlpha = FLICKER_BASE + Math.sin(t * FLICKER_SPEED) * FLICKER_AMP;
+	ctx.fillText(label, W / 2, header_h / 2);
 
 	ctx.globalAlpha = 1.0;
-	ctx.fillStyle 	= gfx.cachedScanline;
+	ctx.fillStyle 	= scanlineColor;
 	ctx.fillRect(0, (t * SCANLINE_SPEED) % H, W, 2);
 });
-
-void render_tick(void)
-{
-	state.runtime += timing.tick_delta;
-	draw_frame(state.runtime, msg_header, state.theme->text,
-		   state.theme->scanline);
-}

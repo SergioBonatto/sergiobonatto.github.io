@@ -14,11 +14,19 @@ struct site_state state = {
 	.page = PAGE_INITIAL
 };
 
+static void render_tick(void)
+{
+	state.runtime += timing.tick_delta;
+	draw_frame(state.runtime);
+}
+
 int main(void)
 {
 	char initial_hash[256];
 
 	init_graphics(state.theme, UI_HEADER_HEIGHT);
+	update_theme_colors(state.theme);
+	render_update_strings(msg_header, state.theme->text, state.theme->scanline);
 
 	apply_style("#feed", css_feed);
 	add_theme_toggle(":light", css_theme_toggle);
