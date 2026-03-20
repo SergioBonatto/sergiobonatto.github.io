@@ -45,7 +45,7 @@ EM_JS(void, add_paragraph, (const char *ptr, size_t len), {
 	Module.ui_append_para(text);
 });
 
-EM_JS(void, add_image, (const char *path_ptr, size_t path_len, const char *alt_ptr, size_t alt_len, float scale), {
+EM_JS(void, add_image, (const char *path_ptr, size_t path_len, const char *alt_ptr, size_t alt_len, float scale, int width, int height, int is_lcp), {
 	ui_init_internal();
 	
 	const decoder = new TextDecoder("utf-8");
@@ -59,8 +59,19 @@ EM_JS(void, add_image, (const char *path_ptr, size_t path_len, const char *alt_p
 	const img 			= document.createElement("img");
 	img.src 			= url;
 	img.alt 			= alt;
-	img.loading 		= "lazy";
+	
+	if (is_lcp) {
+		img.fetchPriority = "high";
+		img.loading = "eager";
+	} else {
+		img.loading = "lazy";
+	}
+
+	if (width > 0) img.width = width;
+	if (height > 0) img.height = height;
+
 	img.style.maxWidth 	= "100%";
+	img.style.height 	= "auto";
 
 	if (scale > 0 && scale !== 1.0) {
 		img.onload = () => {

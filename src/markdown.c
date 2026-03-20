@@ -102,7 +102,7 @@ static void render_line(const char *line, size_t len) {
 				const char *url_s = alt_e + 2;
 				const char *url_e = memchr(url_s, ')', len - (url_s - line));
 				if (url_e) {
-					add_image(url_s, url_e - url_s, alt_s, alt_e - alt_s, 1.0f);
+					add_image(url_s, url_e - url_s, alt_s, alt_e - alt_s, 1.0f, 0, 0, 0);
 					return;
 				}
 			}

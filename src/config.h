@@ -48,6 +48,7 @@ extern const int posts_count;
 extern const char *msg_header;
 extern const char *msg_whoami;
 extern const char *msg_bio;
+extern const char *msg_seo;
 extern const char *msg_404_title;
 extern const char *msg_404_body;
 

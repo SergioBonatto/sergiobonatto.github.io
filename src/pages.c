@@ -10,11 +10,11 @@ void page_render_home(void)
 {
 	const char *pfp = "public/pfp.avif";
 
-	add_image(pfp, strlen(pfp), NULL, 0, 1.0f);
+	add_image(pfp, strlen(pfp), NULL, 0, 1.0f, 463, 512, 1);
 	add_paragraph(msg_whoami, strlen(msg_whoami));
 	add_paragraph(msg_bio, strlen(msg_bio));
 
-	update_seo_metadata("Bonatto - Home", msg_bio, "#/");
+	update_seo_metadata("Bonatto - Home", msg_seo, "#/");
 }
 
 void page_render_blog(void)

@@ -30,9 +30,13 @@ void add_paragraph(const char *text_ptr, size_t len);
  * @alt_ptr: pointer to the alt text string
  * @alt_len: length of the alt text string
  * @scale: scale factor for the image width
+ * @width: explicit width for the image (0 for auto)
+ * @height: explicit height for the image (0 for auto)
+ * @is_lcp: whether the image is the largest contentful paint
  */
 void add_image(const char *path_ptr, size_t path_len,
-	       const char *alt_ptr, size_t alt_len, float scale);
+	       const char *alt_ptr, size_t alt_len, float scale,
+	       int width, int height, int is_lcp);
 
 /*
  * add_theme_toggle - Creates a text toggle in the header.

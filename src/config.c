@@ -65,5 +65,13 @@ const char *msg_bio =
 	"Main interests include dependent type theory, proof languages, language "
 	"interpreters, virtual machines, and minimalist kernels.";
 
+const char *msg_seo =
+	"Software engineer specialized in programming languages, compilers, formal methods, "
+	"type systems, virtual machines, operating systems, and systems programming using "
+	"C, Haskell, Rust, and TypeScript. Work includes Bend, HVM, Kind, Higher Order "
+	"Company tooling, and Agoriz, with emphasis on dependent types, proof systems, "
+	"interpreters, runtime architecture, memory management, distributed systems, "
+	"functional computation, and minimalist kernel development.";
+
 const char *msg_404_title = "404 - NOT FOUND";
 const char *msg_404_body = "The page you are looking for does not exist or has been moved.";
