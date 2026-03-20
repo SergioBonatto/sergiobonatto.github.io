@@ -2,7 +2,19 @@
 #define PROJECT_SRC_UI_H
 
 #include <stddef.h>
-#include "graph.h"
+
+enum bar_seg_style {
+	BAR_SEG_SOLID,
+	BAR_SEG_HATCHED,
+	BAR_SEG_EMPTY,
+};
+
+struct bar_segment {
+	float pct;
+	const char *color_var;
+	float opacity;
+	enum bar_seg_style style;
+};
 
 /*
  * add_paragraph - Appends a text paragraph to the feed element.
@@ -94,10 +106,14 @@ void add_named_graph(const char *name, size_t len);
  * add_bar - Appends a segmented graph bar to the UI.
  * @height: total height in pixels
  * @width: width in pixels
- * @segs: pointer to array of bar_segment structures
+ * @pcts: array of segment percentages (0.0 to 1.0)
+ * @colors: array of CSS variable names for colors
+ * @opacities: array of opacity values
+ * @styles: array of bar_seg_style enums
  * @n: number of segments
  */
-void add_bar(int height, int width, const struct bar_segment *segs, int n);
+void add_bar(int height, int width, const float *pcts, const char **colors,
+	     const float *opacities, const int *styles, int n);
 
 /*
  * update_seo_metadata - Updates the document title and meta tags for SEO.

@@ -209,12 +209,14 @@ int main(int argc, char **argv){
 	printf("\t{ NULL, NULL }\n");
 	printf("};\n\n");
 
-	printf("const char *get_article_body(const char *slug)\n{\n");
-	printf("\tconst struct embedded_post *p;\n");
-	printf("\tfor (p = embedded_posts; p->slug; p++)\n");
-	printf("\t\tif (!strcmp(p->slug, slug))\n");
-	printf("\t\t\treturn p->payload;\n");
-	printf("\treturn NULL;\n}\n");
+	printf("const char *get_article_body(int index)\n{\n");
+	printf("\tif (index < 0 || index >= posts_count)\n");
+	printf("\t\treturn NULL;\n");
+	printf("\tswitch(index) {\n");
+	for (i = 0; i < nr_posts; i++) {
+		printf("\t\tcase %d: return post_data_%s;\n", i, posts[i].slug);
+	}
+	printf("\t\tdefault: return NULL;\n\t}\n}\n");
 
 	return 0;
 }

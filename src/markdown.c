@@ -3,11 +3,12 @@
 #include <stdlib.h>
 #include "ui.h"
 #include "config.h"
-#include "graph.h"
 #include "contents_data.h"
 
 static void render_graph_shortcode(const char *payload, size_t len){
-	struct bar_segment segs[16];
+	float pcts[16], opacities[16];
+	const char *colors[16];
+	int styles[16];
 	char buf[256];
 	char *p, *tok, *saveptr1, *saveptr2;
 	int h, w, n = 0;
@@ -36,29 +37,29 @@ static void render_graph_shortcode(const char *payload, size_t len){
 
 		field = strtok_r(tok, ",", &saveptr2);
 		if (!field) continue;
-		segs[n].pct = (float)atof(field);
+		pcts[n] = (float)atof(field);
 
 		field = strtok_r(NULL, ",", &saveptr2);
 		if (!field) continue;
-		segs[n].color_var = field;
+		colors[n] = field;
 
 		field = strtok_r(NULL, ",", &saveptr2);
 		if (!field) continue;
-		segs[n].opacity = (float)atof(field);
+		opacities[n] = (float)atof(field);
 
 		field = strtok_r(NULL, ",", &saveptr2);
 		if (!field) continue;
 
 		switch (field[0]) {
-		case 's': segs[n].style = BAR_SEG_SOLID;   break;
-		case 'h': segs[n].style = BAR_SEG_HATCHED; break;
-		default:  segs[n].style = BAR_SEG_EMPTY;   break;
+		case 's': styles[n] = BAR_SEG_SOLID;   break;
+		case 'h': styles[n] = BAR_SEG_HATCHED; break;
+		default:  styles[n] = BAR_SEG_EMPTY;   break;
 		}
 		n++;
 	}
 
 	if (n > 0)
-		add_bar(h, w, segs, n);
+		add_bar(h, w, pcts, colors, opacities, styles, n);
 }
 
 static void render_line(const char *line, size_t len){
@@ -135,8 +136,8 @@ void render_markdown(const char *content){
 	}
 }
 
-void load_article(const char *slug){
-	const char *body = get_article_body(slug);
+void load_article(int index){
+	const char *body = get_article_body(index);
 
 	if (body)
 		render_markdown(body);

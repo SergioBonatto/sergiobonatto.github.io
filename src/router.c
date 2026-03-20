@@ -4,6 +4,7 @@
 
 #include "router.h"
 #include "config.h"
+#include "state.h"
 #include "pages.h"
 #include "ui.h"
 
@@ -29,7 +30,7 @@ void open_article(int index)
 
 	state.page = PAGE_ARTICLE;
 	clear_feed();
-	load_article(posts[index].slug);
+	load_article(index);
 
 	snprintf(buf, sizeof(buf), "#/post/%s", posts[index].slug);
 	ui_sync_url(buf);

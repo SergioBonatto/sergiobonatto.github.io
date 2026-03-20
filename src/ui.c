@@ -1,6 +1,6 @@
 #include <emscripten.h>
 #include "ui.h"
-#include "graph.h"
+#include "state.h"
 #include "render.h"
 
 EM_JS(void, ui_init_internal, (void), {
@@ -252,7 +252,7 @@ EM_JS(void, update_seo_metadata, (const char *title_ptr, const char *desc_ptr, c
 	canonical.setAttribute('href', fullUrl);
 });
 
-EM_JS(void, add_bar, (int height, int width, const struct bar_segment *segs, int n), {
+EM_JS(void, add_bar, (int height, int width, const float *pcts, const char **colors, const float *opacities, const int *styles, int n), {
 	ui_init_internal();
 
 	const container = document.createElement("div");
@@ -262,25 +262,13 @@ EM_JS(void, add_bar, (int height, int width, const struct bar_segment *segs, int
 	container.style.display 		= "flex";
 	container.style.flexDirection 	= "column";
 
-	/* 
-	 * WASM32 memory layout for struct bar_segment:
-	 * +0  pct        (float, 4 bytes)
-	 * +4  color_var  (ptr,   4 bytes)
-	 * +8  opacity    (float, 4 bytes)
-	 * +12 style      (int,   4 bytes)
-	 * Stride = 16 bytes.
-	 */
-	const STRIDE = 16;
-
 	for (let i = 0; i < n; i++) {
-		const base = segs + (i * STRIDE);
+		const pct 		= HEAPF32[(pcts >> 2) + i];
+		const colorPtr 	= HEAP32[(colors >> 2) + i];
+		const opacity 	= HEAPF32[(opacities >> 2) + i];
+		const style 	= HEAP32[(styles >> 2) + i];
 
-		const pct 		= HEAPF32[base >> 2];
-		const color_ptr = HEAP32[(base + 4) >> 2];
-		const opacity 	= HEAPF32[(base + 8) >> 2];
-		const style 	= HEAP32[(base + 12) >> 2];
-
-		const color_var = UTF8ToString(color_ptr);
+		const color_var = UTF8ToString(colorPtr);
 
 		const seg 			= document.createElement("div");
 		seg.style.height 	= (pct * 100) + "%";
@@ -309,6 +297,6 @@ void ui_toggle_theme(void)
 	state.theme = state.is_dark ? &theme_dark : &theme_light;
 
 	update_theme_toggle_label(state.is_dark ? ":light" : ":dark");
-	update_theme_colors(state.theme);
-	render_update_strings(msg_header, state.theme->text, state.theme->scanline);
+	update_theme_colors(state.theme, nord_palette);
+	render_update_strings(msg_header, state.theme->text, state.theme->scanline, nord_palette);
 }

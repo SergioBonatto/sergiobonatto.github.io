@@ -2,16 +2,17 @@
 #include <string.h>
 
 #include "config.h"
+#include "state.h"
 #include "render.h"
 #include "ui.h"
 #include "router.h"
 #include "pages.h"
 
 struct site_state state = {
-	.runtime = 0.0f,
-	.is_dark = true,
-	.theme = &theme_dark,
-	.page = PAGE_INITIAL
+	.runtime 	= 0.0f,
+	.is_dark 	= true,
+	.theme 		= &theme_dark,
+	.page 		= PAGE_INITIAL
 };
 
 static void render_tick(void)
@@ -25,8 +26,8 @@ int main(void)
 	char initial_hash[256];
 
 	init_graphics(state.theme, UI_HEADER_HEIGHT);
-	update_theme_colors(state.theme);
-	render_update_strings(msg_header, state.theme->text, state.theme->scanline);
+	update_theme_colors(state.theme, nord_palette);
+	render_update_strings(msg_header, state.theme->text, state.theme->scanline, nord_palette);
 
 	apply_style("#feed", css_feed);
 	add_theme_toggle(":light", css_theme_toggle);

@@ -5,9 +5,9 @@
 
 void init_graphics(const struct theme *theme, int header_height);
 void apply_style(const char *selector, const char *css_text);
-void update_theme_colors(const struct theme *theme);
-void render_update_strings(const char *label, const char *text_color,
-			   const char *scanline_color);
+void update_theme_colors(const struct theme *theme, const char *const *palette);
+void render_update_strings(const char *label, int text_color_idx,
+			   int scanline_color_idx, const char *const *palette);
 void draw_frame(float t);
 
 #endif

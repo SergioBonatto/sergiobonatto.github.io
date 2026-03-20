@@ -2734,11 +2734,19 @@ static const struct embedded_post embedded_posts[] = {
 	{ NULL, NULL }
 };
 
-const char *get_article_body(const char *slug)
+const char *get_article_body(int index)
 {
-	const struct embedded_post *p;
-	for (p = embedded_posts; p->slug; p++)
-		if (!strcmp(p->slug, slug))
-			return p->payload;
-	return NULL;
+	if (index < 0 || index >= posts_count)
+		return NULL;
+	switch(index) {
+		case 0: return post_data_agorismo;
+		case 1: return post_data_ceticismo_tecnologico;
+		case 2: return post_data_a_tirania_e_sua_mascara_de_bondade;
+		case 3: return post_data_a_b__blia_e_o_argumento_circular;
+		case 4: return post_data_deepfake_e_a_desmaniza____o;
+		case 5: return post_data_O_Estado_Como_Motor_da_Economia;
+		case 6: return post_data_minha_noite_estrelada;
+		case 7: return post_data_Criacionismo_Evolutivo_1;
+		default: return NULL;
+	}
 }

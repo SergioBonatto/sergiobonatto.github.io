@@ -8,54 +8,27 @@ const struct timing_config timing = {
 	.scanline_speed = 120.0f
 };
 
-const struct theme theme_dark = {
-	.bg			= "#2E3440",
-	.text		= "#ECEFF4",
-	.dim_text	= "#81A1C1",
-	.scanline	= "rgba(236,239,244,0.035)",
-	.accent		= "#A3BE8C",
+const char *nord_palette[16] = {
+	"#2E3440", "#3B4252", "#434C5E", "#4C566A",
+	"#D8DEE9", "#E5E9F0", "#ECEFF4",
+	"#8FBCBB", "#88C0D0", "#81A1C1", "#5E81AC",
+	"#BF616A", "#D08770", "#EBCB8B", "#A3BE8C", "#B48EAD"
+};
 
-	.nord0		= "#2E3440",
-	.nord1		= "#3B4252",
-	.nord2		= "#434C5E",
-	.nord3		= "#4C566A",
-	.nord4		= "#D8DEE9",
-	.nord5		= "#E5E9F0",
-	.nord6		= "#ECEFF4",
-	.nord7		= "#8FBCBB",
-	.nord8		= "#88C0D0",
-	.nord9		= "#81A1C1",
-	.nord10		= "#5E81AC",
-	.nord11		= "#BF616A",
-	.nord12		= "#D08770",
-	.nord13		= "#EBCB8B",
-	.nord14		= "#A3BE8C",
-	.nord15		= "#B48EAD"
+const struct theme theme_dark = {
+	.bg       = 0,
+	.text     = 6,
+	.dim_text = 9,
+	.accent   = 14,
+	.scanline = 6
 };
 
 const struct theme theme_light = {
-	.bg			= "#ECEFF4",
-	.text		= "#2E3440",
-	.dim_text	= "#4C566A",
-	.scanline	= "rgba(46,52,64,0.035)",
-	.accent		= "#A3BE8C",
-
-	.nord0		= "#2E3440",
-	.nord1		= "#3B4252",
-	.nord2		= "#434C5E",
-	.nord3		= "#4C566A",
-	.nord4		= "#D8DEE9",
-	.nord5		= "#E5E9F0",
-	.nord6		= "#ECEFF4",
-	.nord7		= "#8FBCBB",
-	.nord8		= "#88C0D0",
-	.nord9		= "#81A1C1",
-	.nord10		= "#5E81AC",
-	.nord11		= "#BF616A",
-	.nord12		= "#D08770",
-	.nord13		= "#EBCB8B",
-	.nord14		= "#A3BE8C",
-	.nord15		= "#B48EAD"
+	.bg       = 6,
+	.text     = 0,
+	.dim_text = 3,
+	.accent   = 14,
+	.scanline = 0
 };
 
 

@@ -5,30 +5,36 @@
  * Sincroniza a struct theme (C) com as CSS Variables (JS) 
  * e atualiza o cache do renderizador.
  */
-EM_JS(void, update_theme_colors, (const struct theme *t), {
-	if (!t || !Module.gfx) return;
+EM_JS(void, update_theme_colors, (const struct theme *t, const char *const *palette), {
+	if (!Module.gfx) return;
 	
 	const rootStyle = document.documentElement.style;
-	const getStr = (offset) => UTF8ToString(HEAP32[(t + offset) >> 2]);
+	const getPalette = (idx) => UTF8ToString(HEAP32[(palette >> 2) + idx]);
 
-	const bg = getStr(0);
-	const text = getStr(4);
-	const scanline = getStr(12);
+	/* t layout: bg(0), text(4), dim(8), accent(12), scanline(16) */
+	const bg_idx = HEAP32[t >> 2];
+	const tx_idx = HEAP32[(t + 4) >> 2];
+	const dm_idx = HEAP32[(t + 8) >> 2];
+	const ac_idx = HEAP32[(t + 12) >> 2];
+	const sc_idx = HEAP32[(t + 16) >> 2];
+
+	const bg = getPalette(bg_idx);
+	const text = getPalette(tx_idx);
 
 	rootStyle.setProperty('--bg-color', bg);
 	rootStyle.setProperty('--text-color', text);
-	rootStyle.setProperty('--dim-text-color', getStr(8));
-	rootStyle.setProperty('--scanline-color', scanline);
-	rootStyle.setProperty('--accent-color', getStr(16));
+	rootStyle.setProperty('--dim-text-color', getPalette(dm_idx));
+	rootStyle.setProperty('--scanline-color', getPalette(sc_idx));
+	rootStyle.setProperty('--accent-color', getPalette(ac_idx));
 
 	for (let i = 0; i < 16; i++) {
-		rootStyle.setProperty('--nord' + i, getStr(20 + i * 4));
+		rootStyle.setProperty('--nord' + i, getPalette(i));
 	}
 
 	/* Atualiza cache de renderização */
 	Module.gfx.bg = bg;
 	Module.gfx.textColor = text;
-	Module.gfx.scanlineColor = scanline;
+	Module.gfx.scanlineColor = getPalette(sc_idx);
 });
 
 EM_JS(void, init_graphics, (const struct theme *t, int header_h), {
@@ -54,11 +60,13 @@ EM_JS(void, init_graphics, (const struct theme *t, int header_h), {
 	onResize();
 });
 
-EM_JS(void, render_update_strings, (const char *label_ptr, const char *text_color_ptr, const char *scanline_color_ptr), {
+EM_JS(void, render_update_strings, (const char *label_ptr, int text_color_idx, int scanline_color_idx, const char *const *palette), {
 	if (!Module.gfx) return;
+	const getPalette = (idx) => UTF8ToString(HEAP32[(palette >> 2) + idx]);
+
 	Module.gfx.label         = UTF8ToString(label_ptr);
-	Module.gfx.textColor     = UTF8ToString(text_color_ptr);
-	Module.gfx.scanlineColor = UTF8ToString(scanline_color_ptr);
+	Module.gfx.textColor     = getPalette(text_color_idx);
+	Module.gfx.scanlineColor = getPalette(scanline_color_idx);
 });
 
 EM_JS(void, apply_style, (const char *selector_cstr, const char *style_cstr), {
@@ -90,7 +98,9 @@ EM_JS(void, draw_frame, (float t), {
 	ctx.globalAlpha = FLICKER_BASE + Math.sin(t * FLICKER_SPEED) * FLICKER_AMP;
 	ctx.fillText(label, W / 2, header_h / 2);
 
-	ctx.globalAlpha = 1.0;
+	/* Scanline com opacidade programática */
+	ctx.globalAlpha = 0.035;
 	ctx.fillStyle 	= scanlineColor;
 	ctx.fillRect(0, (t * SCANLINE_SPEED) % H, W, 2);
+	ctx.globalAlpha = 1.0;
 });

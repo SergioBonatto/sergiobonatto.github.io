@@ -8,5 +8,6 @@ void switch_page(bool blog);
 void open_article(int index);
 int open_article_by_slug(const char *slug);
 void switch_to_404(void);
+void load_article(int index);
 
 #endif
