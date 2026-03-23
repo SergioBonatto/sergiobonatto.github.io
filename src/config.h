@@ -5,10 +5,6 @@
 
 struct timing_config {
 	float tick_delta;
-	float flicker_speed;
-	float flicker_base;
-	float flicker_amp;
-	float scanline_speed;
 };
 
 extern const struct timing_config timing;
@@ -20,7 +16,6 @@ struct theme {
 	int text;
 	int dim_text;
 	int accent;
-	int scanline;
 };
 
 extern const struct theme theme_dark;
@@ -39,7 +34,6 @@ struct blog_post {
 	const char *description;
 };
 
-/* Defined in contents_data.h (auto-generated) */
 extern const struct blog_post posts[];
 extern const int posts_count;
 
@@ -49,6 +43,7 @@ extern const char *msg_header;
 extern const char *msg_whoami;
 extern const char *msg_bio;
 extern const char *msg_seo;
+extern const char *msg_github_url;
 extern const char *msg_404_title;
 extern const char *msg_404_body;
 

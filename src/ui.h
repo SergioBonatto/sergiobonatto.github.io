@@ -49,8 +49,9 @@ void add_theme_toggle(const char *label, const char *style);
  * add_footer - Appends a footer element to the body.
  * @year: current year
  * @style: CSS style string
+ * @github_url: GitHub profile URL
  */
-void add_footer(int year, const char *style);
+void add_footer(int year, const char *style, const char *github_url);
 
 /*
  * clear_feed - Removes all content from the feed element.

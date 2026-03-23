@@ -27,7 +27,7 @@ int main(void)
 
 	init_graphics(state.theme, UI_HEADER_HEIGHT);
 	update_theme_colors(state.theme, nord_palette);
-	render_update_strings(msg_header, state.theme->text, state.theme->scanline, nord_palette);
+	render_update_strings(msg_header, state.theme->text, nord_palette);
 
 	apply_style("#feed", css_feed);
 	add_theme_toggle(":light", css_theme_toggle);

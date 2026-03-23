@@ -51,5 +51,5 @@ void page_add_footer(void)
 	tm = *localtime(&t);
 	year = tm.tm_year + 1900;
 
-	add_footer(year, css_footer);
+	add_footer(year, css_footer, msg_github_url);
 }

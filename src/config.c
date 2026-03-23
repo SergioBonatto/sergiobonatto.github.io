@@ -1,11 +1,7 @@
 #include "config.h"
 
 const struct timing_config timing = {
-	.tick_delta		= 0.016f,
-	.flicker_speed	= 12.0f,
-	.flicker_base	= 0.8f,
-	.flicker_amp	= 0.15f,
-	.scanline_speed = 120.0f
+	.tick_delta		= 0.016f
 };
 
 const char *nord_palette[16] = {
@@ -19,25 +15,22 @@ const struct theme theme_dark = {
 	.bg       = 0,
 	.text     = 6,
 	.dim_text = 9,
-	.accent   = 14,
-	.scanline = 6
+	.accent   = 14
 };
 
 const struct theme theme_light = {
 	.bg       = 6,
 	.text     = 0,
 	.dim_text = 3,
-	.accent   = 14,
-	.scanline = 0
+	.accent   = 14
 };
 
-
 const char *css_theme_toggle =
-	"position: fixed; top: 20px; right: 30px; "
+	"position: fixed; top: 20px; right: 20px; "
 	"font-size: 14px; user-select: none; cursor: pointer;";
 
 const char *css_nav_blog =
-	"position: fixed; top: 20px; right: 90px; "
+	"position: fixed; top: 20px; right: 80px; "
 	"font-size: 14px; user-select: none; cursor: pointer;";
 
 const char *css_nav_home =
@@ -52,13 +45,9 @@ const char *css_footer =
 	"background-color: var(--bg-color); color: var(--text-color); "
 	"font-size: 14px; margin-top: 40px;";
 
-/* 
- * NOTE: The 'posts' array and 'posts_count' are now auto-generated
- * by tools/packer.c and reside in src/contents_data.h
- */
-
 const char *msg_header = "BONATTO";
 const char *msg_whoami = "whoami";
+const char *msg_github_url = "https://github.com/SergioBonatto";
 
 const char *msg_bio =
 	"Work spans formal methods, functional programming, and operating systems. "

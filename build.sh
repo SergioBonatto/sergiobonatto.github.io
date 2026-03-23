@@ -6,17 +6,17 @@ mkdir -p build
 gcc tools/packer.c -O2 -o tools/packer
 ./tools/packer contents > src/contents_data.h
 
-# 1. Hashing de Assets Estáticos (Imagens)
+# 1. Static Assets Hashing
 PFP_SRC="public/pfp.avif"
 PFP_HASH=$(shasum -a 256 "$PFP_SRC" | cut -c 1-8)
 PFP_DIST="public/pfp.$PFP_HASH.avif"
 
-# Limpa versões antigas para manter o repo leve
+# Cleanup old versions
 rm -f public/pfp.*.avif
 cp "$PFP_SRC" "$PFP_DIST"
 echo "#define ASSET_PFP \"$PFP_DIST\"" > src/assets.h
 
-# 2. Compilação
+# 2. Compilation
 echo "[" > compile_commands.json
 for file in src/*.c; do
     emcc "$file" -Isrc -DEMSCRIPTEN -MJ "$file.json" -c -o "build/$(basename "$file" .c).o"
@@ -34,26 +34,26 @@ src/config.c src/main.c src/render.c src/ui.c src/markdown.c src/pages.c src/rou
 -s EXPORTED_RUNTIME_METHODS='["UTF8ToString","ccall","cwrap"]' \
 -o build/app.js
 
-# 3. Pós-processamento e Hashing do JS/WASM
+# 3. Post-processing and JS/WASM Hashing
 wasm-opt -Oz --all-features build/app.wasm -o build/app.wasm || echo "wasm-opt skipped"
 terser build/app.js -c -m -o build/app.js || echo "terser skipped"
 
 JS_HASH=$(shasum -a 256 build/app.js | cut -c 1-8)
 WASM_HASH=$(shasum -a 256 build/app.wasm | cut -c 1-8)
 
-# Limpa builds antigos antes de renomear
+# Cleanup old builds before renaming
 rm -f build/app.*.js build/app.*.wasm build/app.*.br
 
 mv build/app.wasm "build/app.$WASM_HASH.wasm"
 mv build/app.js "build/app.$JS_HASH.js"
 
-# Patch no JS para apontar para o novo .wasm
+# Patch JS to point to new .wasm
 sed -i '' "s/app.wasm/app.$WASM_HASH.wasm/g" "build/app.$JS_HASH.js"
 
-# 4. Gerar index.html final
+# 4. Generate final index.html
 sed "s|{{PFP}}|$PFP_DIST|g; s|{{JS}}|build/app.$JS_HASH.js|g" index.template.html > index.html
 
-# 5. Compressão (opcional, gera arquivos .br extras)
+# 5. Compression (optional .br files)
 brotli -f -Z "build/app.$JS_HASH.js" || echo "brotli skipped"
 brotli -f -Z "build/app.$WASM_HASH.wasm" || echo "brotli skipped"
 

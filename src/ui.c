@@ -56,7 +56,7 @@ EM_JS(void, add_image, (const char *path_ptr, size_t path_len, const char *alt_p
 		alt = decoder.decode(HEAPU8.subarray(alt_ptr, alt_ptr + alt_len));
 	}
 
-	const img 			= document.createElement("img");
+	const img 		= document.createElement("img");
 	img.src 			= url;
 	img.alt 			= alt;
 	
@@ -100,24 +100,23 @@ EM_JS(void, add_theme_toggle, (const char *label_cstr, const char *style_cstr), 
 	document.body.appendChild(btn);
 });
 
-EM_JS(void, add_footer, (int year, const char *style_cstr), {
+EM_JS(void, add_footer, (int year, const char *style_cstr, const char *github_url_cstr), {
 	const style = UTF8ToString(style_cstr);
+	const github_url = UTF8ToString(github_url_cstr);
 
 	const footer = document.createElement("footer");
 	footer.id = "main-footer";
 	footer.style.cssText = style;
 
 	footer.innerHTML = `
-		<div style="max-width: 1280px; margin: 0 auto; padding: 0 8px;">
-			<div style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 16px;">
-				<div style="display: flex; align-items: center; gap: 12px;">
-					<div style="font-size: 14px; display: flex; align-items: center; gap: 8px;">
-						<span>&copy; ${Number(year)}</span>
-						<span style="color: var(--dim-text-color)">&bull;</span>
-						<span>[Bonatto]</span>
-						<span style="color: var(--dim-text-color)">&bull;</span>
-						<span>Vim powered</span>
-					</div>
+		<div style="max-width: 900px; margin: 0 auto; padding: 0 20px;">
+			<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px;">
+				<div style="font-size: 14px; display: flex; align-items: center; gap: 8px;">
+					<span>&copy; ${Number(year)} [Bonatto]</span>
+					<span style="color: var(--dim-text-color)">&bull;</span>
+					<span>Vim powered</span>
+					<span style="color: var(--dim-text-color)">&bull;</span>
+					<a href="${github_url}" target="_blank" style="color: var(--text-color); text-decoration: none; font-size: 14px;">GitHub</a>
 				</div>
 			</div>
 		</div>
@@ -135,12 +134,12 @@ EM_JS(void, clear_feed, (void), {
 EM_JS(void, add_nav_link, (const char *label_cstr, const char *style_cstr, const char *id_cstr), {
 	const label = UTF8ToString(label_cstr);
 	const style = UTF8ToString(style_cstr);
-	const id 	= UTF8ToString(id_cstr);
+	const id 		= UTF8ToString(id_cstr);
 
-	const btn 			= document.createElement("div");
-	btn.id 				= id;
+	const btn 				= document.createElement("div");
+	btn.id 						= id;
 	btn.textContent 	= label;
-	btn.style.cssText 	= style;
+	btn.style.cssText = style;
 
 	btn.onclick = () => {
 		if (Module._switch_page) {
@@ -309,5 +308,5 @@ void ui_toggle_theme(void)
 
 	update_theme_toggle_label(state.is_dark ? ":light" : ":dark");
 	update_theme_colors(state.theme, nord_palette);
-	render_update_strings(msg_header, state.theme->text, state.theme->scanline, nord_palette);
+	render_update_strings(msg_header, state.theme->text, nord_palette);
 }
