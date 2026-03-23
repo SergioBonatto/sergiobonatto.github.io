@@ -9,20 +9,18 @@
 #include "pages.h"
 
 struct site_state state = {
-	.runtime 	= 0.0f,
-	.is_dark 	= true,
-	.theme 		= &theme_dark,
-	.page 		= PAGE_INITIAL
+	.runtime	= 0.0f,
+	.is_dark	= true,
+	.theme		= &theme_dark,
+	.page		= PAGE_INITIAL
 };
 
-static void render_tick(void)
-{
+static void render_tick(void) {
 	state.runtime += timing.tick_delta;
 	draw_frame(state.runtime);
 }
 
-int main(void)
-{
+int main(void) {
 	char initial_hash[256];
 
 	init_graphics(state.theme, UI_HEADER_HEIGHT);

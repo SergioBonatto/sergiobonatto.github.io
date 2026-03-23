@@ -45,6 +45,33 @@ EM_JS(void, add_paragraph, (const char *ptr, size_t len), {
 	Module.ui_append_para(text);
 });
 
+EM_JS(void, add_code_block, (const char *lang_ptr, size_t lang_len, const char *code_ptr, size_t code_len), {
+	ui_init_internal();
+
+	const decoder = new TextDecoder("utf-8");
+	const lang = decoder.decode(HEAPU8.subarray(lang_ptr, lang_ptr + lang_len));
+	const code = decoder.decode(HEAPU8.subarray(code_ptr, code_ptr + code_len));
+
+	const pre = document.createElement("pre");
+	pre.style.background = "var(--nord1)";
+	pre.style.padding = "16px";
+	pre.style.borderRadius = "4px";
+	pre.style.overflowX = "auto";
+	pre.style.border = "1px solid var(--nord3)";
+	pre.style.margin = "20px 0";
+
+	const code_el = document.createElement("code");
+	code_el.className = "language-" + lang;
+	code_el.textContent = code;
+	code_el.style.fontFamily = "'Courier New', monospace";
+	code_el.style.fontSize = "14px";
+	code_el.style.lineHeight = "1.5";
+	code_el.style.color = "var(--text-color)";
+
+	pre.appendChild(code_el);
+	Module.ui_append_para(pre);
+});
+
 EM_JS(void, add_image, (const char *path_ptr, size_t path_len, const char *alt_ptr, size_t alt_len, float scale, int width, int height, int is_lcp), {
 	ui_init_internal();
 	

@@ -24,6 +24,16 @@ struct bar_segment {
 void add_paragraph(const char *text_ptr, size_t len);
 
 /*
+ * add_code_block - Appends a code block to the feed.
+ * @lang_ptr: language identifier (e.g., "c", "js")
+ * @lang_len: length of language string
+ * @code_ptr: source code content
+ * @code_len: length of code string
+ */
+void add_code_block(const char *lang_ptr, size_t lang_len,
+		    const char *code_ptr, size_t code_len);
+
+/*
  * add_image - Appends an image to the feed element.
  * @path_ptr: pointer to the image path
  * @path_len: length of the path string

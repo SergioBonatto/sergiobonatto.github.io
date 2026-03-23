@@ -1,6 +1,7 @@
 #include <emscripten.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "ui.h"
 #include "config.h"
 #include "contents_data.h"
@@ -128,6 +129,10 @@ void render_markdown(const char *content) {
 	const char *next;
 	size_t len;
 	int fm_count = 0;
+	bool in_code_block = false;
+	const char *code_start = NULL;
+	const char *lang_start = NULL;
+	size_t lang_len = 0;
 
 	if (!content)
 		return;
@@ -139,10 +144,26 @@ void render_markdown(const char *content) {
 		if (len > 0 && cur[len - 1] == '\r')
 			len--;
 
-		if (len >= 3 && cur[0] == '-' && cur[1] == '-' && cur[2] == '-') {
-			fm_count++;
-		} else if (fm_count % 2 == 0) {
-			render_line(cur, len);
+		if (!in_code_block && len >= 3 && !strncmp(cur, "```", 3)) {
+			in_code_block = true;
+			lang_start = cur + 3;
+			lang_len = len - 3;
+			code_start = next ? next + 1 : NULL;
+		} else if (in_code_block && len >= 3 && !strncmp(cur, "```", 3)) {
+			if (code_start) {
+				size_t code_len = cur - code_start;
+				if (code_len > 0 && code_start[code_len - 1] == '\n')
+					code_len--;
+				add_code_block(lang_start, lang_len, code_start, code_len);
+			}
+			in_code_block = false;
+			code_start = NULL;
+		} else if (!in_code_block) {
+			if (len >= 3 && cur[0] == '-' && cur[1] == '-' && cur[2] == '-') {
+				fm_count++;
+			} else if (fm_count % 2 == 0) {
+				render_line(cur, len);
+			}
 		}
 
 		if (!next)
