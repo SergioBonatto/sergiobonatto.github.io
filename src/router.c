@@ -12,12 +12,9 @@
 
 void switch_to_404(void)
 {
-	if (state.page == PAGE_404)
-		return;
-
-	state.page = PAGE_404;
-	clear_feed();
+	ui_begin_render();
 	page_render_404();
+	ui_end_render();
 }
 
 EMSCRIPTEN_KEEPALIVE
@@ -29,8 +26,9 @@ void open_article(int index)
 		return;
 
 	state.page = PAGE_ARTICLE;
-	clear_feed();
+	ui_begin_render();
 	load_article(index);
+	ui_end_render();
 
 	snprintf(buf, sizeof(buf), "#/post/%s", posts[index].slug);
 	ui_sync_url(buf);
@@ -40,9 +38,7 @@ void open_article(int index)
 
 int open_article_by_slug(const char *slug)
 {
-	int i;
-
-	for (i = 0; i < posts_count; i++) {
+	for (int i = 0; i < posts_count; i++) {
 		if (strcmp(posts[i].slug, slug) == 0) {
 			open_article(i);
 			return 0;
@@ -56,19 +52,16 @@ void switch_page(bool blog)
 {
 	enum page_state next_page = blog ? PAGE_BLOG_INDEX : PAGE_HOME;
 
-	if (state.page == next_page)
-		return;
-
 	state.page = next_page;
-	clear_feed();
-
-	if (state.page == PAGE_BLOG_INDEX) {
+	ui_begin_render();
+	if (blog) {
 		page_render_blog();
 		ui_sync_url("#/blog");
 	} else {
 		page_render_home();
 		ui_sync_url("#/");
 	}
+	ui_end_render();
 }
 
 EMSCRIPTEN_KEEPALIVE

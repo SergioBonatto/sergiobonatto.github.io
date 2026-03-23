@@ -1,339 +1,105 @@
+#include <stdio.h>
+#include <string.h>
 #include <emscripten.h>
 #include "ui.h"
 #include "state.h"
-#include "render.h"
+#include "buffer.h"
+#include "js_api.h"
 
-EM_JS(void, ui_init_internal, (void), {
-	if (Module.ui_initialized)
-		return;
+void add_paragraph(const char *text, size_t len) {
+	buf_append(&g_html_buf, "<p class=\"para\">> ");
+	buf_escape(&g_html_buf, text, len);
+	buf_append(&g_html_buf, "</p>");
+}
 
-	Module.ui_get_feed = () => {
-		if (!Module.ui_feed) {
-			Module.ui_feed = document.getElementById("feed");
-		}
-		return Module.ui_feed;
-	};
+void add_code_block(const char *lang, size_t lang_len, const char *code, size_t code_len) {
+	buf_printf(&g_html_buf,
+	           "<pre style=\"background:var(--nord1);padding:16px;border-radius:4px;overflow-x:auto;border:1px solid var(--nord3);margin:20px 0;\">"
+	           "<code class=\"language-%.*s\" style=\"font-family:'Courier New',monospace;font-size:14px;line-height:1.5;color:var(--text-color);\">",
+	           (int)lang_len, lang);
+	buf_escape(&g_html_buf, code, code_len);
+	buf_append(&g_html_buf, "</code></pre>");
+}
 
-	Module.ui_append_para = (content) => {
-		const feed = Module.ui_get_feed();
-		if (!feed)
-			return;
+void add_image(const char *path, size_t path_len, const char *alt, size_t alt_len, float scale, int width, int height, int is_lcp) {
+	buf_printf(&g_html_buf, "<p class=\"para\"><img src=\"%.*s\" alt=\"%.*s\" %s %s %s style=\"max-width:100%%;height:auto;%s\"",
+	           (int)path_len, path, (int)alt_len, alt ? alt : "",
+	           is_lcp ? "fetchpriority=\"high\" loading=\"eager\"" : "loading=\"lazy\"",
+	           width > 0 ? "width=\"...\"" : "",
+	           height > 0 ? "height=\"...\"" : "",
+	           (scale > 0 && scale != 1.0f) ? "width:auto;" : "");
 
-		const p = document.createElement("p");
-		p.className = "para";
-		if (typeof content === "string") {
-			p.textContent = "> " + content;
+	if (scale > 0 && scale != 1.0f) {
+		buf_printf(&g_html_buf, " onload=\"this.style.width=(this.naturalWidth*%f)+'px'\"", scale);
+	}
+
+	buf_append(&g_html_buf, "></p>");
+}
+
+void add_blog_entry(const char *title, const char *date, int index) {
+	buf_printf(&g_html_buf,
+	           "<div style=\"margin-bottom:20px;display:flex;gap:20px;\">"
+	           "<span style=\"color:var(--dim-text-color);min-width:100px;\">%s</span>"
+	           "<a href=\"#/blog/%d\" onclick=\"Module._open_article(%d);return false;\" style=\"color:var(--text-color);text-decoration:none;\">%s</a>"
+	           "</div>",
+	           date, index, index, title);
+}
+
+void add_bar(int h, int w, const float *pcts, const char **colors, const float *opacities, const int *styles, int n) {
+	buf_printf(&g_html_buf, "<div style=\"width:%dpx;height:%dpx;border:1px solid var(--text-color);display:flex;flex-direction:column;\">", w, h);
+	for (int i = 0; i < n; i++) {
+		const char *style_str = "";
+		if (styles[i] == BAR_SEG_HATCHED) {
+			style_str = "background-image:repeating-linear-gradient(45deg,transparent,transparent 2px,var(%s) 2px,var(%s) 3px);";
 		} else {
-			p.appendChild(content);
+			style_str = "background:var(%s);";
 		}
 
-		feed.appendChild(p);
-		feed.scrollTop = feed.scrollHeight;
-		return p;
-	};
-
-	Module.ui_initialized = true;
-});
-
-EM_JS(void, add_paragraph, (const char *ptr, size_t len), {
-	ui_init_internal();
-	
-	const view 		= HEAPU8.subarray(ptr, ptr + len);
-	const decoder 	= new TextDecoder("utf-8");
-	const text 		= decoder.decode(view);
-	
-	Module.ui_append_para(text);
-});
-
-EM_JS(void, add_code_block, (const char *lang_ptr, size_t lang_len, const char *code_ptr, size_t code_len), {
-	ui_init_internal();
-
-	const decoder = new TextDecoder("utf-8");
-	const lang = decoder.decode(HEAPU8.subarray(lang_ptr, lang_ptr + lang_len));
-	const code = decoder.decode(HEAPU8.subarray(code_ptr, code_ptr + code_len));
-
-	const pre = document.createElement("pre");
-	pre.style.background = "var(--nord1)";
-	pre.style.padding = "16px";
-	pre.style.borderRadius = "4px";
-	pre.style.overflowX = "auto";
-	pre.style.border = "1px solid var(--nord3)";
-	pre.style.margin = "20px 0";
-
-	const code_el = document.createElement("code");
-	code_el.className = "language-" + lang;
-	code_el.textContent = code;
-	code_el.style.fontFamily = "'Courier New', monospace";
-	code_el.style.fontSize = "14px";
-	code_el.style.lineHeight = "1.5";
-	code_el.style.color = "var(--text-color)";
-
-	pre.appendChild(code_el);
-	Module.ui_append_para(pre);
-});
-
-EM_JS(void, add_image, (const char *path_ptr, size_t path_len, const char *alt_ptr, size_t alt_len, float scale, int width, int height, int is_lcp), {
-	ui_init_internal();
-	
-	const decoder = new TextDecoder("utf-8");
-	const url = decoder.decode(HEAPU8.subarray(path_ptr, path_ptr + path_len));
-	
-	let alt = "";
-	if (alt_ptr && alt_len > 0) {
-		alt = decoder.decode(HEAPU8.subarray(alt_ptr, alt_ptr + alt_len));
+		buf_printf(&g_html_buf, "<div style=\"height:%.1f%%;opacity:%.2f;", pcts[i] * 100.0f, opacities[i]);
+		buf_printf(&g_html_buf, style_str, colors[i], colors[i]);
+		buf_append(&g_html_buf, "\"></div>");
 	}
+	buf_append(&g_html_buf, "</div>");
+}
 
-	const img 		= document.createElement("img");
-	img.src 			= url;
-	img.alt 			= alt;
-	
-	if (is_lcp) {
-		img.fetchPriority = "high";
-		img.loading = "eager";
-	} else {
-		img.loading = "lazy";
-	}
+void ui_begin_render(void) {
+	buf_reset(&g_html_buf);
+}
 
-	if (width > 0) img.width = width;
-	if (height > 0) img.height = height;
+void ui_end_render(void) {
+	sys_set_html("#feed", g_html_buf.data);
+}
 
-	img.style.maxWidth 	= "100%";
-	img.style.height 	= "auto";
+void clear_feed(void) {
+	sys_set_html("#feed", "");
+}
 
-	if (scale > 0 && scale !== 1.0) {
-		img.onload = () => {
-			img.style.width = (img.naturalWidth * scale) + "px";
-		};
-	}
-
-	Module.ui_append_para(img);
-});
-
-EM_JS(void, add_theme_toggle, (const char *label_cstr, const char *style_cstr), {
-	const label = UTF8ToString(label_cstr);
-	const style = UTF8ToString(style_cstr);
-
-	const btn 			= document.createElement("div");
-	btn.id 				= "theme-toggle";
-	btn.textContent 	= label;
-	btn.style.cssText 	= style;
-
-	btn.onclick = () => {
-		if (Module._ui_toggle_theme) {
-			Module._ui_toggle_theme();
-		}
-	};
-
-	document.body.appendChild(btn);
-});
-
-EM_JS(void, add_footer, (int year, const char *style_cstr, const char *github_url_cstr), {
-	const style = UTF8ToString(style_cstr);
-	const github_url = UTF8ToString(github_url_cstr);
-
-	const footer = document.createElement("footer");
-	footer.id = "main-footer";
-	footer.style.cssText = style;
-
-	footer.innerHTML = `
-		<div style="max-width: 900px; margin: 0 auto; padding: 0 20px;">
-			<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px;">
-				<div style="font-size: 14px; display: flex; align-items: center; gap: 8px;">
-					<span>&copy; ${Number(year)} [Bonatto]</span>
-					<span style="color: var(--dim-text-color)">&bull;</span>
-					<span>Vim powered</span>
-					<span style="color: var(--dim-text-color)">&bull;</span>
-					<a href="${github_url}" target="_blank" style="color: var(--text-color); text-decoration: none; font-size: 14px;">GitHub</a>
-				</div>
-			</div>
-		</div>
-	`;
-
-	document.body.appendChild(footer);
-});
-
-EM_JS(void, clear_feed, (void), {
-	const feed = (Module.ui_get_feed) ? Module.ui_get_feed() : document.getElementById("feed");
-	if (feed)
-		feed.innerHTML = "";
-});
-
-EM_JS(void, add_nav_link, (const char *label_cstr, const char *style_cstr, const char *id_cstr), {
-	const label = UTF8ToString(label_cstr);
-	const style = UTF8ToString(style_cstr);
-	const id 		= UTF8ToString(id_cstr);
-
-	const btn 				= document.createElement("div");
-	btn.id 						= id;
-	btn.textContent 	= label;
-	btn.style.cssText = style;
-
-	btn.onclick = () => {
-		if (Module._switch_page) {
-			const isBlog = btn.id === "nav-blog";
-			Module._switch_page(isBlog);
-		}
-	};
-
-	document.body.appendChild(btn);
-});
-
-EM_JS(void, add_blog_entry, (const char *title_cstr, const char *date_cstr, int index), {
-	ui_init_internal();
-	const title = UTF8ToString(title_cstr);
-	const date = UTF8ToString(date_cstr);
-
-	const container 				= document.createElement("div");
-	container.style.marginBottom 	= "20px";
-	container.style.display 		= "flex";
-	container.style.gap 			= "20px";
-
-	const dateEl 				= document.createElement("span");
-	dateEl.style.color 			= "var(--dim-text-color)";
-	dateEl.style.minWidth 		= "100px";
-	dateEl.textContent 			= date;
-
-	const link 					= document.createElement("a");
-	link.href 					= "#";
-	link.textContent 			= title;
-	link.style.color 			= "var(--text-color)";
-	link.style.textDecoration 	= "none";
-	link.style.cursor 			= "pointer";
-	link.onmouseover 			= () => link.style.textDecoration = "underline";
-	link.onmouseout 			= () => link.style.textDecoration = "none";
-
-	link.onclick = (e) => {
-		e.preventDefault();
-		if (Module._open_article) {
-			Module._open_article(index);
-		}
-	};
-
-	container.appendChild(dateEl);
-	container.appendChild(link);
-
-	Module.ui_append_para(container);
-});
-
-EM_JS(void, update_theme_toggle_label, (const char *label_cstr), {
-	const label = UTF8ToString(label_cstr);
-	const btn = document.getElementById("theme-toggle");
-	if (btn)
-		btn.textContent = label;
-});
-
-EM_JS(void, ui_init_router, (void), {
-	window.addEventListener('hashchange', () => {
-		if (Module._handle_route) {
-			const hash 		= window.location.hash || "#/";
-			const length 	= lengthBytesUTF8(hash) + 1;
-			const pathPtr 	= _malloc(length);
-			stringToUTF8(hash, pathPtr, length);
-			Module._handle_route(pathPtr);
-			_free(pathPtr);
-		}
-	});
-});
-
-EM_JS(void, ui_sync_url, (const char *path_cstr), {
-	const path = UTF8ToString(path_cstr);
-	if (window.location.hash !== path) {
-		history.pushState(null, "", path);
-	}
-});
-
-EM_JS(void, ui_get_current_hash, (char *buf, int max_len), {
-	const hash = window.location.hash || "#/";
-	stringToUTF8(hash, buf, max_len);
-});
-
-EM_JS(void, update_seo_metadata, (const char *title_ptr, const char *desc_ptr, const char *url_ptr), {
-	const title 	= UTF8ToString(title_ptr);
-	const desc 		= UTF8ToString(desc_ptr);
-	const url 		= UTF8ToString(url_ptr);
-	const baseUrl 	= "https://sergiobonatto.github.io";
-	const imgUrl 	= baseUrl + "/public/SEO.png";
-	const fullUrl 	= baseUrl + (url.startsWith('/') ? url : '/' + url);
-
-	document.title = title;
-
-	const setMeta = (attr, name, content) => {
-		let el = document.querySelector(`meta[${attr}="${name}"]`);
-		if (!el) {
-			el = document.createElement('meta');
-			el.setAttribute(attr, name);
-			document.head.appendChild(el);
-		}
-		el.setAttribute('content', content);
-	};
-
-	setMeta('name', 'description', desc);
-	setMeta('property', 'og:title', title);
-	setMeta('property', 'og:description', desc);
-	setMeta('property', 'og:url', fullUrl);
-	setMeta('property', 'og:image', imgUrl);
-	setMeta('property', 'og:site_name', 'Sergio Bonatto');
-	setMeta('name', 'twitter:title', title);
-	setMeta('name', 'twitter:description', desc);
-	setMeta('name', 'twitter:image', imgUrl);
-	setMeta('name', 'twitter:card', 'summary_large_image');
-	setMeta('name', 'twitter:site', '@fibonatto');
-	setMeta('name', 'twitter:creator', '@fibonatto');
-
-	let canonical = document.querySelector('link[rel="canonical"]');
-	if (!canonical) {
-		canonical = document.createElement('link');
-		canonical.setAttribute('rel', 'canonical');
-		document.head.appendChild(canonical);
-	}
-	canonical.setAttribute('href', fullUrl);
-});
-
-EM_JS(void, add_bar, (int height, int width, const float *pcts, const char **colors, const float *opacities, const int *styles, int n), {
-	ui_init_internal();
-
-	const container = document.createElement("div");
-	container.style.width 			= width + "px";
-	container.style.height 			= height + "px";
-	container.style.border 			= "1px solid var(--text-color)";
-	container.style.display 		= "flex";
-	container.style.flexDirection 	= "column";
-
-	for (let i = 0; i < n; i++) {
-		const pct 		= HEAPF32[(pcts >> 2) + i];
-		const colorPtr 	= HEAP32[(colors >> 2) + i];
-		const opacity 	= HEAPF32[(opacities >> 2) + i];
-		const style 	= HEAP32[(styles >> 2) + i];
-
-		const color_var = UTF8ToString(colorPtr);
-
-		const seg 			= document.createElement("div");
-		seg.style.height 	= (pct * 100) + "%";
-		seg.style.opacity 	= opacity;
-
-		if (style === 0) { /* BAR_SEG_SOLID */
-			seg.style.background = "var(" + color_var + ")";
-		} else if (style === 1) { /* BAR_SEG_HATCHED */
-			const c = "var(" + color_var + ")";
-			seg.style.backgroundImage =
-				"repeating-linear-gradient(45deg, " +
-				"transparent, transparent 2px, " +
-				c + " 2px, " + c + " 3px)";
-		}
-
-		container.appendChild(seg);
-	}
-
-	Module.ui_append_para(container);
-});
+void add_footer(int year, const char *style, const char *github_url) {
+	char footer_html[1024];
+	snprintf(footer_html, sizeof(footer_html),
+		"<div style=\"max-width:900px;margin:0 auto;padding:0 20px;\">"
+		"<div style=\"display:flex;justify-content:space-between;align-items:center;gap:16px;\">"
+		"<div style=\"font-size:14px;display:flex;align-items:center;gap:8px;\">"
+		"<span>&copy; %d [Bonatto]</span>"
+		"<span style=\"color:var(--dim-text-color)\">&bull;</span>"
+		"<span>Vim powered</span>"
+		"<span style=\"color:var(--dim-text-color)\">&bull;</span>"
+		"<a href=\"%s\" target=\"_blank\" style=\"color:var(--text-color);text-decoration:none;\">GitHub</a>"
+		"</div></div></div>", year, github_url);
+	sys_append_child("body", "footer", footer_html);
+	sys_set_style("footer", style);
+}
 
 EMSCRIPTEN_KEEPALIVE
-void ui_toggle_theme(void)
-{
+void ui_toggle_theme(void) {
 	state.is_dark = !state.is_dark;
 	state.theme = state.is_dark ? &theme_dark : &theme_light;
-
 	update_theme_toggle_label(state.is_dark ? ":light" : ":dark");
 	update_theme_colors(state.theme, nord_palette);
 	render_update_strings(msg_header, state.theme->text, nord_palette);
 }
+
+void ui_init_router(void) { sys_init_router(); }
+void ui_sync_url(const char *path) { sys_update_url(path); }
+void ui_get_current_hash(char *buf, int max_len) { sys_get_url_hash(buf, max_len); }
+void update_seo_metadata(const char *t, const char *d, const char *u) { sys_set_meta(t, d, u); }

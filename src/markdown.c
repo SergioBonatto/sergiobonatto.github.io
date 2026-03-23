@@ -34,7 +34,7 @@ static float fast_atof(const char **s) {
 }
 
 static void render_graph_shortcode(const char *p, size_t len) {
-	float pcts[16], opacities[16];
+	float pcts[16], opacs[16];
 	const char *colors[16];
 	int styles[16];
 	char color_names[256];
@@ -54,13 +54,11 @@ static void render_graph_shortcode(const char *p, size_t len) {
 		if (p < end && *p == ',') p++;
 
 		colors[n] = cn_ptr;
-		while (p < end && *p != ',') {
-			*cn_ptr++ = *p++;
-		}
+		while (p < end && *p != ',') *cn_ptr++ = *p++;
 		*cn_ptr++ = '\0';
 
 		if (p < end && *p == ',') p++;
-		opacities[n] = fast_atof(&p);
+		opacs[n] = fast_atof(&p);
 		if (p < end && *p == ',') p++;
 
 		if (p < end) {
@@ -74,8 +72,7 @@ static void render_graph_shortcode(const char *p, size_t len) {
 		n++;
 	}
 
-	if (n > 0)
-		add_bar(h, w, pcts, colors, opacities, styles, n);
+	if (n > 0) add_bar(h, w, pcts, colors, opacs, styles, n);
 }
 
 static void render_line(const char *line, size_t len) {
@@ -129,36 +126,34 @@ void render_markdown(const char *content) {
 	const char *next;
 	size_t len;
 	int fm_count = 0;
-	bool in_code_block = false;
+	bool in_code = false;
 	const char *code_start = NULL;
 	const char *lang_start = NULL;
 	size_t lang_len = 0;
 
-	if (!content)
-		return;
+	if (!content) return;
 
 	while (*cur) {
 		next = strchr(cur, '\n');
 		len = next ? (size_t)(next - cur) : strlen(cur);
 
-		if (len > 0 && cur[len - 1] == '\r')
-			len--;
+		if (len > 0 && cur[len - 1] == '\r') len--;
 
-		if (!in_code_block && len >= 3 && !strncmp(cur, "```", 3)) {
-			in_code_block = true;
-			lang_start = cur + 3;
-			lang_len = len - 3;
-			code_start = next ? next + 1 : NULL;
-		} else if (in_code_block && len >= 3 && !strncmp(cur, "```", 3)) {
-			if (code_start) {
-				size_t code_len = cur - code_start;
-				if (code_len > 0 && code_start[code_len - 1] == '\n')
-					code_len--;
-				add_code_block(lang_start, lang_len, code_start, code_len);
+		if (len >= 3 && !strncmp(cur, "```", 3)) {
+			if (!in_code) {
+				in_code = true;
+				lang_start = cur + 3;
+				lang_len = len - 3;
+				code_start = next ? next + 1 : NULL;
+			} else {
+				if (code_start) {
+					size_t clen = cur - code_start;
+					if (clen > 0 && code_start[clen - 1] == '\n') clen--;
+					add_code_block(lang_start, lang_len, code_start, clen);
+				}
+				in_code = false;
 			}
-			in_code_block = false;
-			code_start = NULL;
-		} else if (!in_code_block) {
+		} else if (!in_code) {
 			if (len >= 3 && cur[0] == '-' && cur[1] == '-' && cur[2] == '-') {
 				fm_count++;
 			} else if (fm_count % 2 == 0) {
@@ -166,14 +161,12 @@ void render_markdown(const char *content) {
 			}
 		}
 
-		if (!next)
-			break;
+		if (!next) break;
 		cur = next + 1;
 	}
 }
 
 void load_article(int index) {
 	const char *body = get_article_body(index);
-	if (body)
-		render_markdown(body);
+	if (body) render_markdown(body);
 }

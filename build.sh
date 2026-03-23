@@ -17,22 +17,28 @@ cp "$PFP_SRC" "$PFP_DIST"
 echo "#define ASSET_PFP \"$PFP_DIST\"" > src/assets.h
 
 # 2. Compilation
-echo "[" > compile_commands.json
-for file in src/*.c; do
-    emcc "$file" -Isrc -DEMSCRIPTEN -MJ "$file.json" -c -o "build/$(basename "$file" .c).o"
-    cat "$file.json" >> compile_commands.json
-    rm "$file.json"
-done
-sed -i '' '$ s/,$//' compile_commands.json
-echo "]" >> compile_commands.json
-
+echo "Compiling WASM..."
 emcc \
-src/config.c src/main.c src/render.c src/ui.c src/markdown.c src/pages.c src/router.c \
--Oz -flto -Isrc -s WASM=1 -s ASSERTIONS=0 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=0 \
--s FILESYSTEM=0 -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
+src/*.c \
+-Oz -Isrc -s WASM=1 -s ASSERTIONS=0 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=0 \
+-s FILESYSTEM=0 -s ERROR_ON_UNDEFINED_SYMBOLS=1 \
 -s EXPORTED_FUNCTIONS='["_main","_ui_toggle_theme","_switch_page","_render_markdown","_open_article","_handle_route","_malloc","_free"]' \
 -s EXPORTED_RUNTIME_METHODS='["UTF8ToString","ccall","cwrap"]' \
 -o build/app.js
+
+# Generate compile_commands.json
+echo "[" > compile_commands.json
+FIRST=1
+for file in src/*.c; do
+    if [ $FIRST -ne 1 ]; then
+        echo "," >> compile_commands.json
+    fi
+    emcc "$file" -Isrc -DEMSCRIPTEN -MJ "$file.json" -c -o "build/$(basename "$file" .c).o"
+    cat "$file.json" >> compile_commands.json
+    rm "$file.json"
+    FIRST=0
+done
+echo "]" >> compile_commands.json
 
 # 3. Post-processing and JS/WASM Hashing
 wasm-opt -Oz --all-features build/app.wasm -o build/app.wasm || echo "wasm-opt skipped"

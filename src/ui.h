@@ -64,6 +64,16 @@ void add_theme_toggle(const char *label, const char *style);
 void add_footer(int year, const char *style, const char *github_url);
 
 /*
+ * ui_begin_render - Resets the global HTML buffer.
+ */
+void ui_begin_render(void);
+
+/*
+ * ui_end_render - Flushes the global HTML buffer to the feed element.
+ */
+void ui_end_render(void);
+
+/*
  * clear_feed - Removes all content from the feed element.
  */
 void clear_feed(void);
