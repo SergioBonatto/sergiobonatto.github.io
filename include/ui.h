@@ -90,9 +90,10 @@ void add_nav_link(const char *label, const char *style, const char *id);
  * add_blog_entry - Appends a blog entry link to the feed element.
  * @title: post title
  * @date: post date string
+ * @slug: post URL slug
  * @index: index of the post in the global array
  */
-void add_blog_entry(const char *title, const char *date, int index);
+void add_blog_entry(const char *title, const char *date, const char *slug, int index);
 
 /*
  * update_theme_toggle_label - Updates the text of the theme toggle button.

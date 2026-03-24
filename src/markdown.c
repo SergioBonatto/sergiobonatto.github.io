@@ -92,29 +92,34 @@ static void render_line(const char *line, size_t len) {
 		add_paragraph(p, l);
 		return;
 	}
-	case '!':
-		if (len > 4 && line[1] == '[') {
-			const char *alt_s = line + 2;
-			const char *alt_e = memchr(alt_s, ']', len - 2);
-			if (alt_e && alt_e[1] == '(') {
-				const char *url_s = alt_e + 2;
-				const char *url_e = memchr(url_s, ')', len - (url_s - line));
-				if (url_e) {
-					add_image(url_s, url_e - url_s, alt_s, alt_e - alt_s, 1.0f, 0, 0, 0);
-					return;
-				}
-			}
-		}
-		break;
-	case '[':
-		if (len > 10 && line[1] == '[' && !strncmp(line + 2, "graph:", 6)) {
-			const char *p = memchr(line, ']', len);
-			if (p && p[1] == ']') {
-				render_graph_shortcode(line + 8, (p - line) - 8);
-				return;
-			}
-		}
-		break;
+	case '!': {
+		if (len <= 4 || line[1] != '[')
+			break;
+
+		const char *alt_s = line + 2;
+		const char *alt_e = memchr(alt_s, ']', len - 2);
+		if (!alt_e || alt_e[1] != '(')
+			break;
+
+		const char *url_s = alt_e + 2;
+		const char *url_e = memchr(url_s, ')', len - (url_s - line));
+		if (!url_e)
+			break;
+
+		add_image(url_s, url_e - url_s, alt_s, alt_e - alt_s, 1.0f, 0, 0, 0);
+		return;
+	}
+	case '[': {
+		if (len <= 10 || line[1] != '[' || strncmp(line + 2, "graph:", 6) != 0)
+			break;
+
+		const char *p = memchr(line, ']', len);
+		if (!p || p[1] != ']')
+			break;
+
+		render_graph_shortcode(line + 8, (p - line) - 8);
+		return;
+	}
 	}
 
 	add_paragraph(line, len);

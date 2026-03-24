@@ -44,26 +44,6 @@ EM_JS(void, sys_scroll_to_bottom, (const char *sel_ptr), {
     if (el) el.scrollTop = el.scrollHeight;
 });
 
-EM_JS(void, sys_update_theme_vars, (int bg_idx, int tx_idx, int dim_idx, int ac_idx, const char *const *palette), {
-    const getPalette = (idx) => UTF8ToString(HEAP32[(palette >> 2) + idx]);
-    const vars = {
-        '--bg-color': getPalette(bg_idx),
-        '--text-color': getPalette(tx_idx),
-        '--dim-text-color': getPalette(dim_idx),
-        '--accent-color': getPalette(ac_idx)
-    };
-
-    [document.documentElement, document.body].forEach(el => {
-        if (!el) return;
-        for (const [name, val] of Object.entries(vars)) {
-            el.style.setProperty(name, val);
-        }
-        for (let i = 0; i < 16; i++) {
-            el.style.setProperty('--nord' + i, getPalette(i));
-        }
-    });
-});
-
 EM_JS(void, sys_init_router, (void), {
     window.addEventListener('hashchange', () => {
         const hash = window.location.hash || "#/";
@@ -133,11 +113,13 @@ EM_JS(void, update_theme_colors, (const struct theme *t, const char *const *pale
 	const rootStyle = document.documentElement.style;
 	const getPalette = (idx) => UTF8ToString(HEAP32[(palette >> 2) + idx]);
 
-	/* t layout: bg(0), text(4), dim(8), accent(12) */
+	/* t layout: bg(0), text(4), dim(8), accent(12), code_bg(16), code_border(20) */
 	const bg_idx = HEAP32[t >> 2];
 	const tx_idx = HEAP32[(t + 4) >> 2];
 	const dm_idx = HEAP32[(t + 8) >> 2];
 	const ac_idx = HEAP32[(t + 12) >> 2];
+	const cb_idx = HEAP32[(t + 16) >> 2];
+	const cr_idx = HEAP32[(t + 20) >> 2];
 
 	const bg = getPalette(bg_idx);
 	const text = getPalette(tx_idx);
@@ -146,6 +128,8 @@ EM_JS(void, update_theme_colors, (const struct theme *t, const char *const *pale
 	rootStyle.setProperty('--text-color', text);
 	rootStyle.setProperty('--dim-text-color', getPalette(dm_idx));
 	rootStyle.setProperty('--accent-color', getPalette(ac_idx));
+	rootStyle.setProperty('--code-bg-color', getPalette(cb_idx));
+	rootStyle.setProperty('--code-border-color', getPalette(cr_idx));
 
 	for (let i = 0; i < 16; i++) {
 		rootStyle.setProperty('--nord' + i, getPalette(i));

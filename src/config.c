@@ -12,17 +12,21 @@ const char *nord_palette[16] = {
 };
 
 const struct theme theme_dark = {
-	.bg       = 0,
-	.text     = 6,
-	.dim_text = 9,
-	.accent   = 14
+	.bg          = 0,
+	.text        = 6,
+	.dim_text    = 9,
+	.accent      = 14,
+	.code_bg     = 1,
+	.code_border = 3
 };
 
 const struct theme theme_light = {
-	.bg       = 6,
-	.text     = 0,
-	.dim_text = 3,
-	.accent   = 14
+	.bg          = 6,
+	.text        = 0,
+	.dim_text    = 3,
+	.accent      = 14,
+	.code_bg     = 5,
+	.code_border = 4
 };
 
 const char *css_theme_toggle =

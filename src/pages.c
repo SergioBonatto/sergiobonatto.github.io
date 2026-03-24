@@ -23,7 +23,7 @@ void page_render_blog(void) {
 
 	add_paragraph(header, strlen(header));
 	for (i = 0; i < posts_count; i++) {
-		add_blog_entry(posts[i].title, posts[i].date, i);
+		add_blog_entry(posts[i].title, posts[i].date, posts[i].slug, i);
 	}
 
 	update_seo_metadata("Bonatto - Blog",

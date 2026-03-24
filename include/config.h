@@ -16,6 +16,8 @@ struct theme {
 	int text;
 	int dim_text;
 	int accent;
+	int code_bg;
+	int code_border;
 };
 
 extern const struct theme theme_dark;

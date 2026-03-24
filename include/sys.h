@@ -14,9 +14,6 @@ void sys_set_style(const char *selector, const char *css);
 void sys_append_child(const char *parent_sel, const char *tag, const char *html);
 void sys_scroll_to_bottom(const char *selector);
 
-void sys_update_theme_vars(int bg_idx, int tx_idx, int dim_idx, int accent_idx, 
-                          const char *const *palette_ptr);
-
 void sys_update_url(const char *path);
 void sys_get_url_hash(char *buf, size_t max_len);
 void sys_init_router(void);

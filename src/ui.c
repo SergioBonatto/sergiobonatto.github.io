@@ -14,7 +14,7 @@ void add_paragraph(const char *text, size_t len) {
 
 void add_code_block(const char *lang, size_t lang_len, const char *code, size_t code_len) {
 	buf_printf(&g_html_buf,
-	           "<pre style=\"background:var(--nord1);padding:16px;border-radius:4px;overflow-x:auto;border:1px solid var(--nord3);margin:20px 0;\">"
+	           "<pre style=\"background:var(--code-bg-color);padding:16px;border-radius:4px;overflow-x:auto;border:1px solid var(--code-border-color);margin:20px 0;\">"
 	           "<code class=\"language-%.*s\" style=\"font-family:'Courier New',monospace;font-size:14px;line-height:1.5;color:var(--text-color);\">",
 	           (int)lang_len, lang);
 	buf_escape(&g_html_buf, code, code_len);
@@ -36,13 +36,13 @@ void add_image(const char *path, size_t path_len, const char *alt, size_t alt_le
 	buf_append(&g_html_buf, "></p>");
 }
 
-void add_blog_entry(const char *title, const char *date, int index) {
+void add_blog_entry(const char *title, const char *date, const char *slug, int index) {
 	buf_printf(&g_html_buf,
 	           "<div style=\"margin-bottom:20px;display:flex;gap:20px;\">"
 	           "<span style=\"color:var(--dim-text-color);min-width:100px;\">%s</span>"
-	           "<a href=\"#/blog/%d\" onclick=\"Module._open_article(%d);return false;\" style=\"color:var(--text-color);text-decoration:none;\">%s</a>"
+	           "<a href=\"#/post/%s\" onclick=\"Module._open_article(%d);return false;\" style=\"color:var(--text-color);text-decoration:none;\">%s</a>"
 	           "</div>",
-	           date, index, index, title);
+	           date, slug, index, title);
 }
 
 void add_bar(int h, int w, const float *pcts, const char **colors, const float *opacities, const int *styles, int n) {
