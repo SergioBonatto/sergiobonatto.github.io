@@ -37,8 +37,9 @@ static void render_graph_shortcode(const char *p, size_t len) {
 	float pcts[16], opacs[16];
 	const char *colors[16];
 	int styles[16];
-	char color_names[256];
+	char color_names[1024];
 	char *cn_ptr = color_names;
+	char *cn_end = color_names + sizeof(color_names) - 1;
 	int h, w, n = 0;
 	const char *end = p + len;
 
@@ -54,7 +55,7 @@ static void render_graph_shortcode(const char *p, size_t len) {
 		if (p < end && *p == ',') p++;
 
 		colors[n] = cn_ptr;
-		while (p < end && *p != ',') *cn_ptr++ = *p++;
+		while (p < end && *p != ',' && cn_ptr < cn_end) *cn_ptr++ = *p++;
 		*cn_ptr++ = '\0';
 
 		if (p < end && *p == ',') p++;
@@ -154,7 +155,7 @@ void render_markdown(const char *content) {
 				if (code_start) {
 					size_t clen = cur - code_start;
 					if (clen > 0 && code_start[clen - 1] == '\n') clen--;
-					add_code_block(lang_start, lang_len, code_start, clen);
+					add_code_block((struct str_view){lang_start, lang_len}, (struct str_view){code_start, clen});
 				}
 				in_code = false;
 			}

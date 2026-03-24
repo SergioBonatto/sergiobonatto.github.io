@@ -2,20 +2,7 @@
 #define PROJECT_SRC_UI_H
 
 #include <stddef.h>
-
-enum bar_seg_style {
-	BAR_SEG_SOLID,
-	BAR_SEG_HATCHED,
-	BAR_SEG_EMPTY,
-};
-
-struct bar_segment {
-	float pct;
-	const char *color_var;
-	float opacity;
-	enum bar_seg_style style;
-};
-
+#include "config.h"
 /*
  * add_paragraph - Appends a text paragraph to the feed element.
  * @text_ptr: pointer to the string in WASM memory
@@ -25,14 +12,10 @@ void add_paragraph(const char *text_ptr, size_t len);
 
 /*
  * add_code_block - Appends a code block to the feed.
- * @lang_ptr: language identifier (e.g., "c", "js")
- * @lang_len: length of language string
- * @code_ptr: source code content
- * @code_len: length of code string
+ * @lang: language identifier view
+ * @code: source code content view
  */
-void add_code_block(const char *lang_ptr, size_t lang_len,
-		    const char *code_ptr, size_t code_len);
-
+void add_code_block(struct str_view lang, struct str_view code); 
 /*
  * add_image - Appends an image to the feed element.
  * @path_ptr: pointer to the image path

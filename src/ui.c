@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <emscripten.h>
-#include "ui.h"
+#include "config.h"
 #include "state.h"
 #include "buffer.h"
 #include "js_api.h"
+#include "ui.h"
 
 void add_paragraph(const char *text, size_t len) {
 	buf_append(&g_html_buf, "<p class=\"para\">> ");
@@ -12,12 +13,19 @@ void add_paragraph(const char *text, size_t len) {
 	buf_append(&g_html_buf, "</p>");
 }
 
-void add_code_block(const char *lang, size_t lang_len, const char *code, size_t code_len) {
-	buf_printf(&g_html_buf,
-	           "<pre style=\"background:var(--code-bg-color);padding:16px;border-radius:4px;overflow-x:auto;border:1px solid var(--code-border-color);margin:20px 0;\">"
-	           "<code class=\"language-%.*s\" style=\"font-family:'Courier New',monospace;font-size:14px;line-height:1.5;color:var(--text-color);\">",
-	           (int)lang_len, lang);
-	buf_escape(&g_html_buf, code, code_len);
+void add_code_block( 
+		struct str_view lang,
+		struct str_view code) {
+	buf_printf(
+		&g_html_buf,
+		"<pre style=\"%s\">"
+		"<code class=\"language-%.*s\" style=\"%s\">", 
+		code_block_pre,
+		(int)lang.len,
+		lang.data,
+		code_block_code
+		);
+	buf_escape(&g_html_buf, code.data, code.len);
 	buf_append(&g_html_buf, "</code></pre>");
 }
 
@@ -77,15 +85,7 @@ void clear_feed(void) {
 void add_footer(int year, const char *style, const char *github_url) {
 	char footer_html[1024];
 	snprintf(footer_html, sizeof(footer_html),
-		"<div style=\"max-width:900px;margin:0 auto;padding:0 20px;\">"
-		"<div style=\"display:flex;justify-content:space-between;align-items:center;gap:16px;\">"
-		"<div style=\"font-size:14px;display:flex;align-items:center;gap:8px;\">"
-		"<span>&copy; %d [Bonatto]</span>"
-		"<span style=\"color:var(--dim-text-color)\">&bull;</span>"
-		"<span>Vim powered</span>"
-		"<span style=\"color:var(--dim-text-color)\">&bull;</span>"
-		"<a href=\"%s\" target=\"_blank\" style=\"color:var(--text-color);text-decoration:none;\">GitHub</a>"
-		"</div></div></div>", year, github_url);
+		footer_style, year, github_url);
 	sys_append_child("body", "footer", footer_html);
 	sys_set_style("footer", style);
 }
