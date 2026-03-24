@@ -20,8 +20,8 @@ echo "#define ASSET_PFP \"$PFP_DIST\"" > generated/assets.h
 echo "Compiling WASM..."
 emcc \
 src/*.c \
--Oz -Iinclude -Igenerated -s WASM=1 -s ASSERTIONS=0 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=0 \
--s FILESYSTEM=0 -s ERROR_ON_UNDEFINED_SYMBOLS=1 \
+-Oz -flto -Iinclude -Igenerated -s WASM=1 -s ASSERTIONS=0 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=0 \
+-s FILESYSTEM=0 -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 -s EXPORTED_FUNCTIONS='["_main","_ui_toggle_theme","_switch_page","_render_markdown","_open_article","_handle_route","_malloc","_free"]' \
 -s EXPORTED_RUNTIME_METHODS='["UTF8ToString","ccall","cwrap"]' \
 -o build/app.js
