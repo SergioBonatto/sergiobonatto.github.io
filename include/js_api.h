@@ -2,7 +2,7 @@
 #define PROJECT_SRC_JS_API_H
 
 #include <stddef.h>
-struct theme;
+#include "config.h" // For struct theme
 
 // From sys.c
 void sys_set_html(const char *selector, const char *html);
@@ -18,8 +18,8 @@ void sys_console_log(const char *msg);
 double sys_now(void);
 
 // From render.c
-void update_theme_colors(const void *t, const char *const *palette);
-void init_graphics(const void *t, int header_h);
+void update_theme_colors(const struct theme *t, const char *const *palette);
+void init_graphics(const struct theme *t, int header_h);
 void render_update_strings(const char *label_ptr, int text_color_idx, const char *const *palette);
 void apply_style(const char *selector_cstr, const char *style_cstr);
 void draw_frame(float t);

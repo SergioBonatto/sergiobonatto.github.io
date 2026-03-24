@@ -4,7 +4,7 @@ set -e
 mkdir -p build
 
 gcc tools/packer.c -O2 -o tools/packer
-./tools/packer contents > src/contents_data.h
+./tools/packer contents > generated/contents_data.h
 
 # 1. Static Assets Hashing
 PFP_SRC="public/pfp.avif"
@@ -14,13 +14,13 @@ PFP_DIST="public/pfp.$PFP_HASH.avif"
 # Cleanup old versions
 rm -f public/pfp.*.avif
 cp "$PFP_SRC" "$PFP_DIST"
-echo "#define ASSET_PFP \"$PFP_DIST\"" > src/assets.h
+echo "#define ASSET_PFP \"$PFP_DIST\"" > generated/assets.h
 
 # 2. Compilation
 echo "Compiling WASM..."
 emcc \
 src/*.c \
--Oz -Isrc -s WASM=1 -s ASSERTIONS=0 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=0 \
+-Oz -Iinclude -Igenerated -s WASM=1 -s ASSERTIONS=0 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=0 \
 -s FILESYSTEM=0 -s ERROR_ON_UNDEFINED_SYMBOLS=1 \
 -s EXPORTED_FUNCTIONS='["_main","_ui_toggle_theme","_switch_page","_render_markdown","_open_article","_handle_route","_malloc","_free"]' \
 -s EXPORTED_RUNTIME_METHODS='["UTF8ToString","ccall","cwrap"]' \
@@ -33,7 +33,7 @@ for file in src/*.c; do
     if [ $FIRST -ne 1 ]; then
         echo "," >> compile_commands.json
     fi
-    emcc "$file" -Isrc -DEMSCRIPTEN -MJ "$file.json" -c -o "build/$(basename "$file" .c).o"
+    emcc "$file" -Iinclude -Igenerated -DEMSCRIPTEN -MJ "$file.json" -c -o "build/$(basename "$file" .c).o"
     cat "$file.json" >> compile_commands.json
     rm "$file.json"
     FIRST=0
