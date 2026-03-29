@@ -1,1 +1,1 @@
-#define ASSET_PFP "public/pfp.d1eb6af7.avif"
+#define ASSET_PFP "public/pfp.d4ba93a6.avif"
