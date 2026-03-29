@@ -95,8 +95,8 @@ void ui_toggle_theme(void) {
 	state.is_dark = !state.is_dark;
 	state.theme = state.is_dark ? &theme_dark : &theme_light;
 	update_theme_toggle_label(state.is_dark ? ":light" : ":dark");
-	update_theme_colors(state.theme, nord_palette);
-	render_update_strings(msg_header, state.theme->text, nord_palette);
+	update_theme_colors(state.theme, palette);
+	render_update_strings(msg_header, state.theme->text, palette);
 }
 
 void ui_init_router(void) { sys_init_router(); }

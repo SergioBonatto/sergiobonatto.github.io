@@ -10,7 +10,7 @@ struct timing_config {
 
 extern const struct timing_config timing;
 
-extern const char *nord_palette[16];
+extern const char *palette[16];
 
 struct theme {
 	int bg;

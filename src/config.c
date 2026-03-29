@@ -3,31 +3,73 @@
 const struct timing_config timing = {
 	.tick_delta		= 0.016f
 };
+/*  */
+/* const char *palette[16] = { */
+/*     "#2E3440", "#3B4252", "#434C5E", "#4C566A", */
+/*     "#D8DEE9", "#E5E9F0", "#ECEFF4", */
+/*     "#8FBCBB", "#88C0D0", "#81A1C1", "#5E81AC", */
+/*     "#BF616A", "#D08770", "#EBCB8B", "#A3BE8C", "#B48EAD" */
+/* }; */
+/*  */
+/* const struct theme theme_dark = { */
+/*     .bg          = 0, */
+/*     .text        = 6, */
+/*     .dim_text    = 9, */
+/*     .accent      = 14, */
+/*     .code_bg     = 1, */
+/*     .code_border = 3 */
+/* }; */
+/*  */
+/* const struct theme theme_light = { */
+/*     .bg          = 6, */
+/*     .text        = 0, */
+/*     .dim_text    = 3, */
+/*     .accent      = 14, */
+/*     .code_bg     = 5, */
+/*     .code_border = 4 */
+/* }; */
+const char *palette[16] = {
+	"#2f3238", /* 0 dark bg */
+	"#44484f", /* 1 dark guide */
+	"#8d949c", /* 2 dark gutter */
 
-const char *nord_palette[16] = {
-	"#2E3440", "#3B4252", "#434C5E", "#4C566A",
-	"#D8DEE9", "#E5E9F0", "#ECEFF4",
-	"#8FBCBB", "#88C0D0", "#81A1C1", "#5E81AC",
-	"#BF616A", "#D08770", "#EBCB8B", "#A3BE8C", "#B48EAD"
+	"#F2F1EE", /* 3 light bg */
+	"#D8D6D2", /* 4 light guide */
+	"#9A9CA1", /* 5 light gutter */
+
+	"#cfd3d8", /* 6 dark text */
+	"#7a8088", /* 7 dark dim */
+
+	"#4A4C52", /* 8 light text */
+	"#767A80", /* 9 light dim */
+
+	"#78a4c4", /* 10 dark accent */
+	"#5B8FA8", /* 11 light accent */
+
+	"#a98abf", /* 12 purple */
+	"#8eae7a", /* 13 green */
+	"#c97a80", /* 14 red */
+	"#c9ad79"  /* 15 yellow */
 };
 
 const struct theme theme_dark = {
 	.bg          = 0,
 	.text        = 6,
-	.dim_text    = 9,
-	.accent      = 14,
-	.code_bg     = 1,
-	.code_border = 3
+	.dim_text    = 7,
+	.accent      = 10,
+	.code_bg     = 0,
+	.code_border = 1
 };
 
 const struct theme theme_light = {
-	.bg          = 6,
-	.text        = 0,
-	.dim_text    = 3,
-	.accent      = 14,
-	.code_bg     = 5,
+	.bg          = 3,
+	.text        = 8,
+	.dim_text    = 9,
+	.accent      = 11,
+	.code_bg     = 3,
 	.code_border = 4
 };
+
 
 const char *css_theme_toggle =
 	"position: fixed; top: 20px; right: 20px; "
