@@ -5,16 +5,16 @@
 
 // From sys.c
 EM_JS(void, sys_set_html, (const char *sel_ptr, const char *html_ptr), {
-    const sel = UTF8ToString(sel_ptr);
-    const html = UTF8ToString(html_ptr);
-    const el = document.querySelector(sel);
+    const sel   = UTF8ToString(sel_ptr);
+    const html  = UTF8ToString(html_ptr);
+    const el    = document.querySelector(sel);
     if (el) el.innerHTML = html;
 });
 
 EM_JS(void, sys_set_text, (const char *sel_ptr, const char *text_ptr), {
-    const sel = UTF8ToString(sel_ptr);
-    const text = UTF8ToString(text_ptr);
-    const el = document.querySelector(sel);
+    const sel   = UTF8ToString(sel_ptr);
+    const text  = UTF8ToString(text_ptr);
+    const el    = document.querySelector(sel);
     if (el) el.textContent = text;
 });
 
@@ -26,9 +26,9 @@ EM_JS(void, sys_set_style, (const char *sel_ptr, const char *css_ptr), {
 });
 
 EM_JS(void, sys_append_child, (const char *sel_ptr, const char *tag_ptr, const char *html_ptr), {
-    const sel = UTF8ToString(sel_ptr);
-    const tag = UTF8ToString(tag_ptr);
-    const html = UTF8ToString(html_ptr);
+    const sel   = UTF8ToString(sel_ptr);
+    const tag   = UTF8ToString(tag_ptr);
+    const html  = UTF8ToString(html_ptr);
     
     const parent = document.querySelector(sel);
     if (!parent) return;
@@ -39,16 +39,16 @@ EM_JS(void, sys_append_child, (const char *sel_ptr, const char *tag_ptr, const c
 });
 
 EM_JS(void, sys_scroll_to_bottom, (const char *sel_ptr), {
-    const sel = UTF8ToString(sel_ptr);
-    const el = document.querySelector(sel);
+    const sel   = UTF8ToString(sel_ptr);
+    const el    = document.querySelector(sel);
     if (el) el.scrollTop = el.scrollHeight;
 });
 
 EM_JS(void, sys_init_router, (void), {
     window.addEventListener('hashchange', () => {
-        const hash = window.location.hash || "#/";
-        const len = lengthBytesUTF8(hash) + 1;
-        const ptr = _malloc(len);
+        const hash  = window.location.hash || "#/";
+        const len   = lengthBytesUTF8(hash) + 1;
+        const ptr   = _malloc(len);
         stringToUTF8(hash, ptr, len);
         if (Module._handle_route) Module._handle_route(ptr);
         _free(ptr);
@@ -69,8 +69,8 @@ EM_JS(void, sys_get_url_hash, (char *buf, size_t max_len), {
 
 EM_JS(void, sys_set_meta, (const char *t_ptr, const char *d_ptr, const char *u_ptr), {
     const title = UTF8ToString(t_ptr);
-    const desc = UTF8ToString(d_ptr);
-    const url = UTF8ToString(u_ptr);
+    const desc  = UTF8ToString(d_ptr);
+    const url   = UTF8ToString(u_ptr);
     
     document.title = title;
 
@@ -153,8 +153,8 @@ EM_JS(void, init_graphics, (const struct theme *t, int header_h), {
 	};
 
 	const onResize = () => {
-		cvs.width = window.innerWidth;
-		cvs.height = window.innerHeight;
+		cvs.width   = window.innerWidth;
+		cvs.height  = window.innerHeight;
 	};
 
 	window.addEventListener('resize', onResize);
@@ -170,9 +170,9 @@ EM_JS(void, render_update_strings, (const char *label_ptr, int text_color_idx, c
 });
 
 EM_JS(void, apply_style, (const char *selector_cstr, const char *style_cstr), {
-	const selector = UTF8ToString(selector_cstr);
-	const style = UTF8ToString(style_cstr);
-	const elements = document.querySelectorAll(selector);
+	const selector  = UTF8ToString(selector_cstr);
+	const style     = UTF8ToString(style_cstr);
+	const elements  = document.querySelectorAll(selector);
 	elements.forEach(el => el.style.cssText = style);
 });
 
@@ -215,12 +215,12 @@ EM_JS(void, add_theme_toggle, (const char *label_cstr, const char *style_cstr), 
 EM_JS(void, add_nav_link, (const char *label_cstr, const char *style_cstr, const char *id_cstr), {
 	const label = UTF8ToString(label_cstr);
 	const style = UTF8ToString(style_cstr);
-	const id 		= UTF8ToString(id_cstr);
+	const id 	= UTF8ToString(id_cstr);
 
-	const btn 				= document.createElement("div");
-	btn.id 						= id;
+	const btn           = document.createElement("div");
+	btn.id 			    = id;
 	btn.textContent 	= label;
-	btn.style.cssText = style;
+	btn.style.cssText   = style;
 
 	btn.onclick = () => {
 		if (Module._switch_page) {
@@ -234,7 +234,7 @@ EM_JS(void, add_nav_link, (const char *label_cstr, const char *style_cstr, const
 
 EM_JS(void, update_theme_toggle_label, (const char *label_cstr), {
 	const label = UTF8ToString(label_cstr);
-	const btn = document.getElementById("theme-toggle");
+	const btn   = document.getElementById("theme-toggle");
 	if (btn)
 		btn.textContent = label;
 });

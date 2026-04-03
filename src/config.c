@@ -97,7 +97,7 @@ const char *code_block_pre =
 
 const char *code_block_code =
 	"font-family:'Courier New',monospace;"
-	"font-size:14px;"
+	"font-size:18px;"
 	"line-height:1.5;"
 	"color:var(--text-color);";
 
