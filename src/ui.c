@@ -6,10 +6,11 @@
 #include "buffer.h"
 #include "js_api.h"
 #include "ui.h"
+#include "markdown.h"
 
 void add_paragraph(const char *text, size_t len) {
 	buf_append(&g_html_buf, "<p class=\"para\">> ");
-	buf_escape(&g_html_buf, text, len);
+	render_text(text, len);
 	buf_append(&g_html_buf, "</p>");
 }
 

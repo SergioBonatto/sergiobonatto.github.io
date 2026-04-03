@@ -10,8 +10,8 @@
 
 struct site_state state = {
 	.runtime	= 0.0f,
-	.is_dark	= true,
-	.theme		= &theme_dark,
+	.is_dark	= false,
+	.theme		= &theme_light,
 	.page		= PAGE_INITIAL
 };
 
@@ -28,7 +28,7 @@ int main(void) {
 	render_update_strings(msg_header, state.theme->text, palette);
 
 	apply_style("#feed", css_feed);
-	add_theme_toggle(":light", css_theme_toggle);
+	add_theme_toggle(":dark", css_theme_toggle);
 	add_nav_link(":blog", css_nav_blog, "nav-blog");
 	add_nav_link(":home", css_nav_home, "nav-home");
 

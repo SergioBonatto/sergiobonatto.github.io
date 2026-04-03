@@ -5,6 +5,8 @@
 #include "ui.h"
 #include "config.h"
 #include "contents_data.h"
+#include "math.h"
+#include "buffer.h"
 
 static int fast_atoi(const char **s) {
 	int res = 0;
@@ -76,9 +78,62 @@ static void render_graph_shortcode(const char *p, size_t len) {
 	if (n > 0) add_bar(h, w, pcts, colors, opacs, styles, n);
 }
 
+void render_text(const char *text, size_t len) {
+	const char *p = text;
+	const char *end = text + len;
+	const char *start = p;
+
+	while (p < end) {
+		if (*p == '$') {
+			if (p > start) {
+				buf_escape(&g_html_buf, start, p - start);
+			}
+
+			bool display = false;
+			p++;
+			if (p < end && *p == '$') {
+				display = true;
+				p++;
+			}
+
+			const char *math_start = p;
+			const char *math_end = NULL;
+			if (display) {
+				math_end = strstr(p, "$$");
+				if (math_end) {
+					math_to_mathml(&g_html_buf, math_start, math_end - math_start, true);
+					p = math_end + 2;
+				}
+			} else {
+				math_end = strchr(p, '$');
+				if (math_end) {
+					math_to_mathml(&g_html_buf, math_start, math_end - math_start, false);
+					p = math_end + 1;
+				}
+			}
+
+			if (math_end) {
+				start = p;
+			} else {
+				// No closing $, treat as literal
+				buf_append(&g_html_buf, "$");
+				if (display) buf_append(&g_html_buf, "$");
+				start = math_start;
+				p = math_start;
+			}
+		} else {
+			p++;
+		}
+	}
+
+	if (p > start) {
+		buf_escape(&g_html_buf, start, p - start);
+	}
+}
+
 static void render_line(const char *line, size_t len) {
 	if (!len) {
-		add_paragraph(line, 0);
+		buf_append(&g_html_buf, "<p class=\"para\">> </p>");
 		return;
 	}
 
@@ -86,11 +141,19 @@ static void render_line(const char *line, size_t len) {
 	case '#': {
 		const char *p = line;
 		size_t l = len;
-		while (l && (*p == '#' || *p == ' ')) {
+		int level = 0;
+		while (l && *p == '#') {
+			p++;
+			l--;
+			level++;
+		}
+		while (l && *p == ' ') {
 			p++;
 			l--;
 		}
-		add_paragraph(p, l);
+		buf_printf(&g_html_buf, "<h%d class=\"para\">> ", level <= 6 ? level : 6);
+		render_text(p, l);
+		buf_printf(&g_html_buf, "</h%d>", level <= 6 ? level : 6);
 		return;
 	}
 	case '!': {
@@ -123,8 +186,11 @@ static void render_line(const char *line, size_t len) {
 	}
 	}
 
-	add_paragraph(line, len);
+	buf_append(&g_html_buf, "<p class=\"para\">> ");
+	render_text(line, len);
+	buf_append(&g_html_buf, "</p>");
 }
+
 
 EMSCRIPTEN_KEEPALIVE
 void render_markdown(const char *content) {

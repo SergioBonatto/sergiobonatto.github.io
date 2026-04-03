@@ -3,31 +3,7 @@
 const struct timing_config timing = {
 	.tick_delta		= 0.016f
 };
-/*  */
-/* const char *palette[16] = { */
-/*     "#2E3440", "#3B4252", "#434C5E", "#4C566A", */
-/*     "#D8DEE9", "#E5E9F0", "#ECEFF4", */
-/*     "#8FBCBB", "#88C0D0", "#81A1C1", "#5E81AC", */
-/*     "#BF616A", "#D08770", "#EBCB8B", "#A3BE8C", "#B48EAD" */
-/* }; */
-/*  */
-/* const struct theme theme_dark = { */
-/*     .bg          = 0, */
-/*     .text        = 6, */
-/*     .dim_text    = 9, */
-/*     .accent      = 14, */
-/*     .code_bg     = 1, */
-/*     .code_border = 3 */
-/* }; */
-/*  */
-/* const struct theme theme_light = { */
-/*     .bg          = 6, */
-/*     .text        = 0, */
-/*     .dim_text    = 3, */
-/*     .accent      = 14, */
-/*     .code_bg     = 5, */
-/*     .code_border = 4 */
-/* }; */
+
 const char *palette[16] = {
 	"#2f3238", /* 0 dark bg */
 	"#44484f", /* 1 dark guide */
