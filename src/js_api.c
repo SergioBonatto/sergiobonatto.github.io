@@ -238,5 +238,3 @@ EM_JS(void, update_theme_toggle_label, (const char *label_cstr), {
 	if (btn)
 		btn.textContent = label;
 });
-
-// from router 

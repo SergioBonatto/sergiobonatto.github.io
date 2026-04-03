@@ -9,7 +9,7 @@
 #include "markdown.h"
 
 void add_paragraph(const char *text, size_t len) {
-	buf_append(&g_html_buf, "<p class=\"para\">> ");
+	buf_append(&g_html_buf, "<p class=\"para\">");
 	render_text(text, len);
 	buf_append(&g_html_buf, "</p>");
 }

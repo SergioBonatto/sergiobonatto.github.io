@@ -133,7 +133,7 @@ void render_text(const char *text, size_t len) {
 
 static void render_line(const char *line, size_t len) {
 	if (!len) {
-		buf_append(&g_html_buf, "<p class=\"para\">> </p>");
+		buf_append(&g_html_buf, "<p class=\"para\"> </p>");
 		return;
 	}
 
@@ -151,7 +151,7 @@ static void render_line(const char *line, size_t len) {
 			p++;
 			l--;
 		}
-		buf_printf(&g_html_buf, "<h%d class=\"para\">> ", level <= 6 ? level : 6);
+		buf_printf(&g_html_buf, "<h%d class=\"para\">", level <= 6 ? level : 6);
 		render_text(p, l);
 		buf_printf(&g_html_buf, "</h%d>", level <= 6 ? level : 6);
 		return;
@@ -186,7 +186,7 @@ static void render_line(const char *line, size_t len) {
 	}
 	}
 
-	buf_append(&g_html_buf, "<p class=\"para\">> ");
+	buf_append(&g_html_buf, "<p class=\"para\">");
 	render_text(line, len);
 	buf_append(&g_html_buf, "</p>");
 }
