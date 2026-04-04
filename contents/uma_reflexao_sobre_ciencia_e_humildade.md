@@ -16,8 +16,8 @@ O maravilhoso da matemática, o campo e não o curso, é que é tão vasto que t
 
 Esse é um dos motivos dela ser tão apaixonante. É como olhar o céu numa noite estrelada, quanto mais fitamos o infinito, maior a beleza percebida das estrelas, vemos mais detalhes, o brilho toma forma e intensidade, padrões são criados e cores ganham espaço ao mesmo tempo que o infinito do céu se torna ainda maior, nos revelando a imponência espacial.
 
-A matemática é isso, Deus escrevendo poemas no universo. Cada fórmula descoberta é um verso, cada teorema é uma estrofe. As leis rimam entre si, e entre tantas estruturas, aparece a beleza apaixonante do que está no seu subespaço invariante.
+A matemática é isso, Deus escrevendo poemas no universo. Cada lema é um verso, cada teorema é uma estrofe. As leis rimam entre si, e entre tantas estruturas, aparece a beleza apaixonante do que está no seu subespaço invariante.
 
-Apenas sendo muito ignorante sobre nossa própria pequenez pra se orgulhar dela e perceber isso não nos coloca num estado de miséria, mas de maravilhamento. Pois, repito, é como olhar as estrelas, não ficamos tristes ao vermos a Via Láctea e nem nos sentimos melhores do que os outros, apenas desfrutamos da beleza do universo.
+É preciso ser muito ignorante sobre nossa própria pequenez pra se orgulhar dela. Perceber isso não nos coloca num estado de miséria, mas de maravilhamento. Pois, repito, é como olhar as estrelas, não ficamos tristes ao vermos a Via Láctea e nem nos sentimos melhores do que os outros, apenas desfrutamos da beleza do universo.
 
 A matemática nos ensina a humildade pois ela nos mostra que tudo o que sabemos é nada perto do que existe. Os problemas não ficam mais difíceis, ficam mais profundos e nos mostram o quanto não sabemos e que não somos capazes de mensurar o que nos falta descobrir. Ela cresce diante dos nossos olhos, se mostrando imponente e avassaladora ao passo que é calorosa e receptiva. Não há como não amar a matemática. 
