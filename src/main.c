@@ -35,10 +35,12 @@ int main(void) {
 	ui_init_router();
 	ui_get_current_hash(initial_hash, sizeof(initial_hash));
 
-	if (initial_hash[0] != '\0' && strcmp(initial_hash, "#/") != 0)
+	if (initial_hash[0] != '\0' && strcmp(initial_hash, "#/") != 0) {
 		handle_route(initial_hash);
-	else
-		switch_page(false);
+	} else {
+		state.page = PAGE_HOME;
+		ui_sync_url("#/");
+	}
 
 	page_add_footer();
 

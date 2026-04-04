@@ -8,7 +8,46 @@ EM_JS(void, sys_set_html, (const char *sel_ptr, const char *html_ptr), {
     const sel   = UTF8ToString(sel_ptr);
     const html  = UTF8ToString(html_ptr);
     const el    = document.querySelector(sel);
-    if (el) el.innerHTML = html;
+    if (!el) return;
+
+    el.innerHTML = html;
+
+    if (sel === '#feed') {
+        if (!window._imgCache) window._imgCache = new Map();
+        el.querySelectorAll('.img-placeholder').forEach(ph => {
+            const src = ph.dataset.src;
+            let img = window._imgCache.get(src);
+            if (!img) {
+                img = new Image();
+                img.src = src;
+                window._imgCache.set(src, img);
+            }
+            
+            img.alt = ph.dataset.alt || "";
+            if (ph.dataset.lcp) {
+                img.setAttribute('fetchpriority', 'high');
+                img.loading = 'eager';
+            } else {
+                img.loading = 'lazy';
+            }
+            if (ph.dataset.width) img.width = ph.dataset.width;
+            if (ph.dataset.height) img.height = ph.dataset.height;
+            
+            img.style.maxWidth = '100%';
+            img.style.height = 'auto';
+            
+            if (ph.dataset.scale) {
+                const scale = parseFloat(ph.dataset.scale);
+                img.style.width = "auto";
+                img.onload = () => { img.style.width = (img.naturalWidth * scale) + "px"; };
+                if (img.complete) img.onload();
+            } else {
+                img.style.width = "";
+            }
+
+            ph.replaceWith(img);
+        });
+    }
 });
 
 EM_JS(void, sys_set_text, (const char *sel_ptr, const char *text_ptr), {
@@ -45,6 +84,11 @@ EM_JS(void, sys_scroll_to_bottom, (const char *sel_ptr), {
 });
 
 EM_JS(void, sys_init_router, (void), {
+    if (!window._imgCache) window._imgCache = new Map();
+    document.querySelectorAll('img').forEach(img => {
+        if (img.src) window._imgCache.set(img.src, img);
+    });
+
     window.addEventListener('hashchange', () => {
         const hash  = window.location.hash || "#/";
         const len   = lengthBytesUTF8(hash) + 1;

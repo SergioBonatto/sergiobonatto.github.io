@@ -31,18 +31,15 @@ void add_code_block(
 }
 
 void add_image(const char *path, size_t path_len, const char *alt, size_t alt_len, float scale, int width, int height, int is_lcp) {
-	buf_printf(&g_html_buf, "<p class=\"para\"><img src=\"%.*s\" alt=\"%.*s\" %s %s %s style=\"max-width:100%%;height:auto;%s\"",
-	           (int)path_len, path, (int)alt_len, alt ? alt : "",
-	           is_lcp ? "fetchpriority=\"high\" loading=\"eager\"" : "loading=\"lazy\"",
-	           width > 0 ? "width=\"...\"" : "",
-	           height > 0 ? "height=\"...\"" : "",
-	           (scale > 0 && scale != 1.0f) ? "width:auto;" : "");
+	buf_printf(&g_html_buf, "<p class=\"para\"><span class=\"img-placeholder\" data-src=\"%.*s\" data-alt=\"%.*s\"",
+	           (int)path_len, path, (int)alt_len, alt ? alt : "");
 
-	if (scale > 0 && scale != 1.0f) {
-		buf_printf(&g_html_buf, " onload=\"this.style.width=(this.naturalWidth*%f)+'px'\"", scale);
-	}
+	if (is_lcp) buf_append(&g_html_buf, " data-lcp=\"1\"");
+	if (width > 0) buf_printf(&g_html_buf, " data-width=\"%d\"", width);
+	if (height > 0) buf_printf(&g_html_buf, " data-height=\"%d\"", height);
+	if (scale > 0 && scale != 1.0f) buf_printf(&g_html_buf, " data-scale=\"%f\"", scale);
 
-	buf_append(&g_html_buf, "></p>");
+	buf_append(&g_html_buf, "></span></p>");
 }
 
 void add_blog_entry(const char *title, const char *date, const char *slug, int index) {
