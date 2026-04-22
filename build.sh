@@ -28,16 +28,16 @@ src/*.c \
 
 # Generate compile_commands.json
 echo "[" > compile_commands.json
-FIRST=1
-for file in src/*.c; do
-    if [ $FIRST -ne 1 ]; then
-        echo "," >> compile_commands.json
-    fi
+FILES=(src/*.c)
+for i in "${!FILES[@]}"; do
+    file="${FILES[$i]}"
     emcc "$file" -Iinclude -Igenerated -DEMSCRIPTEN -MJ "$file.json" -c -o "build/$(basename "$file" .c).o"
+    # Remove any trailing comma and newline to control the structure manually
     cat "$file.json" >> compile_commands.json
     rm "$file.json"
-    FIRST=0
 done
+# Remove last comma if exists and close array
+sed -i '' '$ s/,$//' compile_commands.json
 echo "]" >> compile_commands.json
 
 # 3. Post-processing and JS/WASM Hashing
