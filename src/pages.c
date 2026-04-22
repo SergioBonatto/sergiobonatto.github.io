@@ -1,6 +1,5 @@
 #include <string.h>
 #include <stddef.h>
-#include <time.h>
 
 #include "pages.h"
 #include "config.h"
@@ -23,7 +22,7 @@ void page_render_blog(void) {
 
 	add_paragraph(header, strlen(header));
 	for (i = 0; i < posts_count; i++) {
-		add_blog_entry(posts[i].title, posts[i].date, posts[i].slug, i);
+		add_blog_entry(posts[i].title, posts[i].date, posts[i].slug);
 	}
 
 	update_seo_metadata("Bonatto - Blog",
@@ -39,13 +38,5 @@ void page_render_404(void) {
 }
 
 void page_add_footer(void) {
-	time_t t;
-	struct tm tm;
-	int year;
-
-	t = time(NULL);
-	tm = *localtime(&t);
-	year = tm.tm_year + 1900;
-
-	add_footer(year, css_footer, msg_github_url);
+	add_footer(css_footer, msg_github_url);
 }

@@ -5,7 +5,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 
-#define BUFFER_CAPACITY (512 * 1024) 
+#define BUFFER_CAPACITY (128 * 1024)
 
 typedef struct {
     char data[BUFFER_CAPACITY];
@@ -20,5 +20,7 @@ void buf_append(Buffer *b, const char *str);
 void buf_append_len(Buffer *b, const char *str, size_t len);
 void buf_printf(Buffer *b, const char *fmt, ...);
 void buf_escape(Buffer *b, const char *str, size_t len);
+void buf_append_attr_escaped(Buffer *b, const char *str, size_t len);
+bool buf_overflowed(const Buffer *b);
 
 #endif

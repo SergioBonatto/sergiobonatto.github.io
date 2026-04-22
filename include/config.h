@@ -62,6 +62,7 @@ struct bar_segment {
 
 extern const struct blog_post posts[];
 extern const int posts_count;
+int find_post_index_by_slug(const char *slug);
 
 #define UI_HEADER_HEIGHT 180
 
@@ -74,6 +75,5 @@ extern const char *msg_404_title;
 extern const char *msg_404_body;
 extern const char *code_block_pre;
 extern const char *code_block_code;
-extern const char *footer_style;
 
 #endif

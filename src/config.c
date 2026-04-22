@@ -100,14 +100,3 @@ const char *code_block_code =
 	"font-size:18px;"
 	"line-height:1.5;"
 	"color:var(--text-color);";
-
-const char *footer_style =
-		"<div style=\"max-width:900px;margin:0 auto;padding:0 20px;\">"
-		"<div style=\"display:flex;justify-content:space-between;align-items:center;gap:16px;\">"
-		"<div style=\"font-size:14px;display:flex;align-items:center;gap:8px;\">"
-		"<span>&copy; %d [Bonatto]</span>"
-		"<span style=\"color:var(--dim-text-color)\">&bull;</span>"
-		"<span>Vim powered</span>"
-		"<span style=\"color:var(--dim-text-color)\">&bull;</span>"
-		"<a href=\"%s\" target=\"_blank\" style=\"color:var(--text-color);text-decoration:none;\">GitHub</a>"
-		"</div></div></div>";

@@ -12,6 +12,7 @@
 
 void switch_to_404(void)
 {
+	state.page = PAGE_404;
 	ui_begin_render();
 	page_render_404();
 	ui_end_render();
@@ -38,13 +39,21 @@ void open_article(int index)
 
 int open_article_by_slug(const char *slug)
 {
-	for (int i = 0; i < posts_count; i++) {
-		if (strcmp(posts[i].slug, slug) == 0) {
-			open_article(i);
-			return 0;
-		}
+	int index = find_post_index_by_slug(slug);
+	if (index >= 0) {
+		open_article(index);
+		return 0;
 	}
 	return -1;
+}
+
+EMSCRIPTEN_KEEPALIVE
+void handle_current_route(void)
+{
+	char path[256];
+
+	ui_get_current_hash(path, sizeof(path));
+	handle_route(path);
 }
 
 EMSCRIPTEN_KEEPALIVE

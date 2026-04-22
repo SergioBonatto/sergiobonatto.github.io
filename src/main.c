@@ -1,7 +1,6 @@
 #include <emscripten.h>
 #include <string.h>
 
-#include "config.h"
 #include "state.h"
 #include "render.h"
 #include "ui.h"
@@ -14,11 +13,6 @@ struct site_state state = {
 	.theme		= &theme_light,
 	.page		= PAGE_INITIAL
 };
-
-static void render_tick(void) {
-	state.runtime += timing.tick_delta;
-	draw_frame(state.runtime);
-}
 
 int main(void) {
 	char initial_hash[256];
@@ -38,13 +32,11 @@ int main(void) {
 	if (initial_hash[0] != '\0' && strcmp(initial_hash, "#/") != 0) {
 		handle_route(initial_hash);
 	} else {
-		state.page = PAGE_HOME;
-		ui_sync_url("#/");
+		switch_page(false);
 	}
 
 	page_add_footer();
-
-	emscripten_set_main_loop(render_tick, 0, 1);
+	draw_frame();
 
 	return 0;
 }

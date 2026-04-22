@@ -8,31 +8,70 @@
 #include "math.h"
 #include "buffer.h"
 
-static int fast_atoi(const char **s) {
+static bool is_digit_ascii(char c) {
+	return c >= '0' && c <= '9';
+}
+
+static int fast_atoi(const char **s, const char *end) {
 	int res = 0;
-	while (**s >= '0' && **s <= '9') {
+	while (*s < end && is_digit_ascii(**s)) {
 		res = res * 10 + (**s - '0');
 		(*s)++;
 	}
 	return res;
 }
 
-static float fast_atof(const char **s) {
+static float fast_atof(const char **s, const char *end) {
 	float res = 0.0f;
-	while (**s >= '0' && **s <= '9') {
+	while (*s < end && is_digit_ascii(**s)) {
 		res = res * 10.0f + (**s - '0');
 		(*s)++;
 	}
-	if (**s == '.') {
+	if (*s < end && **s == '.') {
 		(*s)++;
 		float frac = 0.1f;
-		while (**s >= '0' && **s <= '9') {
+		while (*s < end && is_digit_ascii(**s)) {
 			res += (**s - '0') * frac;
 			frac /= 10.0f;
 			(*s)++;
 		}
 	}
 	return res;
+}
+
+static const char *find_inline_math_end(const char *p, const char *end) {
+	return memchr(p, '$', (size_t)(end - p));
+}
+
+static const char *find_display_math_end(const char *p, const char *end) {
+	while (p < end) {
+		const char *hit = memchr(p, '$', (size_t)(end - p));
+		if (!hit || hit + 1 >= end) return NULL;
+		if (hit[1] == '$') return hit;
+		p = hit + 1;
+	}
+	return NULL;
+}
+
+static bool is_valid_graph_color_name(const char *name) {
+	if (!name || name[0] != '-' || name[1] != '-')
+		return false;
+
+	for (const unsigned char *p = (const unsigned char *)name + 2; *p; p++) {
+		if ((*p >= 'a' && *p <= 'z') ||
+		    (*p >= 'A' && *p <= 'Z') ||
+		    (*p >= '0' && *p <= '9') ||
+		    *p == '-' || *p == '_') {
+			continue;
+		}
+		return false;
+	}
+
+	return true;
+}
+
+static bool is_front_matter_delim(const char *line, size_t len) {
+	return len == 3 && line[0] == '-' && line[1] == '-' && line[2] == '-';
 }
 
 static void render_graph_shortcode(const char *p, size_t len) {
@@ -45,23 +84,31 @@ static void render_graph_shortcode(const char *p, size_t len) {
 	int h, w, n = 0;
 	const char *end = p + len;
 
-	h = fast_atoi(&p);
+	h = fast_atoi(&p, end);
 	if (p < end && *p == ',') p++;
-	w = fast_atoi(&p);
+	w = fast_atoi(&p, end);
+	if (h <= 0 || w <= 0 || h > 4096 || w > 4096)
+		return;
 
 	while (p < end && n < 16) {
 		while (p < end && (*p == ';' || *p == ' ')) p++;
 		if (p >= end) break;
 
-		pcts[n] = fast_atof(&p);
+		pcts[n] = fast_atof(&p, end);
 		if (p < end && *p == ',') p++;
 
 		colors[n] = cn_ptr;
 		while (p < end && *p != ',' && cn_ptr < cn_end) *cn_ptr++ = *p++;
+		if (p < end && *p != ',')
+			return;
 		*cn_ptr++ = '\0';
+		if (!is_valid_graph_color_name(colors[n]))
+			return;
 
 		if (p < end && *p == ',') p++;
-		opacs[n] = fast_atof(&p);
+		opacs[n] = fast_atof(&p, end);
+		if (pcts[n] < 0.0f || pcts[n] > 1.0f || opacs[n] < 0.0f || opacs[n] > 1.0f)
+			return;
 		if (p < end && *p == ',') p++;
 
 		if (p < end) {
@@ -99,13 +146,13 @@ void render_text(const char *text, size_t len) {
 			const char *math_start = p;
 			const char *math_end = NULL;
 			if (display) {
-				math_end = strstr(p, "$$");
+				math_end = find_display_math_end(p, end);
 				if (math_end) {
 					math_to_mathml(&g_html_buf, math_start, math_end - math_start, true);
 					p = math_end + 2;
 				}
 			} else {
-				math_end = strchr(p, '$');
+				math_end = find_inline_math_end(p, end);
 				if (math_end) {
 					math_to_mathml(&g_html_buf, math_start, math_end - math_start, false);
 					p = math_end + 1;
@@ -162,7 +209,7 @@ static void render_line(const char *line, size_t len) {
 
 		const char *alt_s = line + 2;
 		const char *alt_e = memchr(alt_s, ']', len - 2);
-		if (!alt_e || alt_e[1] != '(')
+		if (!alt_e || alt_e + 1 >= line + len || alt_e[1] != '(')
 			break;
 
 		const char *url_s = alt_e + 2;
@@ -178,7 +225,7 @@ static void render_line(const char *line, size_t len) {
 			break;
 
 		const char *p = memchr(line, ']', len);
-		if (!p || p[1] != ']')
+		if (!p || p + 1 >= line + len || p[1] != ']')
 			break;
 
 		render_graph_shortcode(line + 8, (p - line) - 8);
@@ -197,11 +244,12 @@ void render_markdown(const char *content) {
 	const char *cur = content;
 	const char *next;
 	size_t len;
-	int fm_count = 0;
 	bool in_code = false;
 	const char *code_start = NULL;
 	const char *lang_start = NULL;
 	size_t lang_len = 0;
+	bool allow_front_matter = true;
+	bool in_front_matter = false;
 
 	if (!content) return;
 
@@ -226,10 +274,15 @@ void render_markdown(const char *content) {
 				in_code = false;
 			}
 		} else if (!in_code) {
-			if (len >= 3 && cur[0] == '-' && cur[1] == '-' && cur[2] == '-') {
-				fm_count++;
-			} else if (fm_count % 2 == 0) {
+			if (allow_front_matter && !in_front_matter && is_front_matter_delim(cur, len)) {
+				in_front_matter = true;
+			} else if (in_front_matter && is_front_matter_delim(cur, len)) {
+				in_front_matter = false;
+				allow_front_matter = false;
+			} else if (!in_front_matter) {
 				render_line(cur, len);
+				if (len != 0)
+					allow_front_matter = false;
 			}
 		}
 

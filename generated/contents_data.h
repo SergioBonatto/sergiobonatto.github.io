@@ -3507,25 +3507,39 @@ const struct blog_post posts[] = {
 
 const int posts_count = 11;
 
-struct embedded_post {
-	const char *slug;
-	const char *payload;
+static const struct { const char *slug; int index; } post_slug_index[] = {
+	{ "Criacionismo_Evolutivo_1", 10 },
+	{ "O_Estado_Como_Motor_da_Economia", 8 },
+	{ "a_b__blia_e_o_argumento_circular", 6 },
+	{ "a_tirania_e_sua_mascara_de_bondade", 5 },
+	{ "agorismo", 3 },
+	{ "ceticismo_tecnologico", 4 },
+	{ "deepfake_e_a_desmaniza____o", 7 },
+	{ "minha_noite_estrelada", 9 },
+	{ "terminal", 2 },
+	{ "tipos_dependentes_e_programas_que_carregam_provas", 1 },
+	{ "uma_reflexao_sobre_ciencia_e_humildade", 0 }
 };
 
-static const struct embedded_post embedded_posts[] = {
-	{ "uma_reflexao_sobre_ciencia_e_humildade", post_data_uma_reflexao_sobre_ciencia_e_humildade },
-	{ "tipos_dependentes_e_programas_que_carregam_provas", post_data_tipos_dependentes_e_programas_que_carregam_provas },
-	{ "terminal", post_data_terminal },
-	{ "agorismo", post_data_agorismo },
-	{ "ceticismo_tecnologico", post_data_ceticismo_tecnologico },
-	{ "a_tirania_e_sua_mascara_de_bondade", post_data_a_tirania_e_sua_mascara_de_bondade },
-	{ "a_b__blia_e_o_argumento_circular", post_data_a_b__blia_e_o_argumento_circular },
-	{ "deepfake_e_a_desmaniza____o", post_data_deepfake_e_a_desmaniza____o },
-	{ "O_Estado_Como_Motor_da_Economia", post_data_O_Estado_Como_Motor_da_Economia },
-	{ "minha_noite_estrelada", post_data_minha_noite_estrelada },
-	{ "Criacionismo_Evolutivo_1", post_data_Criacionismo_Evolutivo_1 },
-	{ NULL, NULL }
-};
+int find_post_index_by_slug(const char *slug)
+{
+	int lo = 0;
+	int hi = posts_count - 1;
+
+	while (lo <= hi) {
+		int mid = lo + ((hi - lo) >> 1);
+		int cmp = strcmp(slug, post_slug_index[mid].slug);
+
+		if (cmp == 0)
+			return post_slug_index[mid].index;
+		if (cmp < 0)
+			hi = mid - 1;
+		else
+			lo = mid + 1;
+	}
+
+	return -1;
+}
 
 const char *get_article_body(int index)
 {

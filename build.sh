@@ -22,7 +22,7 @@ emcc \
 src/*.c \
 -Oz -flto -Iinclude -Igenerated -s WASM=1 -s ASSERTIONS=0 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=0 \
 -s FILESYSTEM=0 -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
--s EXPORTED_FUNCTIONS='["_main","_ui_toggle_theme","_switch_page","_render_markdown","_open_article","_handle_route","_malloc","_free"]' \
+-s EXPORTED_FUNCTIONS='["_main","_ui_toggle_theme","_switch_page","_render_markdown","_handle_route","_handle_current_route","_draw_frame"]' \
 -s EXPORTED_RUNTIME_METHODS='["UTF8ToString","ccall","cwrap"]' \
 -o build/app.js
 

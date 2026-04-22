@@ -1,6 +1,5 @@
 #include <emscripten.h>
 #include <string.h>
-#include <stdlib.h>
 #include "config.h" 
 
 // From sys.c
@@ -10,7 +9,10 @@ EM_JS(void, sys_set_html, (const char *sel_ptr, const char *html_ptr), {
     const el    = document.querySelector(sel);
     if (!el) return;
 
-    el.innerHTML = html;
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const fragment = range.createContextualFragment(html);
+    el.replaceChildren(fragment);
 
     if (sel === '#feed') {
         if (!window._imgCache) window._imgCache = new Map();
@@ -64,19 +66,6 @@ EM_JS(void, sys_set_style, (const char *sel_ptr, const char *css_ptr), {
     els.forEach(el => el.style.cssText = css);
 });
 
-EM_JS(void, sys_append_child, (const char *sel_ptr, const char *tag_ptr, const char *html_ptr), {
-    const sel   = UTF8ToString(sel_ptr);
-    const tag   = UTF8ToString(tag_ptr);
-    const html  = UTF8ToString(html_ptr);
-    
-    const parent = document.querySelector(sel);
-    if (!parent) return;
-
-    const el = document.createElement(tag);
-    el.innerHTML = html;
-    parent.appendChild(el);
-});
-
 EM_JS(void, sys_scroll_to_bottom, (const char *sel_ptr), {
     const sel   = UTF8ToString(sel_ptr);
     const el    = document.querySelector(sel);
@@ -90,12 +79,9 @@ EM_JS(void, sys_init_router, (void), {
     });
 
     window.addEventListener('hashchange', () => {
-        const hash  = window.location.hash || "#/";
-        const len   = lengthBytesUTF8(hash) + 1;
-        const ptr   = _malloc(len);
-        stringToUTF8(hash, ptr, len);
-        if (Module._handle_route) Module._handle_route(ptr);
-        _free(ptr);
+        if (Module._handle_current_route) {
+            Module._handle_current_route();
+        }
     });
 });
 
@@ -139,6 +125,56 @@ EM_JS(void, sys_set_meta, (const char *t_ptr, const char *d_ptr, const char *u_p
     setMeta('name', 'twitter:title', title);
     setMeta('name', 'twitter:description', desc);
     setMeta('name', 'twitter:image', imgUrl);
+});
+
+EM_JS(void, sys_render_footer, (const char *style_ptr, const char *url_ptr), {
+    const style = UTF8ToString(style_ptr);
+    const url = UTF8ToString(url_ptr);
+    const year = new Date().getFullYear();
+
+    let footer = document.querySelector('body > footer[data-site-footer="1"]');
+    if (!footer) {
+        footer = document.createElement('footer');
+        footer.dataset.siteFooter = '1';
+        document.body.appendChild(footer);
+    }
+
+    footer.style.cssText = style;
+
+    const outer = document.createElement('div');
+    outer.style.cssText = 'max-width:900px;margin:0 auto;padding:0 20px;';
+
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:16px;';
+
+    const meta = document.createElement('div');
+    meta.style.cssText = 'font-size:14px;display:flex;align-items:center;gap:8px;';
+
+    const copyright = document.createElement('span');
+    copyright.textContent = '\u00A9 ' + String(year) + ' [Bonatto]';
+
+    const dot1 = document.createElement('span');
+    dot1.style.cssText = 'color:var(--dim-text-color)';
+    dot1.textContent = '•';
+
+    const vim = document.createElement('span');
+    vim.textContent = 'Vim powered';
+
+    const dot2 = document.createElement('span');
+    dot2.style.cssText = 'color:var(--dim-text-color)';
+    dot2.textContent = '•';
+
+    const github = document.createElement('a');
+    github.href = url;
+    github.target = '_blank';
+    github.rel = 'noreferrer';
+    github.style.cssText = 'color:var(--text-color);text-decoration:none;';
+    github.textContent = 'GitHub';
+
+    meta.append(copyright, dot1, vim, dot2, github);
+    row.appendChild(meta);
+    outer.appendChild(row);
+    footer.replaceChildren(outer);
 });
 
 EM_JS(void, sys_console_log, (const char *msg_ptr), {
@@ -197,8 +233,16 @@ EM_JS(void, init_graphics, (const struct theme *t, int header_h), {
 	};
 
 	const onResize = () => {
-		cvs.width   = window.innerWidth;
-		cvs.height  = window.innerHeight;
+		const dpr = window.devicePixelRatio || 1;
+		const width = Math.max(1, Math.floor(window.innerWidth * dpr));
+		const height = Math.max(1, Math.floor(window.innerHeight * dpr));
+
+		cvs.width = width;
+		cvs.height = height;
+		cvs.style.width = window.innerWidth + 'px';
+		cvs.style.height = window.innerHeight + 'px';
+		Module.gfx.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+		if (Module._draw_frame) Module._draw_frame();
 	};
 
 	window.addEventListener('resize', onResize);
@@ -220,13 +264,13 @@ EM_JS(void, apply_style, (const char *selector_cstr, const char *style_cstr), {
 	elements.forEach(el => el.style.cssText = style);
 });
 
-EM_JS(void, draw_frame, (float t), {
+EM_JS(void, draw_frame, (void), {
 	const gfx = Module.gfx;
 	if (!gfx?.ctx) return;
 
 	const {ctx, cvs, header_h, bg, label, textColor} = gfx;
-	const W = cvs.width;
-	const H = cvs.height;
+	const W = cvs.clientWidth || window.innerWidth;
+	const H = cvs.clientHeight || window.innerHeight;
 
 	ctx.fillStyle = bg;
 	ctx.fillRect(0, 0, W, H);

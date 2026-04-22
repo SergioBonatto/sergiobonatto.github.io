@@ -5,6 +5,16 @@
 
 Buffer g_html_buf;
 
+static void buf_append_char(Buffer *b, char c) {
+    if (b->overflow) return;
+    if (b->len + 1 >= BUFFER_CAPACITY) {
+        b->overflow = true;
+        return;
+    }
+    b->data[b->len++] = c;
+    b->data[b->len] = '\0';
+}
+
 void buf_reset(Buffer *b) {
     b->len = 0;
     b->data[0] = '\0';
@@ -30,26 +40,26 @@ void buf_printf(Buffer *b, const char *fmt, ...) {
 
     va_list args;
     va_start(args, fmt);
-    
-    int remaining = BUFFER_CAPACITY - b->len;
+
+    size_t remaining = BUFFER_CAPACITY - b->len;
     int written = vsnprintf(b->data + b->len, remaining, fmt, args);
     
     va_end(args);
 
-    if (written < 0 || written >= remaining) {
+    if (written < 0 || (size_t)written >= remaining) {
         b->overflow = true;
     } else {
-        b->len += written;
+        b->len += (size_t)written;
     }
 }
 
-void buf_escape(Buffer *b, const char *str, size_t len) {
+static void buf_escape_impl(Buffer *b, const char *str, size_t len) {
     if (b->overflow) return;
-    
+
     for (size_t i = 0; i < len; i++) {
         char c = str[i];
         const char *entity = NULL;
-        
+
         switch (c) {
             case '&': entity = "&amp;"; break;
             case '<': entity = "&lt;"; break;
@@ -59,15 +69,21 @@ void buf_escape(Buffer *b, const char *str, size_t len) {
         }
 
         if (entity) {
-            buf_append(b, entity);
+            buf_append_len(b, entity, strlen(entity));
         } else {
-            if (b->len < BUFFER_CAPACITY - 1) {
-                b->data[b->len++] = c;
-            } else {
-                b->overflow = true;
-                break;
-            }
+            buf_append_char(b, c);
         }
     }
-    b->data[b->len] = '\0';
+}
+
+void buf_escape(Buffer *b, const char *str, size_t len) {
+    buf_escape_impl(b, str, len);
+}
+
+void buf_append_attr_escaped(Buffer *b, const char *str, size_t len) {
+    buf_escape_impl(b, str, len);
+}
+
+bool buf_overflowed(const Buffer *b) {
+    return b->overflow;
 }

@@ -40,11 +40,10 @@ void add_theme_toggle(const char *label, const char *style);
 
 /*
  * add_footer - Appends a footer element to the body.
- * @year: current year
  * @style: CSS style string
  * @github_url: GitHub profile URL
  */
-void add_footer(int year, const char *style, const char *github_url);
+void add_footer(const char *style, const char *github_url);
 
 /*
  * ui_begin_render - Resets the global HTML buffer.
@@ -74,9 +73,8 @@ void add_nav_link(const char *label, const char *style, const char *id);
  * @title: post title
  * @date: post date string
  * @slug: post URL slug
- * @index: index of the post in the global array
  */
-void add_blog_entry(const char *title, const char *date, const char *slug, int index);
+void add_blog_entry(const char *title, const char *date, const char *slug);
 
 /*
  * update_theme_toggle_label - Updates the text of the theme toggle button.
@@ -103,13 +101,6 @@ void ui_sync_url(const char *path);
  * ui_get_current_hash - Returns the current URL hash into the provided buffer.
  */
 void ui_get_current_hash(char *buf, int max_len);
-
-/*
- * add_named_graph - Injects a predefined graph by its identifier.
- * @name: identifier string
- * @len: length of the identifier
- */
-void add_named_graph(const char *name, size_t len);
 
 /*
  * add_bar - Appends a segmented graph bar to the UI.
