@@ -10,13 +10,13 @@ const char *palette[16] = {
 	"#8d949c", /* 2 dark gutter */
 
 	"#F2F1EE", /* 3 light bg */
-	"#D8D6D2", /* 4 light guide */
+	"#e4e0d7", /* 4 light guide (grid line) */
 	"#9A9CA1", /* 5 light gutter */
 
 	"#cfd3d8", /* 6 dark text */
 	"#7a8088", /* 7 dark dim */
 
-	"#4A4C52", /* 8 light text */
+	"#1c3d72", /* 8 light text (pen blue) */
 	"#767A80", /* 9 light dim */
 
 	"#78a4c4", /* 10 dark accent */
@@ -24,7 +24,7 @@ const char *palette[16] = {
 
 	"#a98abf", /* 12 purple */
 	"#8eae7a", /* 13 green */
-	"#c97a80", /* 14 red */
+	"#c0392b", /* 14 red (pen red) */
 	"#c9ad79"  /* 15 yellow */
 };
 
@@ -41,7 +41,7 @@ const struct theme theme_light = {
 	.bg          = 3,
 	.text        = 8,
 	.dim_text    = 9,
-	.accent      = 11,
+	.accent      = 14,
 	.code_bg     = 3,
 	.code_border = 4
 };
@@ -90,13 +90,13 @@ const char *msg_404_body = "The page you are looking for does not exist or has b
 const char *code_block_pre =
 	"background:var(--code-bg-color);"
 	"padding:16px;"
-	"border-radius:4px;"
+	"border-radius:0;"
 	"overflow-x:auto;"
 	"border:1px solid var(--code-border-color);"
 	"margin:20px 0;";
 
 const char *code_block_code =
 	"font-family:'Courier New',monospace;"
-	"font-size:18px;"
+	"font-size:0.9rem;"
 	"line-height:1.5;"
 	"color:var(--text-color);";

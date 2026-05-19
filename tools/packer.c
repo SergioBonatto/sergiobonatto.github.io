@@ -59,6 +59,7 @@ static void sanitize_slug(char *dst, size_t dst_cap, const char *src){
 static char *read_file(const char *path, size_t *len){
 	FILE *f;
 	char *buf;
+	long sz_long;
 	size_t sz;
 
 	f = fopen(path, "rb");
@@ -66,7 +67,12 @@ static char *read_file(const char *path, size_t *len){
 		return NULL;
 
 	fseek(f, 0, SEEK_END);
-	sz = ftell(f);
+	sz_long = ftell(f);
+	if (sz_long < 0) {
+		fclose(f);
+		return NULL;
+	}
+	sz = (size_t)sz_long;
 	rewind(f);
 
 	buf = malloc(sz + 1);

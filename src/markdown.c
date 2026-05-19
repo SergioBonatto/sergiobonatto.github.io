@@ -44,11 +44,10 @@ static const char *find_inline_math_end(const char *p, const char *end) {
 }
 
 static const char *find_display_math_end(const char *p, const char *end) {
-	while (p < end) {
-		const char *hit = memchr(p, '$', (size_t)(end - p));
-		if (!hit || hit + 1 >= end) return NULL;
-		if (hit[1] == '$') return hit;
-		p = hit + 1;
+	while (p + 1 < end) {
+		if (p[0] == '$' && p[1] == '$')
+			return p;
+		p++;
 	}
 	return NULL;
 }
@@ -72,6 +71,16 @@ static bool is_valid_graph_color_name(const char *name) {
 
 static bool is_front_matter_delim(const char *line, size_t len) {
 	return len == 3 && line[0] == '-' && line[1] == '-' && line[2] == '-';
+}
+
+static bool is_math_block_delim(const char *line, size_t len) {
+	if (len < 2 || line[0] != '$' || line[1] != '$')
+		return false;
+	for (size_t i = 2; i < len; i++) {
+		if (line[i] != ' ' && line[i] != '\r' && line[i] != '\t')
+			return false;
+	}
+	return true;
 }
 
 static void render_graph_shortcode(const char *p, size_t len) {
@@ -250,6 +259,8 @@ void render_markdown(const char *content) {
 	size_t lang_len = 0;
 	bool allow_front_matter = true;
 	bool in_front_matter = false;
+	bool in_math = false;
+	const char *math_start = NULL;
 
 	if (!content) return;
 
@@ -274,15 +285,31 @@ void render_markdown(const char *content) {
 				in_code = false;
 			}
 		} else if (!in_code) {
-			if (allow_front_matter && !in_front_matter && is_front_matter_delim(cur, len)) {
-				in_front_matter = true;
-			} else if (in_front_matter && is_front_matter_delim(cur, len)) {
-				in_front_matter = false;
-				allow_front_matter = false;
-			} else if (!in_front_matter) {
-				render_line(cur, len);
-				if (len != 0)
+			if (is_math_block_delim(cur, len)) {
+				if (!in_math) {
+					in_math = true;
+					math_start = next ? next + 1 : NULL;
+				} else {
+					if (math_start && cur > math_start) {
+						size_t mlen = cur - math_start;
+						while (mlen > 0 && (math_start[mlen - 1] == '\n' || math_start[mlen - 1] == '\r')) {
+							mlen--;
+						}
+						math_to_mathml(&g_html_buf, math_start, mlen, true);
+					}
+					in_math = false;
+				}
+			} else if (!in_math) {
+				if (allow_front_matter && !in_front_matter && is_front_matter_delim(cur, len)) {
+					in_front_matter = true;
+				} else if (in_front_matter && is_front_matter_delim(cur, len)) {
+					in_front_matter = false;
 					allow_front_matter = false;
+				} else if (!in_front_matter) {
+					render_line(cur, len);
+					if (len != 0)
+						allow_front_matter = false;
+				}
 			}
 		}
 

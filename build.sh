@@ -11,10 +11,17 @@ PFP_SRC="public/pfp.avif"
 PFP_HASH=$(shasum -a 256 "$PFP_SRC" | cut -c 1-8)
 PFP_DIST="public/pfp.$PFP_HASH.avif"
 
+FONT_SRC="public/Virgil.woff2"
+FONT_HASH=$(shasum -a 256 "$FONT_SRC" | cut -c 1-8)
+FONT_DIST="public/Virgil.$FONT_HASH.woff2"
+
 # Cleanup old versions
 rm -f public/pfp.*.avif
+rm -f public/Virgil.*.woff2
 cp "$PFP_SRC" "$PFP_DIST"
+cp "$FONT_SRC" "$FONT_DIST"
 echo "#define ASSET_PFP \"$PFP_DIST\"" > generated/assets.h
+echo "#define ASSET_FONT \"$FONT_DIST\"" >> generated/assets.h
 
 # 2. Compilation
 echo "Compiling WASM..."
@@ -57,7 +64,7 @@ mv build/app.js "build/app.$JS_HASH.js"
 sed -i '' "s/app.wasm/app.$WASM_HASH.wasm/g" "build/app.$JS_HASH.js"
 
 # 4. Generate final index.html
-sed "s|{{PFP}}|$PFP_DIST|g; s|{{JS}}|build/app.$JS_HASH.js|g" index.template.html > index.html
+sed "s|{{PFP}}|$PFP_DIST|g; s|{{FONT}}|$FONT_DIST|g; s|{{JS}}|build/app.$JS_HASH.js|g" index.template.html > index.html
 
 # 5. Compression (optional .br files)
 brotli -f -Z "build/app.$JS_HASH.js" || echo "brotli skipped"

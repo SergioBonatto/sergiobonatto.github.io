@@ -1,1 +1,161 @@
-<!doctype html><html lang=pt><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Bonatto</title><meta name=description content="Work spans formal methods, functional programming, and operating systems."><meta name="google-site-verification" content="YZt--bJGFhf1puUTMa3odpocmGWn3v5bRppUsbXeJeA" /><meta name=author content="Sergio Bonatto"><meta property=og:title content=Bonatto><meta property=og:description content="Work spans formal methods, functional programming, and operating systems."><meta property=og:type content=website><meta property=og:image content="https://sergiobonatto.github.io/public/SEO.png"><meta property=og:url content="https://sergiobonatto.github.io/"><meta name=twitter:card content=summary_large_image><meta name=twitter:site content="@fibonatto"><meta name=twitter:creator content="@fibonatto"><meta name=twitter:title content=Bonatto><meta name=twitter:description content="Work spans formal methods, functional programming, and operating systems."><meta name=twitter:image content="https://sergiobonatto.github.io/public/SEO.png"><link rel="preload" as="image" href="{{PFP}}" fetchpriority="high" type="image/avif"><style>:root{--bg-color:#F2F1EE;--text-color:#F2F1EE;--dim-text-color:#81A1C1}body{margin:0;background:var(--bg-color);color:var(--text-color);font-family:"Courier New",monospace;overflow-x:hidden}#screen{display:block;position:fixed;top:0;left:0;z-index:-1;pointer-events:none;width:100%;height:100%}#feed{max-width:900px;margin:100px auto 0;padding:20px;min-height:calc(100vh - 280px)}.para{margin:6px 0;line-height:1.6;white-space:pre-wrap;font-size: 18px;}</style><link rel="icon" href="favicon.svg"><canvas id=screen></canvas><main id=feed><p class="para"><img src="{{PFP}}" alt="" fetchpriority="high" loading="eager" width="463" height="512" style="max-width:100%;height:auto;"></p><p class="para">whoami</p><p class="para">Work spans formal methods, functional programming, and operating systems. Main interests include dependent type theory, proof languages, language interpreters, virtual machines, and minimalist kernels.</p></main><script defer src={{JS}}></script></html>
+<!doctype html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Bonatto</title>
+    <meta name="description" content="Work spans formal methods, functional programming, and operating systems.">
+    <meta name="google-site-verification" content="YZt--bJGFhf1puUTMa3odpocmGWn3v5bRppUsbXeJeA" />
+    <meta name="author" content="Sergio Bonatto">
+    <meta property="og:title" content="Bonatto">
+    <meta property="og:description" content="Work spans formal methods, functional programming, and operating systems.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://sergiobonatto.github.io/public/SEO.png">
+    <meta property="og:url" content="https://sergiobonatto.github.io/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@fibonatto">
+    <meta name="twitter:creator" content="@fibonatto">
+    <meta name="twitter:title" content="Bonatto">
+    <meta name="twitter:description" content="Work spans formal methods, functional programming, and operating systems.">
+    <meta name="twitter:image" content="https://sergiobonatto.github.io/public/SEO.png">
+    
+    <link rel="preload" as="image" href="{{PFP}}" fetchpriority="high" type="image/avif">
+    
+    <style>
+        @font-face {
+            font-family: 'Virgil';
+            src: url('{{FONT}}') format('woff2');
+            font-display: swap;
+        }
+
+        :root {
+            --bg-color: #F2F1EE;
+            --text-color: #1c3d72;
+            --dim-text-color: #767A80;
+            --accent-color: #c0392b;
+            --grid-color: #e4e0d7;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: 'Virgil', 'Kalam', cursive;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        #screen {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        #header-underline {
+            position: fixed;
+            top: 110px; /* Alinhado com o texto desenhado no canvas */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px; /* Largura aproximada do título "BONATTO" */
+            height: 12px;
+            background-color: var(--accent-color);
+            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0,6 Q30,2 100,1 L100,7 Q30,9 0,8 Z"/></svg>') no-repeat center / 100% 100%;
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0,6 Q30,2 100,1 L100,7 Q30,9 0,8 Z"/></svg>') no-repeat center / 100% 100%;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        .nav-underline {
+            position: absolute;
+            bottom: -8px;
+            left: -5%;
+            width: 110%;
+            height: 6px;
+            background-color: var(--accent-color);
+            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0,5 Q30,2 100,1 L100,6 Q30,8 0,7 Z"/></svg>') no-repeat center / 100% 100%;
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0,5 Q30,2 100,1 L100,6 Q30,8 0,7 Z"/></svg>') no-repeat center / 100% 100%;
+            opacity: 0.7;
+        }
+
+        #feed {
+            max-width: 900px;
+            margin: 100px auto 0;
+            padding: 20px;
+            min-height: calc(100vh - 280px);
+        }
+
+        .para {
+            margin: 12px 0;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        h1, h2, h3, h4, h5, h6, .highlight-red {
+            position: relative;
+            display: inline-block;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: normal;
+        }
+
+        /* Máscara SVG para criar o sublinhado irregular */
+        h1::after, h2::after, h3::after, h4::after, h5::after, h6::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: -2%;
+            width: 104%;
+            height: 8px; /* Altura da bounding box do traço */
+            background-color: var(--accent-color);
+            
+            /* O path d="M0,6 Q30,2 100,1 L100,7 Q30,9 0,8 Z" desenha uma forma fechada que é 
+               fina na esquerda (2 unidades de espessura) e grossa na direita (6 unidades). */
+            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0,6 Q30,2 100,1 L100,7 Q30,9 0,8 Z"/></svg>') no-repeat center / 100% 100%;
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0,6 Q30,2 100,1 L100,7 Q30,9 0,8 Z"/></svg>') no-repeat center / 100% 100%;
+            
+            opacity: 0.9;
+        }
+
+        a {
+            color: var(--text-color);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--accent-color);
+        }
+
+        code, pre {
+            font-family: 'Courier New', monospace !important;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            body { font-size: 1.05rem; }
+            #feed { margin-top: 60px; }
+        }
+    </style>
+    
+    <link rel="icon" type="image/svg+xml" sizes="any" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iIzRjNTY2YSIgZD0iTTAgMGgxNnYxNkgweiIvPjxwYXRoIGZpbGw9IiNlY2VmZjQiIGQ9Im0zIDMgNSA1LTUgNXYtMmwzLTMtMy0zem02IDhoNHYySDl6Ii8+PC9zdmc+">
+</head>
+<body>
+    <canvas id="screen"></canvas>
+    <div id="header-underline"></div>
+    <main id="feed">
+        <p class="para">
+            <img src="{{PFP}}" alt="Bonatto" fetchpriority="high" loading="eager" width="463" height="512" style="max-width:100%;height:auto;">
+        </p>
+        <h1 class="para">whoami</h1>
+        <p class="para">Work spans formal methods, functional programming, and operating systems. Main interests include dependent type theory, proof languages, language interpreters, virtual machines, and minimalist kernels.</p>
+    </main>
+    <script defer src="{{JS}}"></script>
+</body>
+</html>

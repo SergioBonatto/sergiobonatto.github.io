@@ -58,7 +58,9 @@ static void parse_expr(MathParser *p);
 static bool match_cmd(MathParser *p, const char *s) {
 	size_t len = strlen(s);
 	if (p->cur + len <= p->end && strncmp(p->cur, s, len) == 0) {
-		if (p->cur + len < p->end && is_alpha_uc((unsigned char)p->cur[len])) return false;
+		if (is_alpha_uc((unsigned char)*s)) {
+			if (p->cur + len < p->end && is_alpha_uc((unsigned char)p->cur[len])) return false;
+		}
 		p->cur += len;
 		return true;
 	}
@@ -116,6 +118,7 @@ static const CmdEntry CMD_TABLE[] = {
 	{"nabla", "<mo>&nabla;</mo>"},
 	{"le", "<mo>&le;</mo>"},
 	{"ge", "<mo>&ge;</mo>"},
+	{"ne", "<mo>&ne;</mo>"},
 	{"neq", "<mo>&ne;</mo>"},
 	{"approx", "<mo>&asymp;</mo>"},
 	{"to", "<mo>&rarr;</mo>"},
@@ -124,7 +127,36 @@ static const CmdEntry CMD_TABLE[] = {
 	{"rightarrow", "<mo>&rarr;</mo>"},
 	{"leftarrow", "<mo>&larr;</mo>"},
 	{"Rightarrow", "<mo>&rArr;</mo>"},
-	{"Leftarrow", "<mo>&lArr;</mo>"}
+	{"Leftarrow", "<mo>&lArr;</mo>"},
+	{"mid", "<mo>&mid;</mo>"},
+	{"sim", "<mo>&sim;</mo>"},
+	{"in", "<mo>&in;</mo>"},
+	{"notin", "<mo>&notin;</mo>"},
+	{"subseteq", "<mo>&sube;</mo>"},
+	{"subset", "<mo>&subset;</mo>"},
+	{"cup", "<mo>&cup;</mo>"},
+	{"cap", "<mo>&cap;</mo>"},
+	{"cdot", "<mo>&sdot;</mo>"},
+	{"forall", "<mo>&forall;</mo>"},
+	{"exists", "<mo>&exists;</mo>"},
+	{"dots", "<mo>&hellip;</mo>"},
+	{"cdots", "<mo>&ctdot;</mo>"},
+	{"ldots", "<mo>&hellip;</mo>"},
+	{"exp", "<mi>exp</mi>"},
+	{"log", "<mi>log</mi>"},
+	{"ln", "<mi>ln</mi>"},
+	{"top", "<mo>&top;</mo>"},
+	{"bot", "<mo>&bot;</mo>"},
+	{"perp", "<mo>&perp;</mo>"},
+	{"theta", "<mi>&theta;</mi>"},
+	{"sigma", "<mi>&sigma;</mi>"},
+	{"rho", "<mi>&rho;</mi>"},
+	{"tau", "<mi>&tau;</mi>"},
+	{"alpha", "<mi>&alpha;</mi>"},
+	{"downarrow", "<mo>&darr;</mo>"},
+	{"|", "<mo>&Vert;</mo>"},
+	{"{", "<mo>{</mo>"},
+	{"}", "<mo>}</mo>"}
 };
 
 #define CMD_TABLE_LEN (sizeof(CMD_TABLE) / sizeof(CMD_TABLE[0]))
@@ -193,9 +225,17 @@ static bool is_plain_identifier(const char *start, const char *end) {
 }
 
 static void parse_command(MathParser *p) {
-	if (p->cur < p->end && (*p->cur == ',' || *p->cur == ' ')) {
-		p->cur++;
-		buf_append(p->b, "<mspace width=\"0.167em\"></mspace>");
+	if (p->cur < p->end && strchr(", !;:", *p->cur)) {
+		char c = *p->cur++;
+		if (c == '!') {
+			buf_append(p->b, "<mspace width=\"-0.167em\"></mspace>");
+		} else if (c == ';') {
+			buf_append(p->b, "<mspace width=\"0.278em\"></mspace>");
+		} else if (c == ':') {
+			buf_append(p->b, "<mspace width=\"0.222em\"></mspace>");
+		} else {
+			buf_append(p->b, "<mspace width=\"0.167em\"></mspace>");
+		}
 		return;
 	}
 
@@ -207,7 +247,7 @@ static void parse_command(MathParser *p) {
 		handle_sqrt(p);
 		return;
 	}
-	if (match_cmd(p, "mathrm")) {
+	if (match_cmd(p, "mathrm") || match_cmd(p, "text")) {
 		emit_styled_atom(p, "normal");
 		return;
 	}
@@ -217,6 +257,17 @@ static void parse_command(MathParser *p) {
 	}
 	if (match_cmd(p, "mathbb")) {
 		emit_styled_atom(p, "double-struck");
+		return;
+	}
+	if (match_cmd(p, "mathcal")) {
+		emit_styled_atom(p, "script");
+		return;
+	}
+	if (match_cmd(p, "mathbf")) {
+		emit_styled_atom(p, "bold");
+		return;
+	}
+	if (match_cmd(p, "left") || match_cmd(p, "right")) {
 		return;
 	}
 
@@ -318,7 +369,9 @@ static void emit_atom_span(Buffer *b, const AtomSpan *atom) {
 				.end = atom->end - 1,
 				.b = b
 			};
+			buf_append(b, "<mrow>");
 			parse_expr(&inner);
+			buf_append(b, "</mrow>");
 		}
 		break;
 	case ATOM_COMMAND:
@@ -347,9 +400,9 @@ static void emit_atom_span(Buffer *b, const AtomSpan *atom) {
 }
 
 static void parse_expr(MathParser *p) {
-	while (p->cur < p->end && *p->cur != '}') {
+	while (p->cur < p->end) {
 		skip_ws(p);
-		if (p->cur >= p->end || *p->cur == '}') break;
+		if (p->cur >= p->end) break;
 
 		AtomSpan base, sub = {0}, sup = {0};
 		bool has_sub = false;

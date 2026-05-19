@@ -15,16 +15,10 @@ EM_JS(void, sys_set_html, (const char *sel_ptr, const char *html_ptr), {
     el.replaceChildren(fragment);
 
     if (sel === '#feed') {
-        if (!window._imgCache) window._imgCache = new Map();
         el.querySelectorAll('.img-placeholder').forEach(ph => {
             const src = ph.dataset.src;
-            let img = window._imgCache.get(src);
-            if (!img) {
-                img = new Image();
-                img.src = src;
-                window._imgCache.set(src, img);
-            }
-            
+            const img = new Image();
+            img.src = src;
             img.alt = ph.dataset.alt || "";
             if (ph.dataset.lcp) {
                 img.setAttribute('fetchpriority', 'high');
@@ -73,9 +67,10 @@ EM_JS(void, sys_scroll_to_bottom, (const char *sel_ptr), {
 });
 
 EM_JS(void, sys_init_router, (void), {
-    if (!window._imgCache) window._imgCache = new Map();
-    document.querySelectorAll('img').forEach(img => {
-        if (img.src) window._imgCache.set(img.src, img);
+    window.addEventListener('popstate', () => {
+        if (Module._handle_current_route) {
+            Module._handle_current_route();
+        }
     });
 
     window.addEventListener('hashchange', () => {
@@ -210,6 +205,7 @@ EM_JS(void, update_theme_colors, (const struct theme *t, const char *const *pale
 	rootStyle.setProperty('--accent-color', getPalette(ac_idx));
 	rootStyle.setProperty('--code-bg-color', getPalette(cb_idx));
 	rootStyle.setProperty('--code-border-color', getPalette(cr_idx));
+	rootStyle.setProperty('--grid-color', getPalette(cr_idx));
 
 	for (let i = 0; i < 16; i++) {
 		rootStyle.setProperty('--nord' + i, getPalette(i));
@@ -225,7 +221,7 @@ EM_JS(void, init_graphics, (const struct theme *t, int header_h), {
 
 	Module.gfx = {
 		cvs,
-		ctx: cvs.getContext("2d", {alpha: false}),
+		ctx: cvs.getContext("2d", {alpha: true}),
 		header_h,
 		bg: "",
 		label: "",
@@ -247,6 +243,13 @@ EM_JS(void, init_graphics, (const struct theme *t, int header_h), {
 
 	window.addEventListener('resize', onResize);
 	onResize();
+
+	// Ensure font is loaded then redraw
+	if (document.fonts) {
+		document.fonts.load("bold 60px 'Virgil'").then(() => {
+			if (Module._draw_frame) Module._draw_frame();
+		});
+	}
 });
 
 EM_JS(void, render_update_strings, (const char *label_ptr, int text_color_idx, const char *const *palette), {
@@ -255,6 +258,8 @@ EM_JS(void, render_update_strings, (const char *label_ptr, int text_color_idx, c
 
 	Module.gfx.label         = UTF8ToString(label_ptr);
 	Module.gfx.textColor     = getPalette(text_color_idx);
+	
+	if (Module._draw_frame) Module._draw_frame();
 });
 
 EM_JS(void, apply_style, (const char *selector_cstr, const char *style_cstr), {
@@ -272,10 +277,9 @@ EM_JS(void, draw_frame, (void), {
 	const W = cvs.clientWidth || window.innerWidth;
 	const H = cvs.clientHeight || window.innerHeight;
 
-	ctx.fillStyle = bg;
-	ctx.fillRect(0, 0, W, H);
+	ctx.clearRect(0, 0, W, H);
 
-	ctx.font 		= "bold 40px 'Courier New', monospace";
+	ctx.font 		= "bold 60px 'Virgil', cursive";
 	ctx.fillStyle 	= textColor;
 	ctx.textAlign 	= "center";
 	ctx.fillText(label, W / 2, header_h / 2);
@@ -290,6 +294,10 @@ EM_JS(void, add_theme_toggle, (const char *label_cstr, const char *style_cstr), 
 	btn.id 				= "theme-toggle";
 	btn.textContent 	= label;
 	btn.style.cssText 	= style;
+
+	const underline = document.createElement("div");
+	underline.className = "nav-underline";
+	btn.appendChild(underline);
 
 	btn.onclick = () => {
 		if (Module._ui_toggle_theme) {
@@ -309,6 +317,10 @@ EM_JS(void, add_nav_link, (const char *label_cstr, const char *style_cstr, const
 	btn.id 			    = id;
 	btn.textContent 	= label;
 	btn.style.cssText   = style;
+
+	const underline = document.createElement("div");
+	underline.className = "nav-underline";
+	btn.appendChild(underline);
 
 	btn.onclick = () => {
 		if (Module._switch_page) {
