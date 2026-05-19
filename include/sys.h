@@ -22,4 +22,7 @@ void sys_render_footer(const char *style, const char *github_url);
 void sys_console_log(const char *msg);
 double sys_now(void);
 
+int sys_load_theme(void);
+void sys_save_theme(int is_dark);
+
 #endif

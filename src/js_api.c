@@ -3,6 +3,15 @@
 #include "config.h" 
 
 // From sys.c
+EM_JS(int, sys_load_theme, (void), {
+    const val = localStorage.getItem('site-theme');
+    return (val === 'dark') ? 1 : 0;
+});
+
+EM_JS(void, sys_save_theme, (int is_dark), {
+    localStorage.setItem('site-theme', is_dark ? 'dark' : 'light');
+});
+
 EM_JS(void, sys_set_html, (const char *sel_ptr, const char *html_ptr), {
     const sel   = UTF8ToString(sel_ptr);
     const html  = UTF8ToString(html_ptr);
@@ -213,6 +222,14 @@ EM_JS(void, update_theme_colors, (const struct theme *t, const char *const *pale
 
 	Module.gfx.bg = bg;
 	Module.gfx.textColor = text;
+
+	if (bg_idx === 0) {
+		document.documentElement.classList.add('dark-theme');
+		localStorage.setItem('site-theme', 'dark');
+	} else {
+		document.documentElement.classList.remove('dark-theme');
+		localStorage.setItem('site-theme', 'light');
+	}
 });
 
 EM_JS(void, init_graphics, (const struct theme *t, int header_h), {
@@ -273,7 +290,7 @@ EM_JS(void, draw_frame, (void), {
 	const gfx = Module.gfx;
 	if (!gfx?.ctx) return;
 
-	const {ctx, cvs, header_h, bg, label, textColor} = gfx;
+	const {ctx, cvs, header_h, label, textColor} = gfx;
 	const W = cvs.clientWidth || window.innerWidth;
 	const H = cvs.clientHeight || window.innerHeight;
 

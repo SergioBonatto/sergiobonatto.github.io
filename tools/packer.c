@@ -93,44 +93,31 @@ static char *read_file(const char *path, size_t *len){
 	return buf;
 }
 
-static void extract_value(char *dest, const char *src, size_t max){
-	while (*src && (isspace((unsigned char)*src) || *src == '\x22'))
-		src++;
+static void extract_value(char *dest, const char *src, size_t len, size_t max) {
+	const char *start = src;
+	const char *end = src + len;
 
-	strncpy(dest, src, max - 1);
-	dest[max - 1] = '\0';
-
-	size_t len = strlen(dest);
-	if (len == 0)
-		return;
-
-	char *end = dest + len - 1;
-	while (end >= dest && (isspace((unsigned char)*end) || *end == '\x22')) {
-		*end = '\0';
+	while (start < end && (isspace((unsigned char)*start) || *start == '\x22'))
+		start++;
+	while (end > start && (isspace((unsigned char)*(end - 1)) || *(end - 1) == '\x22'))
 		end--;
-	}
+
+	size_t final_len = (size_t)(end - start);
+	if (final_len >= max)
+		fail("value exceeds fixed buffer", "front matter");
+
+	memcpy(dest, start, final_len);
+	dest[final_len] = '\0';
 }
 
-static void parse_meta(const char *buf, struct post *p){
+static void parse_meta(const char *buf, struct post *p) {
 	const char *line = buf;
-	const char *next;
-
-	struct {
-		const char *key;
-		char *dest;
-		size_t len;
-	} map[] = {
-		{ "title:",       p->title,       MAX_TITLE },
-		{ "date:",        p->date,        MAX_DATE },
-		{ "description:", p->description, MAX_DESCRIPTION },
-		{ NULL, NULL, 0 }
-	};
 
 	strcpy(p->title, "Untitled");
 	strcpy(p->date, "1970-01-01");
 	p->description[0] = '\0';
 
-	if (strncmp(line, "---", 3) != 0 || (line[3] != '\n' && line[3] != '\r'))
+	if (strncmp(line, "---", 3) != 0)
 		return;
 
 	line = strchr(line, '\n');
@@ -139,24 +126,26 @@ static void parse_meta(const char *buf, struct post *p){
 	line++;
 
 	while (line && *line) {
-		next = strchr(line, '\n');
+		const char *next = strchr(line, '\n');
 		size_t line_len = next ? (size_t)(next - line) : strlen(line);
 
-		if ((line_len == 3 && strncmp(line, "---", 3) == 0) ||
-		    (line_len == 4 && strncmp(line, "---\r", 4) == 0)) {
+		if (line_len >= 3 && strncmp(line, "---", 3) == 0)
 			break;
-		}
 
-		for (int i = 0; map[i].key; i++) {
+		struct {
+			const char *key;
+			char *dest;
+			size_t len;
+		} map[] = {
+			{ "title:",       p->title,       MAX_TITLE },
+			{ "date:",        p->date,        MAX_DATE },
+			{ "description:", p->description, MAX_DESCRIPTION },
+		};
+
+		for (int i = 0; i < 3; i++) {
 			size_t klen = strlen(map[i].key);
 			if (line_len >= klen && strncmp(line, map[i].key, klen) == 0) {
-				char temp[1024];
-				size_t copy_len = line_len - klen;
-				if (copy_len >= sizeof(temp))
-					fail("front matter line exceeds parser buffer", map[i].key);
-				memcpy(temp, line + klen, copy_len);
-				temp[copy_len] = '\0';
-				extract_value(map[i].dest, temp, map[i].len);
+				extract_value(map[i].dest, line + klen, line_len - klen, map[i].len);
 				break;
 			}
 		}

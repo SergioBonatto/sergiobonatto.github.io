@@ -6,6 +6,7 @@
 #include "ui.h"
 #include "router.h"
 #include "pages.h"
+#include "sys.h"
 
 struct site_state state = {
 	.runtime	= 0.0f,
@@ -17,12 +18,15 @@ struct site_state state = {
 int main(void) {
 	char initial_hash[256];
 
+	state.is_dark = sys_load_theme() == 1;
+	state.theme = state.is_dark ? &theme_dark : &theme_light;
+
 	init_graphics(state.theme, UI_HEADER_HEIGHT);
 	update_theme_colors(state.theme, palette);
 	render_update_strings(msg_header, state.theme->text, palette);
 
 	apply_style("#feed", css_feed);
-	add_theme_toggle(":dark", css_theme_toggle);
+	add_theme_toggle(state.is_dark ? ":light" : ":dark", css_theme_toggle);
 	add_nav_link(":blog", css_nav_blog, "nav-blog");
 	add_nav_link(":home", css_nav_home, "nav-home");
 

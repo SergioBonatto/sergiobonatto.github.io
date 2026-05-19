@@ -49,15 +49,15 @@ const struct theme theme_light = {
 
 const char *css_theme_toggle =
 	"position: fixed; top: 20px; right: 20px; "
-	"font-size: 14px; user-select: none; cursor: pointer;";
+	"font-size: 18px; user-select: none; cursor: pointer; color: var(--text-color);";
 
 const char *css_nav_blog =
 	"position: fixed; top: 20px; right: 80px; "
-	"font-size: 14px; user-select: none; cursor: pointer;";
+	"font-size: 18px; user-select: none; cursor: pointer; color: var(--text-color);";
 
 const char *css_nav_home =
 	"position: fixed; top: 20px; right: 140px; "
-	"font-size: 14px; user-select: none; cursor: pointer;";
+	"font-size: 18px; user-select: none; cursor: pointer; color: var(--text-color);";
 
 const char *css_feed = "padding: 20px; max-width: 900px; margin-top: 100px; min-height: calc(100vh - 180px - 100px);";
 
@@ -65,7 +65,7 @@ const char *css_footer =
 	"width: 100%; padding: 24px 0; display: flex; flex-direction: column; "
 	"align-items: center; justify-content: space-between; "
 	"background-color: var(--bg-color); color: var(--text-color); "
-	"font-size: 14px; margin-top: 40px;";
+	"font-size: 18px; margin-top: 40px;";
 
 const char *msg_header = "BONATTO";
 const char *msg_whoami = "whoami";

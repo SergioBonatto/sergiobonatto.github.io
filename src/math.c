@@ -227,49 +227,31 @@ static bool is_plain_identifier(const char *start, const char *end) {
 static void parse_command(MathParser *p) {
 	if (p->cur < p->end && strchr(", !;:", *p->cur)) {
 		char c = *p->cur++;
-		if (c == '!') {
-			buf_append(p->b, "<mspace width=\"-0.167em\"></mspace>");
-		} else if (c == ';') {
-			buf_append(p->b, "<mspace width=\"0.278em\"></mspace>");
-		} else if (c == ':') {
-			buf_append(p->b, "<mspace width=\"0.222em\"></mspace>");
-		} else {
-			buf_append(p->b, "<mspace width=\"0.167em\"></mspace>");
-		}
+		const char *width = (c == '!') ? "-0.167em" :
+		                    (c == ';') ? "0.278em" :
+		                    (c == ':') ? "0.222em" : "0.167em";
+		buf_append(p->b, "<mspace width=\"");
+		buf_append(p->b, width);
+		buf_append(p->b, "\"></mspace>");
 		return;
 	}
 
-	if (match_cmd(p, "frac")) {
-		handle_frac(p);
-		return;
+	if (match_cmd(p, "frac")) { handle_frac(p); return; }
+	if (match_cmd(p, "sqrt")) { handle_sqrt(p); return; }
+
+	static const struct { const char *name; const char *variant; } styled[] = {
+		{"mathrm", "normal"}, {"text", "normal"}, {"operatorname", "normal"},
+		{"mathbb", "double-struck"}, {"mathcal", "script"}, {"mathbf", "bold"},
+	};
+
+	for (size_t i = 0; i < sizeof(styled)/sizeof(styled[0]); i++) {
+		if (match_cmd(p, styled[i].name)) {
+			emit_styled_atom(p, styled[i].variant);
+			return;
+		}
 	}
-	if (match_cmd(p, "sqrt")) {
-		handle_sqrt(p);
-		return;
-	}
-	if (match_cmd(p, "mathrm") || match_cmd(p, "text")) {
-		emit_styled_atom(p, "normal");
-		return;
-	}
-	if (match_cmd(p, "operatorname")) {
-		emit_styled_atom(p, "normal");
-		return;
-	}
-	if (match_cmd(p, "mathbb")) {
-		emit_styled_atom(p, "double-struck");
-		return;
-	}
-	if (match_cmd(p, "mathcal")) {
-		emit_styled_atom(p, "script");
-		return;
-	}
-	if (match_cmd(p, "mathbf")) {
-		emit_styled_atom(p, "bold");
-		return;
-	}
-	if (match_cmd(p, "left") || match_cmd(p, "right")) {
-		return;
-	}
+
+	if (match_cmd(p, "left") || match_cmd(p, "right")) return;
 
 	for (size_t i = 0; i < CMD_TABLE_LEN; i++) {
 		if (match_cmd(p, CMD_TABLE[i].name)) {
@@ -278,14 +260,10 @@ static void parse_command(MathParser *p) {
 		}
 	}
 
-	buf_append(p->b, "<mi>");
-	buf_append_len(p->b, "?", 1);
-	buf_append(p->b, "</mi>");
+	buf_append(p->b, "<mi>?</mi>");
 }
 
 static bool parse_atom_span(MathParser *p, AtomSpan *atom) {
-	const char *start;
-
 	skip_ws(p);
 	if (p->cur >= p->end) {
 		atom->kind = ATOM_NONE;
@@ -293,11 +271,10 @@ static bool parse_atom_span(MathParser *p, AtomSpan *atom) {
 		return false;
 	}
 
-	start = p->cur;
-	atom->start = start;
+	atom->start = p->cur;
+	char c = *p->cur;
 
-	switch (*p->cur) {
-	case '{': {
+	if (c == '{') {
 		int depth = 1;
 		p->cur++;
 		while (p->cur < p->end && depth > 0) {
@@ -309,7 +286,8 @@ static bool parse_atom_span(MathParser *p, AtomSpan *atom) {
 		atom->end = p->cur;
 		return true;
 	}
-	case '\\':
+
+	if (c == '\\') {
 		p->cur++;
 		if (p->cur < p->end && !is_alpha_uc((unsigned char)*p->cur))
 			p->cur++;
@@ -318,30 +296,25 @@ static bool parse_atom_span(MathParser *p, AtomSpan *atom) {
 		atom->kind = ATOM_COMMAND;
 		atom->end = p->cur;
 		return true;
-	default:
-		break;
 	}
 
-	if (is_digit_uc((unsigned char)*p->cur)) {
-		while (p->cur < p->end &&
-		       (is_digit_uc((unsigned char)*p->cur) || *p->cur == '.')) {
+	if (is_digit_uc((unsigned char)c)) {
+		while (p->cur < p->end && (is_digit_uc((unsigned char)*p->cur) || *p->cur == '.'))
 			p->cur++;
-		}
 		atom->kind = ATOM_NUMBER;
 		atom->end = p->cur;
 		return true;
 	}
 
-	if (is_alpha_uc((unsigned char)*p->cur)) {
-		do {
+	if (is_alpha_uc((unsigned char)c)) {
+		while (p->cur < p->end && is_alpha_uc((unsigned char)*p->cur))
 			p->cur++;
-		} while (p->cur < p->end && is_alpha_uc((unsigned char)*p->cur));
 		atom->kind = ATOM_IDENT;
 		atom->end = p->cur;
 		return true;
 	}
 
-	if (strchr("+-*/()[]=<>!|,:", *p->cur)) {
+	if (strchr("+-*/()[]=<>!|,:", c)) {
 		p->cur++;
 		atom->kind = ATOM_OPERATOR;
 		atom->end = p->cur;
@@ -355,18 +328,15 @@ static bool parse_atom_span(MathParser *p, AtomSpan *atom) {
 }
 
 static void emit_atom_span(Buffer *b, const AtomSpan *atom) {
-	MathParser nested = {
-		.cur = atom->start,
-		.end = atom->end,
-		.b = b
-	};
-
 	switch (atom->kind) {
 	case ATOM_GROUP:
 		if (atom->end > atom->start + 1) {
+			const char *inner_end = atom->end;
+			if (inner_end > atom->start && *(inner_end - 1) == '}')
+				inner_end--;
 			MathParser inner = {
 				.cur = atom->start + 1,
-				.end = atom->end - 1,
+				.end = inner_end,
 				.b = b
 			};
 			buf_append(b, "<mrow>");
@@ -374,10 +344,11 @@ static void emit_atom_span(Buffer *b, const AtomSpan *atom) {
 			buf_append(b, "</mrow>");
 		}
 		break;
-	case ATOM_COMMAND:
-		nested.cur++;
+	case ATOM_COMMAND: {
+		MathParser nested = { .cur = atom->start + 1, .end = atom->end, .b = b };
 		parse_command(&nested);
 		break;
+	}
 	case ATOM_NUMBER:
 		buf_append(b, "<mn>");
 		buf_append_len(b, atom->start, (size_t)(atom->end - atom->start));
@@ -396,6 +367,28 @@ static void emit_atom_span(Buffer *b, const AtomSpan *atom) {
 	case ATOM_NONE:
 	default:
 		break;
+	}
+}
+
+static void emit_scripts(Buffer *b, const AtomSpan *base, const AtomSpan *sub, bool has_sub, const AtomSpan *sup, bool has_sup) {
+	if (has_sub && has_sup) {
+		buf_append(b, "<msubsup>");
+		emit_atom_span(b, base);
+		emit_atom_span(b, sub);
+		emit_atom_span(b, sup);
+		buf_append(b, "</msubsup>");
+	} else if (has_sub) {
+		buf_append(b, "<msub>");
+		emit_atom_span(b, base);
+		emit_atom_span(b, sub);
+		buf_append(b, "</msub>");
+	} else if (has_sup) {
+		buf_append(b, "<msup>");
+		emit_atom_span(b, base);
+		emit_atom_span(b, sup);
+		buf_append(b, "</msup>");
+	} else {
+		emit_atom_span(b, base);
 	}
 }
 
@@ -428,48 +421,13 @@ static void parse_expr(MathParser *p) {
 				sub = script;
 				has_sub = true;
 			} else {
-				if (has_sub && has_sup) {
-					buf_append(p->b, "<msubsup>");
-					emit_atom_span(p->b, &base);
-					emit_atom_span(p->b, &sub);
-					emit_atom_span(p->b, &sup);
-					buf_append(p->b, "</msubsup>");
-				} else if (has_sub) {
-					buf_append(p->b, "<msub>");
-					emit_atom_span(p->b, &base);
-					emit_atom_span(p->b, &sub);
-					buf_append(p->b, "</msub>");
-				} else if (has_sup) {
-					buf_append(p->b, "<msup>");
-					emit_atom_span(p->b, &base);
-					emit_atom_span(p->b, &sup);
-					buf_append(p->b, "</msup>");
-				}
+				emit_scripts(p->b, &base, &sub, has_sub, &sup, has_sup);
 				base = script;
 				has_sub = false;
 				has_sup = false;
 			}
 		}
-
-		if (has_sub && has_sup) {
-			buf_append(p->b, "<msubsup>");
-			emit_atom_span(p->b, &base);
-			emit_atom_span(p->b, &sub);
-			emit_atom_span(p->b, &sup);
-			buf_append(p->b, "</msubsup>");
-		} else if (has_sub) {
-			buf_append(p->b, "<msub>");
-			emit_atom_span(p->b, &base);
-			emit_atom_span(p->b, &sub);
-			buf_append(p->b, "</msub>");
-		} else if (has_sup) {
-			buf_append(p->b, "<msup>");
-			emit_atom_span(p->b, &base);
-			emit_atom_span(p->b, &sup);
-			buf_append(p->b, "</msup>");
-		} else {
-			emit_atom_span(p->b, &base);
-		}
+		emit_scripts(p->b, &base, &sub, has_sub, &sup, has_sup);
 	}
 }
 
